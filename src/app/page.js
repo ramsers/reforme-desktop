@@ -1,8 +1,17 @@
 import Image from 'next/image'
-import Layout from "@components/layout/Layout";
+import Layout from '@components/layout/Layout'
+import HeroSection from '@features/home/HeroSection'
+import CardSection from '@features/home/CardSection'
+import StudioSection from "@features/home/hero-section/StudioSection";
 
 export default function Home() {
     return (
-        <Layout>Im the new reform</Layout>
+        <>
+            <HeroSection />
+            <Layout>
+                <CardSection />
+            </Layout>
+            <StudioSection />
+        </>
     )
 }
