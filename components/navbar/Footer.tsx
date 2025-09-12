@@ -12,8 +12,8 @@ const Footer: React.FC = () => {
                     </span>
                 </a>
 
-                <div className="hidden md:flex">
-                    <ul className="text-brown-default mt-4 flex flex-col rounded-lg border border-gray-100 p-4 font-medium font-semibold md:mt-0 md:flex-row md:space-x-8 md:border-0 md:p-0 rtl:space-x-reverse">
+                <div className="flex flex-col md:flex">
+                    <ul className="text-brown-default mt-4 flex flex-col rounded-lg border border-gray-100 font-medium font-semibold md:mt-0 md:flex-row md:space-x-8 md:border-0 md:p-0 rtl:space-x-reverse">
                         <li>
                             <a
                                 href="#"

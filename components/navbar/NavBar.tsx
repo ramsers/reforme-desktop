@@ -1,5 +1,7 @@
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import MobileNavBar from '@components/navbar/MobileNavBar'
+import appRoutes from 'config/appRoutes'
+
 
 export default function NavBar() {
     return (
@@ -18,7 +20,7 @@ export default function NavBar() {
                     <ul className="text-brown-default mt-4 flex flex-col rounded-lg border border-gray-100 p-4 font-medium font-semibold md:mt-0 md:flex-row md:space-x-8 md:border-0 md:p-0 rtl:space-x-reverse">
                         <li>
                             <a
-                                href="#"
+                                href={appRoutes.home}
                                 className="block rounded-sm px-3 py-2 md:bg-transparent md:p-0"
                                 aria-current="page"
                             >
@@ -43,10 +45,10 @@ export default function NavBar() {
                         </li>
                         <li>
                             <a
-                                href="#"
+                                href={appRoutes.authenticate.signUp}
                                 className="block rounded-sm px-3 py-2 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
                             >
-                                Pricing
+                                SignUp
                             </a>
                         </li>
                         <li>

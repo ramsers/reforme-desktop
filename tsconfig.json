@@ -26,7 +26,7 @@
             "@animations/*": ["public/assets/animations/*"],
             "@styles/*": ["styles/*"],
             "@hooks/*": ["hooks/*"],
-            "@bobtypes/*": ["types/*"],
+            "@reformetypes/*": ["types/*"],
             "@store/*": ["store/*"],
             "@mocks/*.svg": ["__mocks__/svg"],
             "@mocks/*": ["__mocks__/"]

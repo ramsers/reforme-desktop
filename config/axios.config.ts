@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'ax
 import { camelizeKeys, decamelizeKeys } from 'humps'
 
 const apiClient = axios.create({
-    baseUrl: process.env.NEXT_PUBLIC_API_URL,
+    baseURL: process.env.NEXT_PUBLIC_API_URL,
 })
 
 let authInterceptorId: number
