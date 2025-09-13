@@ -9,11 +9,12 @@ import StudioSection from "@features/home/hero-section/StudioSection";
 export default function Home() {
     return (
         <>
-            <HeroSection />
-            <Layout>
-                <CardSection />
-            </Layout>
-            <StudioSection />
+            <p>in app now</p>
+            {/*<HeroSection />*/}
+            {/*<Layout>*/}
+            {/*    <CardSection />*/}
+            {/*</Layout>*/}
+            {/*<StudioSection />*/}
         </>
     )
 }

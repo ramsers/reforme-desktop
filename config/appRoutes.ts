@@ -1,8 +1,8 @@
 const AppRoutes = {
     home: '/',
     authenticate: {
-        signUp: '/authenticate/signup',
-        login: '/authenticate/login'
+        signUp: '/app/authenticate/signup',
+        login: '/app/authenticate/login'
     }
 }
 

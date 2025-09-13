@@ -7,7 +7,7 @@ export default function NavBar() {
     return (
         <nav className="bg-main px-3 py-4 md:px-8">
             <div className="flex w-full flex-wrap items-center justify-between">
-                <a href="https://flowbite.com/" className="flex items-center space-x-3 rtl:space-x-reverse">
+                <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
                     <span className="font-heading text-brown-default text-5xl font-semibold tracking-wider whitespace-nowrap">
                         Reformé
                     </span>
@@ -45,10 +45,10 @@ export default function NavBar() {
                         </li>
                         <li>
                             <a
-                                href={appRoutes.authenticate.signUp}
+                                href={appRoutes.authenticate.login}
                                 className="block rounded-sm px-3 py-2 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
                             >
-                                SignUp
+                                Login
                             </a>
                         </li>
                         <li>
