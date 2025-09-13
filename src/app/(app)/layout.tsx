@@ -9,8 +9,6 @@ export const metadata = {
 export default function AppLayout({ children }) {
     return (
         <div className="client-portal">
-            {/* Example: client portal sidebar */}
-            <aside>Sidebar</aside>
             <main>{children}</main>
         </div>
     )
