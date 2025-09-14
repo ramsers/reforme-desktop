@@ -21,3 +21,8 @@ export enum eRole {
     INSTRUCTOR = 'INSTRUCTOR',
     CLIENT = 'CLIENT'
 }
+
+export type LoginPayload = {
+    email: string
+    password: string
+}

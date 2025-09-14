@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import {eRole, SignUpPayload} from "@reformetypes/authTypes";
+import {eRole, LoginPayload, SignUpPayload} from "@reformetypes/authTypes";
 
 export type SignUpSliceType = {
     name: string | null
@@ -27,10 +27,10 @@ const signUpSlice = createSlice({
             state.email = action.payload.email
             state.phoneNumber = action.payload.phoneNumber
             state.role = action.payload.role
-        }
+        },
+        login: (state, action: PayloadAction<LoginPayload>) => state
     }
 })
 
-export const { signUp } = signUpSlice.actions;
-console.log('TEST =============', signUp)
+export const { signUp, login } = signUpSlice.actions;
 export default signUpSlice.reducer

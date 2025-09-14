@@ -28,9 +28,7 @@ const SignUpForm: React.FC<SignUpFormProps> = () => {
     });
 
     return (
-        <div className="max-w-md mx-auto p-4 border rounded-lg">
-            <h2 className="text-xl font-bold mb-4">Sign Up</h2>
-
+        <div className="max-w-md mx-auto p-4">
             <Formik
                 initialValues={{
                     name: "",
@@ -40,13 +38,10 @@ const SignUpForm: React.FC<SignUpFormProps> = () => {
                 }}
                 validationSchema={SignupSchema}
                 onSubmit={(values, { setSubmitting }) => {
-                    // 🚨 Don't log password in devtools!
-                    console.log("Submitting (without password):", values);
                     const payload = {
                         ...values,
+                        phoneNumber: values.phoneNumber || '',
                         role: eRole.CLIENT,
-                        // onSuccess: () => console.log('Hello =========='),
-                        // onError: () => console.log('error ==========')
                     }
                     dispatch(signUp(payload))
 
@@ -57,8 +52,8 @@ const SignUpForm: React.FC<SignUpFormProps> = () => {
                 {({ isSubmitting }) => (
                     <Form className="flex flex-col gap-4">
                         <div>
-                            <label>Name</label>
-                            <Field name="name" className="border p-2 w-full" />
+                            <label className="font-semibold">Name</label>
+                            <Field name="name" className="border border-2 border-brown-default p-2 w-full rounded-lg" />
                             <ErrorMessage
                                 name="name"
                                 component="div"
@@ -67,8 +62,8 @@ const SignUpForm: React.FC<SignUpFormProps> = () => {
                         </div>
 
                         <div>
-                            <label>Email</label>
-                            <Field name="email" type="email" className="border p-2 w-full" />
+                            <label className="font-semibold">Email</label>
+                            <Field name="email" type="email" className="border p-2 w-full border-2 border-brown-default rounded-lg" />
                             <ErrorMessage
                                 name="email"
                                 component="div"
@@ -77,11 +72,11 @@ const SignUpForm: React.FC<SignUpFormProps> = () => {
                         </div>
 
                         <div>
-                            <label>Password</label>
+                            <label className="font-semibold">Password</label>
                             <Field
                                 name="password"
                                 type="password"
-                                className="border p-2 w-full"
+                                className="border p-2 w-full border-2 border-brown-default rounded-lg"
                             />
                             <ErrorMessage
                                 name="password"
@@ -91,8 +86,8 @@ const SignUpForm: React.FC<SignUpFormProps> = () => {
                         </div>
 
                         <div>
-                            <label>Phone Number (optional)</label>
-                            <Field name="phoneNumber" className="border p-2 w-full" />
+                            <label className="font-semibold">Phone Number (optional)</label>
+                            <Field name="phoneNumber" className="border p-2 w-full border-2 border-brown-default rounded-lg" />
                             <ErrorMessage
                                 name="phoneNumber"
                                 component="div"
@@ -100,11 +95,11 @@ const SignUpForm: React.FC<SignUpFormProps> = () => {
                             />
                         </div>
 
-                        <button
-                            type="submit"
-                            // disabled={isSubmitting}
-                            className="bg-blue-600 text-white px-4 py-2 rounded"
-                        >
+                        <button type="button" className="bg-brown-default p-4 rounded-lg text-main font-semibold hover:bg-brown-50 transition-colors">
+                        {/*    type="submit"*/}
+                        {/*    // disabled={isSubmitting}*/}
+                        {/*    className="bg-blue-600 text-white px-4 py-2 rounded"*/}
+                        {/*>*/}
                             Submit
                         </button>
                     </Form>

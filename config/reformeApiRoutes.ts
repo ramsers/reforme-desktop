@@ -4,3 +4,5 @@ const APIRoutes = {
         LOGIN: '/authentication/login',
     }
 }
+
+export default APIRoutes;

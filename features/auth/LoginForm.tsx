@@ -6,6 +6,8 @@ import {AppDispatch} from "@store/index";
 import * as Yup from "yup";
 import {Formik, Form, Field, ErrorMessage} from "formik";
 import Image from 'next/image'
+import {eRole} from "@reformetypes/authTypes";
+import {signUp, login} from "@store/slices/signUpSlice";
 
 
 type LoginFormOwnProps = {}
@@ -29,23 +31,29 @@ const LoginForm: React.FC<LoginFormProps> = () => {
     });
 
     return (
-        <div className="h-screen flex h-full flex-col-reverse justify-between overflow-y-auto lg:flex-row lg:overflow-y-clip">
+        <div className="flex flex-col gap-5">
+            <Formik
+                initialValues={{
+                    email: "",
+                    password: "",
+                }}
+                validationSchema={LoginSchema}
+                onSubmit={(values, { setSubmitting }) => {
+                    console.log('hitting submit ==========')
+                    const payload = {
+                        ...values,
+                    }
+                    dispatch(login(payload))
 
-            {/* Form Section */}
-            <div className="flex h-full w-full items-center justify-center p-4 lg:w-2/5 lg:p-16">
-                <h2 className="text-xl font-bold mb-4">Login</h2>
-                <Formik
-                    initialValues={{
-                        email: "",
-                        password: "",
-                    }}
-                    validationSchema={LoginSchema}
-                    onSubmit={(values, { setSubmitting }) => {}}>
-                    {({ isSubmitting }) => (
+
+                    setSubmitting(false);
+                }}>
+                {({ isSubmitting }) => (
+                    <>
                         <Form className="flex flex-col gap-4 w-full">
                             <div>
-                                <label>Email</label>
-                                <Field name="email" type="email" className="border p-2 w-full" />
+                                <label className="font-semibold">Email</label>
+                                <Field name="email" type="email" className="border border-2 border-brown-default p-2 w-full rounded-lg" />
                                 <ErrorMessage
                                     name="email"
                                     component="div"
@@ -53,11 +61,11 @@ const LoginForm: React.FC<LoginFormProps> = () => {
                                 />
                             </div>
                             <div>
-                                <label>Password</label>
+                                <label className="font-semibold">Password</label>
                                 <Field
                                     name="password"
                                     type="password"
-                                    className="border p-2 w-full"
+                                    className="border border-2 p-2 w-full rounded-lg border-brown-default"
                                 />
                                 <ErrorMessage
                                     name="password"
@@ -65,31 +73,15 @@ const LoginForm: React.FC<LoginFormProps> = () => {
                                     className="text-red-500 text-sm"
                                 />
                             </div>
+                            <button type="submit" className="bg-brown-default p-4 rounded-lg text-main font-semibold hover:bg-brown-50 transition-colors">
+                                Login
+                            </button>
                         </Form>
-                    )}
-                </Formik>
-            </div>
-
-            {/* Image Section */}
-            <aside className="hidden lg:flex lg:flex-1 items-center justify-center overflow-hidden bg-[url('/images/main_hero.jpg')] bg-cover bg-center bg-no-repeat">
-                <Image
-                    src="/images/burn_plus.jpg"
-                    width={1500}
-                    height={500}
-                    alt="Picture of the author"
-                    className="object-cover w-full h-full"
-                />
-            </aside>
+                    </>
+                )}
+            </Formik>
         </div>
     )
 }
 
-const mapStateToProps = (store: RootState): LoginFormSliceProps => (
-    {}
-)
-
-const mapDispatchToProps = (dispatch: Dispatch): LoginFormDispatchProps => (
-    {}
-)
-
-export default connect(mapStateToProps, mapDispatchToProps)(LoginForm)
+export default LoginForm

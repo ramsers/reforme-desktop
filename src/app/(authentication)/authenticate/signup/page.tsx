@@ -7,6 +7,7 @@ import {Dispatch} from 'redux'
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import SignUpForm from "@features/auth/SignUpForm";
+import AuthLayout from "@components/layout/AuthLayout";
 
 type SignUpPageOwnProps = {}
 
@@ -22,7 +23,7 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
 
     return (
         <div>
-            <SignUpForm />
+            <AuthLayout title={"Sign Up"} form={<SignUpForm />} imgPath={"/images/signup_side_img.jpg"}/>
         </div>
     )
 }

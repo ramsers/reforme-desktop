@@ -8,6 +8,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import SignUpForm from "@features/auth/SignUpForm";
 import LoginForm from "@features/auth/LoginForm";
+import AuthLayout from "@components/layout/AuthLayout";
 
 type LoginPageOwnProps = {}
 
@@ -23,7 +24,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 
     return (
         <div>
-            <LoginForm />
+            <AuthLayout form={<LoginForm />} imgPath={"/images/login_side_img.jpg"} title={"Login"}/>
         </div>
     )
 }
