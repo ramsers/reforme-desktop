@@ -31,7 +31,7 @@ export function* loginSaga(action: PayloadAction<LoginPayload>) {
 
     } catch (e) {
 
-      }
+    }
 }
 
 function* signUpFormSaga() {
