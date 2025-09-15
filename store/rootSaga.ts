@@ -1,6 +1,7 @@
 import {all, takeEvery, put, delay, call, spawn} from "redux-saga/effects"
 import { incrementByAmount } from "./slices/counterSlice"
 import signUpFormSaga from "@store/sagas/signUpSagas";
+import classesSagas from "@store/sagas/classSagas";
 
 function* incrementAsync() {
     yield delay(1000)
@@ -13,7 +14,8 @@ function* watchIncrementAsync() {
 
 export default function* rootSaga() {
     const sagas = [
-        signUpFormSaga
+        signUpFormSaga,
+        classesSagas
     ]
     yield all(
         sagas.map((saga) =>
