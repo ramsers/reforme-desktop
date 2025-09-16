@@ -1,6 +1,7 @@
 import {User} from "@reformetypes/userTypes";
 
 export type Class = {
+    id: string
     title: string
     description: string
     size: number,

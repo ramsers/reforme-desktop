@@ -1,9 +1,17 @@
+"use client"
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import MobileNavBar from '@components/navbar/MobileNavBar'
 import appRoutes from 'config/appRoutes'
+import {useSelector} from "react-redux";
+import {RootState} from "@store/index";
+import AccountDropdown from "@components/navbar/AccountDropdown";
 
 
 export default function NavBar() {
+    const user = useSelector((state: RootState) => state.user);
+
+    console.log('USER NAVBAR =============', user)
+
     return (
         <nav className="bg-main px-3 py-4 md:px-8">
             <div className="flex w-full flex-wrap items-center justify-between">
@@ -37,18 +45,10 @@ export default function NavBar() {
                         </li>
                         <li>
                             <a
-                                href="#"
+                                href={appRoutes.classes.list}
                                 className="block rounded-sm px-3 py-2 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
                             >
                                 Classes
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href={appRoutes.authenticate.login}
-                                className="block rounded-sm px-3 py-2 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
-                            >
-                                Login
                             </a>
                         </li>
                         <li>
@@ -58,6 +58,17 @@ export default function NavBar() {
                             >
                                 Contact
                             </a>
+                        </li>
+                        <li>
+                            {
+                                user?.name && <AccountDropdown /> || <a
+                                    href={appRoutes.authenticate.login}
+                                    className="block rounded-sm px-3 py-2 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
+                                >
+                                    Login
+                                </a>
+                            }
+
                         </li>
                     </ul>
                 </div>

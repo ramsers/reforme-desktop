@@ -1,19 +1,19 @@
 import {PayloadAction} from "@reduxjs/toolkit";
-import {call, takeLatest} from "redux-saga/effects";
-import {fetchClasses} from "@store/slices/classSlice"
+import {call, takeLatest, put} from "redux-saga/effects";
+import {fetchClasses, fetchClassesSuccess} from "@store/slices/classSlice"
 import {AxiosResponse} from "axios";
 import {AccessTokenResponse} from "@reformetypes/authTypes";
 import {postLogin} from "@api/auth";
-import {ClassList} from "@reformetypes/classTypes";
+import {Class, ClassList} from "@reformetypes/classTypes";
 import {getClasses} from "@api/classes";
+import {ShortPaginatedResponse} from "@reformetypes/common/PaginatedResponseTypes";
 
-export function* fetchClassesSaga(action: PayloadAction<string>) {
+export function* fetchClassesSaga(action: PayloadAction<Record<string, any>>) {
     try {
         console.log('HITTTING loginSaga =============', action.payload)
         try {
-            const response: AxiosResponse<ClassList> = yield call(getClasses, action.payload)
-            console.log('HITTTING xloginSaga =============', response)
-
+            const response: AxiosResponse<ShortPaginatedResponse<Class>> = yield call(getClasses, action.payload)
+            yield put(fetchClassesSuccess(response.data))
         } catch (e) {
 
         }

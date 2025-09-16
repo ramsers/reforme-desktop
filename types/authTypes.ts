@@ -1,8 +1,9 @@
 import {string} from "@redux-saga/is";
+import {User} from "@reformetypes/userTypes";
 
 export type SignUpPayload = SignUp & {
-    onSuccess: () => void
-    onError: (errorMessage: string) => void
+    onSuccess?: () => void
+    onError?: (errorMessage: string) => void
 }
 
 export type SignUp = {
@@ -14,7 +15,8 @@ export type SignUp = {
 }
 
 export interface AccessTokenResponse {
-    accessToken: string
+    access: string
+    user: User
 }
 
 export enum eRole {
@@ -25,4 +27,5 @@ export enum eRole {
 export type LoginPayload = {
     email: string
     password: string
+    onSuccess?: () => void
 }

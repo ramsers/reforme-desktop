@@ -8,6 +8,8 @@ import {Formik, Form, Field, ErrorMessage} from "formik";
 import Image from 'next/image'
 import {eRole} from "@reformetypes/authTypes";
 import {signUp, login} from "@store/slices/signUpSlice";
+import {useRouter} from "next/navigation";
+import AppRoutes from "../../config/appRoutes";
 
 
 type LoginFormOwnProps = {}
@@ -22,6 +24,7 @@ type LoginFormProps = LoginFormOwnProps &
 
 const LoginForm: React.FC<LoginFormProps> = () => {
     const dispatch = useDispatch<AppDispatch>();
+    const router = useRouter()
 
     const LoginSchema = Yup.object().shape({
         email: Yup.string()
@@ -42,6 +45,7 @@ const LoginForm: React.FC<LoginFormProps> = () => {
                     console.log('hitting submit ==========')
                     const payload = {
                         ...values,
+                        onSuccess: () => router.push(AppRoutes.home)
                     }
                     dispatch(login(payload))
 
@@ -80,6 +84,12 @@ const LoginForm: React.FC<LoginFormProps> = () => {
                     </>
                 )}
             </Formik>
+            <div className="flex flex-row gap-1">
+                <p> Dont have an account?</p>
+                <button onClick={() => router.push(AppRoutes.authenticate.signUp)}
+                        className="underline text-blue-600 cursor-pointer">Sign Up
+                </button>
+            </div>
         </div>
     )
 }

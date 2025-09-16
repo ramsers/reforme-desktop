@@ -8,6 +8,8 @@ import {Dispatch} from 'redux'
 import * as Yup from "yup";
 import {eRole, SignUpPayload} from "@reformetypes/authTypes";
 import { signUp } from "@store/slices/signUpSlice"
+import {useRouter} from "next/navigation";
+import AppRoutes from "../../config/appRoutes";
 
 type SignUpFormOwnProps = {}
 
@@ -15,6 +17,7 @@ type SignUpFormProps = SignUpFormOwnProps
 
 const SignUpForm: React.FC<SignUpFormProps> = () => {
     const dispatch = useDispatch<AppDispatch>();
+    const router = useRouter()
 
     const SignupSchema = Yup.object().shape({
         name: Yup.string().required("Name is required"),
@@ -28,7 +31,7 @@ const SignUpForm: React.FC<SignUpFormProps> = () => {
     });
 
     return (
-        <div className="max-w-md mx-auto p-4">
+        <div className="flex flex-col gap-5">
             <Formik
                 initialValues={{
                     name: "",
@@ -42,6 +45,7 @@ const SignUpForm: React.FC<SignUpFormProps> = () => {
                         ...values,
                         phoneNumber: values.phoneNumber || '',
                         role: eRole.CLIENT,
+                        onSuccess: () => router.push(AppRoutes.home)
                     }
                     dispatch(signUp(payload))
 
@@ -105,6 +109,12 @@ const SignUpForm: React.FC<SignUpFormProps> = () => {
                     </Form>
                 )}
             </Formik>
+            <div className="flex flex-row gap-1">
+                <p>Already have an account?</p>
+                <button onClick={() => router.push(AppRoutes.authenticate.login)}
+                        className="underline text-blue-600 cursor-pointer">Login
+                </button>
+            </div>
         </div>
     );
 }

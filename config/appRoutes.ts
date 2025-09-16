@@ -4,7 +4,7 @@ const AppRoutes = {
         signUp: '/authenticate/signup',
         login: '/authenticate/login'
     },
-    classes: '/classes'
+    classes: {list: '/classes'}
 }
 
 export default AppRoutes

@@ -4,7 +4,10 @@ const APIRoutes = {
         LOGIN: '/authentication/login',
     },
     CLASSES: {
-        LIST: (filter?: string) => `/classes?${filter}`
+        LIST: '/classes'
+    },
+    USER: {
+        ME: '/users/me'
     }
 }
 

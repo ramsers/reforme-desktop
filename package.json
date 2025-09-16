@@ -13,6 +13,7 @@
     "dependencies": {
         "@headlessui/react": "^2.2.7",
         "axios": "^1.11.0",
+        "dayjs": "^1.11.18",
         "formik": "^2.4.6",
         "humps": "^2.0.1",
         "next": "15.5.2",
