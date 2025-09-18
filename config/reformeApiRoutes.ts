@@ -10,7 +10,8 @@ const APIRoutes = {
         ME: '/users/me'
     },
     BOOKING: {
-        MAIN: '/bookings'
+        MAIN: '/bookings',
+        DELETE: (id: string) => `/bookings/${id}`
     }
 }
 

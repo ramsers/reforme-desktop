@@ -1,5 +1,4 @@
 "use client"
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import MobileNavBar from '@components/navbar/MobileNavBar'
 import appRoutes from 'config/appRoutes'
 import {useSelector} from "react-redux";
@@ -9,8 +8,6 @@ import AccountDropdown from "@components/navbar/AccountDropdown";
 
 export default function NavBar() {
     const user = useSelector((state: RootState) => state.user);
-
-    console.log('USER NAVBAR =============', user)
 
     return (
         <nav className="bg-main px-3 py-4 md:px-8">

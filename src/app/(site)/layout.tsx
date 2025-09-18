@@ -27,13 +27,14 @@ export default function SiteLayout({
 
   return (
     <html lang="en">
-      <NavBar />
+
         <body>
-        <Layout>
-            {children}
-        </Layout>
+          <NavBar />
+            <Layout>
+                <div className="min-h-[65vh]">{children}</div>
+            </Layout>
+          <Footer />
         </body>
-      <Footer />
     </html>
   )
 }

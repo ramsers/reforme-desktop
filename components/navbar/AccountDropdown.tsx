@@ -12,6 +12,8 @@ import {
     UserCircleIcon
 } from '@heroicons/react/24/solid'
 import {logout} from "@store/slices/signUpSlice"
+import {useRouter} from "next/navigation";
+import AppRoutes from "../../config/appRoutes";
 
 type AccountDropdownOwnProps = {}
 
@@ -25,9 +27,10 @@ type AccountDropdownProps = AccountDropdownOwnProps &
 
 const AccountDropdown: React.FC<AccountDropdownProps> = () => {
     const dispatch = useDispatch()
+    const router = useRouter()
     return (
         <Menu>
-            <MenuButton className="items-center gap-2 rounded-md">
+            <MenuButton className="items-center gap-2 rounded-md hover:bg-brown-default/40">
                 <UserCircleIcon className="h-6 w-6" />
             </MenuButton>
 
@@ -37,9 +40,9 @@ const AccountDropdown: React.FC<AccountDropdownProps> = () => {
                 className="w-52 origin-top-right rounded-xl border border-white/5 p-1 text-main text-sm/6 bg-brown-50 transition duration-100 ease-out [--anchor-gap:--spacing(1)] focus:outline-none data-closed:scale-95 data-closed:opacity-0"
             >
                 <MenuItem>
-                    <button className="group flex w-full items-center gap-2 px-3 py-1.5 data-focus:bg-main/10">
+                    <button onClick={() => router.push(AppRoutes.bookings.list)} className="group flex w-full items-center gap-2 px-3 py-1.5 data-focus:bg-main/10">
                         <PencilIcon className="size-4 text-main" />
-                        Edit
+                        Bookings
                     </button>
                 </MenuItem>
                 <MenuItem>

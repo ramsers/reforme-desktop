@@ -1,9 +1,10 @@
 "use client"
-import React from 'react'
+import React, {useEffect} from 'react'
 import {Dispatch} from 'redux'
-import {useDispatch} from "react-redux";
-import BookingCalendar from "@features/BookingCalendar";
+import {useDispatch, useSelector} from "react-redux";
+import BookingList from "@features/booking/BookingList";
 import {fetchBookings} from "@store/slices/bookingSlice"
+import {RootState} from "@store/index";
 
 type BookingsPageOwnProps = {}
 
@@ -18,10 +19,16 @@ type BookingsPageProps = BookingsPageOwnProps &
 const BookingsPage: React.FC<BookingsPageProps> = () => {
     const dispatch = useDispatch()
 
+    useEffect(() => {
+        dispatch(fetchBookings({}));
+    }, [dispatch]);
+
+    const bookings = useSelector((state: RootState) => state.booking.bookings.results);
+
 
     return (
         <div>
-            <BookingCalendar />
+            <BookingList bookings={bookings}/>
         </div>
     )
 }

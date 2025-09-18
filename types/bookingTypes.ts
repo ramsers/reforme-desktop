@@ -7,6 +7,7 @@ export type CreateBookingPayload = {
 }
 
 export type Booking = {
+    id: string
     client: User
     bookedClass: Class
 }

@@ -1,6 +1,7 @@
 import {Booking, CreateBookingPayload} from "@reformetypes/bookingTypes";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ShortPaginatedResponse} from "@reformetypes/common/PaginatedResponseTypes";
+import {stat} from "fs";
 
 export type BookingSliceType = {
     booking: Booking | null
@@ -21,7 +22,7 @@ const bookingSlice = createSlice({
     name: 'bookingSlice',
     initialState: initialState,
     reducers: {
-        fetchBookings: (state) => state,
+        fetchBookings: (state, action: PayloadAction<Record<string, any>>) => state,
         fetchBookingsSuccess: (state, action: PayloadAction<Booking[]>) => {
             state.bookings = action.payload
             return state
@@ -30,9 +31,16 @@ const bookingSlice = createSlice({
         createBookingSuccess: (state, action: PayloadAction<ShortPaginatedResponse<Booking>>) => {
             state.booking = action.payload
             return state
+        },
+        deleteUserBooking: (state, action: PayloadAction<string>) => state,
+        deleteUserBookingSuccess: (state, action: PayloadAction<string>) => {
+            const indexToRemove = state.bookings.results.findIndex(booking => booking.id === action.payload)
+            console.log('SAGA & SUCCCESS ======================', indexToRemove)
         }
     }
 })
 
-export const {createBooking, createBookingSuccess, fetchBookings, fetchBookingsSuccess} = bookingSlice.actions;
+export const {
+    createBooking, createBookingSuccess, fetchBookings, fetchBookingsSuccess, deleteUserBooking, deleteUserBookingSuccess
+} = bookingSlice.actions;
 export default bookingSlice.reducer
