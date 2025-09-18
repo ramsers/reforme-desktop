@@ -2,30 +2,28 @@ import {RootState} from '@store/index'
 import React, {useEffect, useState} from 'react'
 import {connect, useDispatch, useSelector} from 'react-redux'
 import {Dispatch} from 'redux'
-import {fetchClasses} from "@store/slices/classSlice"
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
-
-import classSlice from "@store/slices/classSlice";
+import {fetchClasses} from "@store/slices/classSlice";
+import {fetchBookings} from "@store/slices/bookingSlice"
 import {Class} from "@reformetypes/classTypes";
-import {createBooking} from "@store/slices/bookingSlice"
+import {Booking} from "@reformetypes/bookingTypes";
 
+type BookingCalendarOwnProps = {}
 
-type ClassesCalendarOwnProps = {}
+type BookingCalendarSliceProps = {}
 
-type ClassesCalendarSliceProps = {}
+type BookingCalendarDispatchProps = {}
 
-type ClassesCalendarDispatchProps = {}
+type BookingCalendarProps = BookingCalendarOwnProps &
+    BookingCalendarSliceProps &
+    BookingCalendarDispatchProps
 
-type ClassesCalendarProps = ClassesCalendarOwnProps &
-    ClassesCalendarSliceProps &
-    ClassesCalendarDispatchProps
-
-const ClassesCalendar: React.FC<ClassesCalendarProps> = () => {
+const BookingCalendar: React.FC<BookingCalendarProps> = () => {
     const dispatch = useDispatch();
-    const classes = useSelector((state: RootState) => state.class?.classes?.results);
+    const bookings = useSelector((state: RootState) => state.booking.bookings.results);
     const user = useSelector((state: RootState) => state.user);
-    console.log('classes ==============', classes)
+    console.log('classes ==============', bookings)
     dayjs.extend(utc);
 
     // current week (today + next 6 days)
@@ -38,8 +36,15 @@ const ClassesCalendar: React.FC<ClassesCalendarProps> = () => {
 
     useEffect(() => {
         // whenever selectedDay changes, fetch classes
-        dispatch(fetchClasses({ date: selectedDay.format("YYYY-MM-DD") }));
+        // dispatch(fetchClasses({ date: selectedDay.format("YYYY-MM-DD") }));
+        dispatch(fetchBookings());
     }, [dispatch, selectedDay]);
+
+    console.log('BOOKI?NGS ===========', bookings)
+    //TODO - set up booking and classes calendar to have the monthly/top toggle (next 7 day span)
+    //TODO - see if booking and class calendar can have some kind of common commponent
+    //TODO - have archived/completed section to show previously booked classes
+    //TODO - wth does reschedule do?
 
     return (
         <div className="w-full flex flex-col items-center gap-6">
@@ -65,34 +70,36 @@ const ClassesCalendar: React.FC<ClassesCalendarProps> = () => {
 
             {/* Class list */}
             <div className="w-full max-w-2xl flex flex-col gap-3">
-                {classes && classes.length > 0 ? (
-                    classes.map((cls: Class) => (
+                {bookings && bookings.length > 0 ? (
+                    bookings.map((bk: Booking) => (
                         <div
-                            key={cls.id}
+                            key={bk.bookedClass.id}
                             className="p-4 rounded-xl shadow bg-white border border-gray-200"
                         >
                             <div className="flex flex-row items-center justify-between">
                                 <div className="flex flex-col gap-1">
-                                    <div className="text-lg font-bold">{cls.title}</div>
-                                    <div className="text-sm text-gray-600">{cls.description}</div>
-                                    <span className="text-sm">{cls.instructor.name} • {dayjs(cls.date).format("h:mm A")}</span>
+                                    <div className="text-lg font-bold">{bk.bookedClass.title}</div>
+                                    <div className="text-sm text-gray-600">{bk.bookedClass.description}</div>
+                                    <span className="text-sm">{bk.bookedClass.instructor.name} • {dayjs(bk.bookedClass.date).format("h:mm A")}</span>
                                 </div>
 
-                                {
-                                    user?.name && (
-                                        <button onClick={() => dispatch(createBooking({clientId: user.id, classId: cls.id}))}
-                                                className="hover:bg-gray-10 transition-colors hover:text-brown-default
+                                <div className="flex flex-row gap-2">
+                                    <button className="hover:bg-gray-10/50 transition-colors hover:text-foreground
+                                        bg-gray-10 border border-brown-50 text-brown-default font-semibold rounded-lg px-3 py-1">
+                                        Cancel
+                                    </button>
+                                    <button className="hover:bg-gray-10 transition-colors hover:text-brown-default
                                         bg-brown-default font-semibold text-main rounded-lg px-3 py-1">
-                                            Book now
-                                        </button>
-                                    )
-                                }
+                                        Reschedule
+                                    </button>
+                                </div>
+
                             </div>
                         </div>
                     ))
                 ) : (
                     <div className="text-gray-500 text-center py-10">
-                        No classes scheduled for this day
+                        No appointments scheduled for this day
                     </div>
                 )}
             </div>
@@ -100,12 +107,12 @@ const ClassesCalendar: React.FC<ClassesCalendarProps> = () => {
     )
 }
 
-const mapStateToProps = (store: RootState): ClassesCalendarSliceProps => (
+const mapStateToProps = (store: RootState): BookingCalendarSliceProps => (
     {}
 )
 
-const mapDispatchToProps = (dispatch: Dispatch): ClassesCalendarDispatchProps => (
+const mapDispatchToProps = (dispatch: Dispatch): BookingCalendarDispatchProps => (
     {}
 )
 
-export default connect(mapStateToProps, mapDispatchToProps)(ClassesCalendar)
+export default connect(mapStateToProps, mapDispatchToProps)(BookingCalendar)

@@ -1,6 +1,9 @@
 "use client"
 import React from 'react'
 import {Dispatch} from 'redux'
+import {useDispatch} from "react-redux";
+import BookingCalendar from "@features/BookingCalendar";
+import {fetchBookings} from "@store/slices/bookingSlice"
 
 type BookingsPageOwnProps = {}
 
@@ -13,7 +16,14 @@ type BookingsPageProps = BookingsPageOwnProps &
     BookingsPageDispatchProps
 
 const BookingsPage: React.FC<BookingsPageProps> = () => {
-    return <p>im in bookings</p>
+    const dispatch = useDispatch()
+
+
+    return (
+        <div>
+            <BookingCalendar />
+        </div>
+    )
 }
 
 

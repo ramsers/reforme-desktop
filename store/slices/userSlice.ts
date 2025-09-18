@@ -25,6 +25,7 @@ const userSlice = createSlice({
         fetchUser: (state) => state,
         fetchUserSuccess: (state, action: PayloadAction<User>) => {
             console.log('I AM HITTING SUCCESS ==========', action.payload)
+            state.id = action.payload.id
             state.name = action.payload.name
             state.email = action.payload.email
             state.phoneNumber = action.payload.phoneNumber
@@ -33,6 +34,7 @@ const userSlice = createSlice({
             return state
         },
         reset: (state) => {
+            state.id = ''
             state.name = ''
             state.email = ''
             state.phoneNumber = ''

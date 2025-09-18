@@ -8,6 +8,9 @@ const APIRoutes = {
     },
     USER: {
         ME: '/users/me'
+    },
+    BOOKING: {
+        MAIN: '/bookings'
     }
 }
 
