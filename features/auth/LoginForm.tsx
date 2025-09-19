@@ -42,10 +42,15 @@ const LoginForm: React.FC<LoginFormProps> = () => {
                 }}
                 validationSchema={LoginSchema}
                 onSubmit={(values, { setSubmitting }) => {
-                    console.log('hitting submit ==========')
                     const payload = {
                         ...values,
-                        onSuccess: () => router.push(AppRoutes.home)
+                        onSuccess: (user) => {
+                            if (user.role === eRole.ADMIN) {
+                                router.push(AppRoutes.dashboard.main)
+                            } else {
+                                router.push(AppRoutes.home)
+                            }
+                        }
                     }
                     dispatch(login(payload))
 

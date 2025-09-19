@@ -31,7 +31,7 @@ export function* fetchBookingsSaga(action: PayloadAction<Record<string, any>>) {
 
 export function* deleteUserBookingSaga(action: PayloadAction<string>) {
     try {
-        yield call(deleteBooking, action.payload)
+        // yield call(deleteBooking, action.payload)
         yield put(deleteUserBookingSuccess(action.payload))
     } catch (e) {
 

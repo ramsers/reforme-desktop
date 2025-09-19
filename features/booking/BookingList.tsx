@@ -15,6 +15,7 @@ import {getWeekRange} from "../../utils/dateUtils";
 import {useRouter} from "next/navigation";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
 import AppRoutes from "../../config/appRoutes";
+import {deleteUserBooking} from "@store/slices/bookingSlice";
 
 
 type BookingListOwnProps = {
@@ -34,13 +35,19 @@ const BookingList: React.FC<BookingListProps> = ({bookings}) => {
     const router = useRouter();
     dayjs.extend(utc);
 
-    function handleReschedule(booking: Booking) {
+    const handleReschedule = (booking: Booking) => {
         const { start, end } = getWeekRange(booking.bookedClass.date);
 
         dispatch(fetchClasses({ start_date: start, end_date: end }));
 
         router.push(`${AppRoutes.classes.list}?original_booking=${booking.id}`);
     }
+
+    const handleCancel = (bookingId: string) => {
+        dispatch(deleteUserBooking(bookingId))
+    }
+
+
 
     return (
         <>
@@ -69,6 +76,7 @@ const BookingList: React.FC<BookingListProps> = ({bookings}) => {
 
                                     <div className="flex flex-row justify-between">
                                         <button
+                                            onClick={() => handleCancel(bk.id)}
                                             className="font-semibold text-red-700 hover:text-red-500
                                              cursor-pointer">
                                             Cancel

@@ -21,7 +21,8 @@ export interface AccessTokenResponse {
 
 export enum eRole {
     INSTRUCTOR = 'INSTRUCTOR',
-    CLIENT = 'CLIENT'
+    CLIENT = 'CLIENT',
+    ADMIN = 'ADMIN',
 }
 
 export type LoginPayload = {

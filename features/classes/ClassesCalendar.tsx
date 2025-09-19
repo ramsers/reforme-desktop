@@ -13,6 +13,7 @@ import {createBooking} from "@store/slices/bookingSlice"
 import CalendarBar from "@components/calendar/CalendarBar";
 import CalendarList from "@components/calendar/CalendarList";
 import {useSearchParams} from "next/navigation";
+import {deleteBooking} from "@api/booking";
 
 
 type ClassesCalendarOwnProps = {}
@@ -40,8 +41,11 @@ const ClassesCalendar: React.FC<ClassesCalendarProps> = () => {
         dispatch(fetchClasses({ date: selectedDay.format("YYYY-MM-DD") }));
     }, [dispatch, selectedDay]);
 
-    const handleCreateBooking = () => {
-        dispatch(createBooking({ clientId: user.id, classId: cls.id }))
+    const handleCreateBooking = (classId: string) => {
+        if (originalBookingId) {
+            dispatch(deleteBooking({ bookingId: originalBookingId }));
+        }
+        dispatch(createBooking({ clientId: user.id, classId: classId }))
     }
 
     return (
@@ -57,7 +61,7 @@ const ClassesCalendar: React.FC<ClassesCalendarProps> = () => {
                     date: cls.date,
                     actions: user?.name ? (
                         <button
-                            onClick={() => handleCreateBooking()}
+                            onClick={() => handleCreateBooking(cls.id)}
                             className="hover:bg-gray-10 transition-colors hover:text-brown-default bg-brown-default font-semibold text-main rounded-lg px-3 py-1"
                         >
                             Book now

@@ -32,10 +32,11 @@ const bookingSlice = createSlice({
             state.booking = action.payload
             return state
         },
-        deleteUserBooking: (state, action: PayloadAction<string>) => state,
+        deleteUserBooking: (state, action: PayloadAction<string>) => {
+            return state
+        },
         deleteUserBookingSuccess: (state, action: PayloadAction<string>) => {
             const indexToRemove = state.bookings.results.findIndex(booking => booking.id === action.payload)
-            console.log('SAGA & SUCCCESS ======================', indexToRemove)
         }
     }
 })
