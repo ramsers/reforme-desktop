@@ -4,7 +4,7 @@ const APIRoutes = {
         LOGIN: '/authentication/login',
     },
     CLASSES: {
-        LIST: '/classes'
+        MAIN: '/classes'
     },
     USER: {
         ME: '/users/me'

@@ -60,8 +60,8 @@ const SlidingModal: React.FC<SlidingModalProps> = ({isOpen, setIsOpen, title, ch
                                     <XMarkIcon className="h-6 w-6" />
                                 </button>
 
-                                <div className="flex-1 overflow-y-auto p-6 pb-24">
-                                    <Dialog.Title className="text-lg font-semibold">
+                                <div className="overflow-y-auto p-6 pb-24 gap-4 flex flex-col">
+                                    <Dialog.Title className="text-2xl font-bold">
                                         {title}
                                     </Dialog.Title>
                                     {children}
@@ -76,6 +76,7 @@ const SlidingModal: React.FC<SlidingModalProps> = ({isOpen, setIsOpen, title, ch
                                     </button>
                                     <button
                                         onClick={() => onClick()}
+                                        type={"submit"}
                                         className="px-4 py-2 rounded-md bg-brown-default text-white font-semibold w-full"
                                     >
                                         {content}

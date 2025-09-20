@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@store/index";
 import {fetchClasses} from "@store/slices/classSlice";
 import SlidingModal from "@components/slidingModal/SlidingModal";
+import CreateClassForm from "@features/dashboard/classes/CreateClassForm";
 
 const DashboardClassesPage: React.FC = () => {
     // List of of classes prefiltered to this week.
@@ -43,7 +44,7 @@ const DashboardClassesPage: React.FC = () => {
                 </div>
             </div>
             <ClassesTable classes={classes}/>
-            <SlidingModal isOpen={isOpen} setIsOpen={setIsOpen}/>
+            <CreateClassForm isOpen={isOpen} setIsOpen={setIsOpen} />
         </div>
     )
 }

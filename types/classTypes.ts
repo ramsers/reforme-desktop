@@ -7,11 +7,20 @@ export type Class = {
     size: number,
     length: number
     date: Date
-    instructor: User
+    instructorId: User
 }
 
 export type ClassList = {
     classes: Class[]
+}
+
+export type CreateClassPayload = {
+    title: string
+    description: string
+    size: number,
+    length: number
+    date: Date
+    instructorId?: User | null
 }
 
 // class Classes(TimestampModel, UUIDModel):
