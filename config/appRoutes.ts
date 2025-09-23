@@ -10,6 +10,9 @@ const AppRoutes = {
         main: '/dashboard',
         classes: {
             list: '/dashboard/classes'
+        },
+        instructors: {
+          list: '/dashboard/instructors'
         }
     }
 }

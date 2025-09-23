@@ -1,8 +1,10 @@
 import {AxiosResponse} from "axios";
-import {getUserInfo} from "@api/user";
+import {getAllInstructors, getUserInfo, postCreateUser} from "@api/user";
 import {call, put, takeEvery} from "redux-saga/effects";
-import {fetchUserSuccess, fetchUser} from "@store/slices/userSlice"
-import {User} from "@reformetypes/userTypes";
+import {fetchUserSuccess, fetchUser, fetchAllInstructors,
+    fetchAllInstructorsSuccess, createUser, createUserSuccess} from "@store/slices/userSlice"
+import {CreateUserPayload, User} from "@reformetypes/userTypes";
+import {PayloadAction} from "@reduxjs/toolkit";
 
 export function* fetchUserSaga() {
     console.log('IAM HITTING the SAGA =========')
@@ -16,8 +18,32 @@ export function* fetchUserSaga() {
     }
 }
 
+export function* fetchAllInstructorsSaga() {
+    try {
+        const response: AxiosResponse<User[]> = yield call(getAllInstructors)
+
+        console.log("RESPONSE ====================", response)
+        yield put(fetchAllInstructorsSuccess(response.data))
+    } catch (e) {
+
+    }
+}
+
+export function* createUserSaga(action: PayloadAction<CreateUserPayload>) {
+    try {
+        console.log('USER =============', action.payload)
+        // const response: AxiosResponse<User> = yield call(postCreateUser, action.payload)
+
+        // console.log('USER =============', response.data)
+    } catch (e) {
+
+    }
+}
+
 function* userSagas() {
     yield takeEvery(fetchUser.type, fetchUserSaga)
+    yield takeEvery(fetchAllInstructors.type, fetchAllInstructorsSaga)
+    yield takeEvery(createUser.type, createUserSaga)
 }
 
 export default userSagas

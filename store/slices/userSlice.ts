@@ -1,4 +1,4 @@
-import {User} from "@reformetypes/userTypes";
+import {CreateUserPayload, User} from "@reformetypes/userTypes";
 import {eRole} from "@reformetypes/authTypes";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
@@ -8,6 +8,7 @@ export type UserSliceType = {
     phoneNumber: string | null
     password: string | null
     role: eRole | null
+    instructors: User[]
 }
 
 const INITIAL_USER_STATE: UserSliceType = {
@@ -15,7 +16,8 @@ const INITIAL_USER_STATE: UserSliceType = {
     email: '',
     phoneNumber: '',
     password: '',
-    role: null
+    role: null,
+    instructors: []
 }
 
 const userSlice = createSlice({
@@ -41,9 +43,25 @@ const userSlice = createSlice({
             state.password = ''
             state.role = ''
             return state
+        },
+        fetchAllInstructors: (state) => state,
+        fetchAllInstructorsSuccess: (state, action: PayloadAction<User[]>) => {
+            state.instructors = action.payload
+            return state
+        },
+        createUser: (state, action: PayloadAction<CreateUserPayload>) => state,
+        createUserSuccess: (state, action: PayloadAction<User>) => {
+
+            if (action.payload.role === eRole.INSTRUCTOR) {
+                state.instructors.push(action.payload)
+            }
+
+            return state
         }
     }
 })
 
-export const { fetchUser, fetchUserSuccess, reset } = userSlice.actions;
+export const {
+    fetchUser, fetchUserSuccess, reset, fetchAllInstructors, fetchAllInstructorsSuccess, createUser, createUserSuccess
+} = userSlice.actions;
 export default userSlice.reducer

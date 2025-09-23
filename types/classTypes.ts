@@ -7,7 +7,7 @@ export type Class = {
     size: number,
     length: number
     date: Date
-    instructorId: User
+    instructor: User | null
 }
 
 export type ClassList = {
@@ -20,6 +20,16 @@ export type CreateClassPayload = {
     size: number,
     length: number
     date: Date
+    instructorId?: User | null
+}
+
+export type PartialUpdateClassPayload = {
+    id: string
+    title?: string
+    description?: string
+    size?: number,
+    length?: number
+    date?: Date
     instructorId?: User | null
 }
 

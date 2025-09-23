@@ -7,7 +7,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@store/index";
 import {fetchClasses} from "@store/slices/classSlice";
 import SlidingModal from "@components/slidingModal/SlidingModal";
-import CreateClassForm from "@features/dashboard/classes/CreateClassForm";
+import CreateClassForm from "@features/dashboard/classes/CreateEditClassForm";
+import CreateClassButtonModal from "@features/dashboard/classes/CreateClassButtonModal";
 
 const DashboardClassesPage: React.FC = () => {
     // List of of classes prefiltered to this week.
@@ -30,21 +31,9 @@ const DashboardClassesPage: React.FC = () => {
                     <p className="text-lg">Classes</p>
                     <p className="text-sm">View and manage your classes</p>
                 </div>
-                <div>
-                    <button
-                        // onClick={() => console.log('clicked')}
-                        onClick={() => setIsOpen(true)}
-                        className="group hover:bg-white transition-colors bg-dashboard-action cursor-pointer
-                        font-semibold text-main rounded-lg px-3 py-2 flex flex-row items-center gap-1"
-                    >
-                        <PlusIcon className="h-5 w-5 group-hover:text-dashboard-action"/>
-
-                        <p className="group-hover:text-dashboard-action">Create class</p>
-                    </button>
-                </div>
+                <CreateClassButtonModal />
             </div>
-            <ClassesTable classes={classes}/>
-            <CreateClassForm isOpen={isOpen} setIsOpen={setIsOpen} />
+            <ClassesTable classes={classes} isOpen={isOpen} setIsOpen={setIsOpen}/>
         </div>
     )
 }

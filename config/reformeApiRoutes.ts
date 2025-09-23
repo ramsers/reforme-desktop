@@ -4,10 +4,14 @@ const APIRoutes = {
         LOGIN: '/authentication/login',
     },
     CLASSES: {
-        MAIN: '/classes'
+        MAIN: '/classes',
+        BY_ID: (id: string) => `/classes/${id}`,
+        PARTIAL_UPDATE: (id: string) => `/classes/${id}`
     },
     USER: {
-        ME: '/users/me'
+        MAIN: '/users',
+        ME: '/users/me',
+        ALL_INSTRUCTORS: '/users/all-instructors'
     },
     BOOKING: {
         MAIN: '/bookings',

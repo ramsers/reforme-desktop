@@ -33,6 +33,9 @@ const SideBar: React.FC<SideBarProps> = ({open, setOpen}) => {
                 <button onClick={() => router.push(AppRoutes.dashboard.classes.list)} className="block w-full hover:bg-gray-700 p-2 rounded text-left">
                     Classes
                 </button>
+                <button onClick={() => router.push(AppRoutes.dashboard.instructors.list)} className="block w-full hover:bg-gray-700 p-2 rounded text-left">
+                    Instructors
+                </button>
                 <a href="#"  className="block w-full hover:bg-gray-700 p-2 rounded text-left">
                     Profile
                 </a>

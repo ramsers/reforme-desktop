@@ -1,6 +1,6 @@
 import {RootState} from '@store/index'
-import React from 'react'
-import {connect, useDispatch} from 'react-redux'
+import React, {useEffect} from 'react'
+import {connect, useDispatch, useSelector} from 'react-redux'
 import {Dispatch} from 'redux'
 import {AppDispatch} from "@store/index";
 import * as Yup from "yup";
@@ -10,6 +10,8 @@ import {eRole} from "@reformetypes/authTypes";
 import {signUp, login} from "@store/slices/signUpSlice";
 import {useRouter} from "next/navigation";
 import AppRoutes from "../../config/appRoutes";
+import {User} from "@reformetypes/userTypes";
+import App from "next/app";
 
 
 type LoginFormOwnProps = {}
@@ -24,6 +26,8 @@ type LoginFormProps = LoginFormOwnProps &
 
 const LoginForm: React.FC<LoginFormProps> = () => {
     const dispatch = useDispatch<AppDispatch>();
+    const user = useSelector((state: RootState) => state.user);
+
     const router = useRouter()
 
     const LoginSchema = Yup.object().shape({
@@ -32,6 +36,16 @@ const LoginForm: React.FC<LoginFormProps> = () => {
             .required("Email is required"),
         password: Yup.string().required("Password is required"),
     });
+
+    useEffect(() => {
+        if (user?.role) {
+            if(user?.role === eRole.ADMIN) {
+                return router.push(AppRoutes.dashboard.main)
+            } else {
+                router.push(AppRoutes.home)
+            }
+        }
+    }, [user.role, router])
 
     return (
         <div className="flex flex-col gap-5">
@@ -44,15 +58,14 @@ const LoginForm: React.FC<LoginFormProps> = () => {
                 onSubmit={(values, { setSubmitting }) => {
                     const payload = {
                         ...values,
-                        onSuccess: (user) => {
-                            if (user.role === eRole.ADMIN) {
-                                router.push(AppRoutes.dashboard.main)
-                            } else {
-                                router.push(AppRoutes.home)
-                            }
-                        }
                     }
-                    dispatch(login(payload))
+                    dispatch(login(payload)).unwrap().then((user: User) => {
+                        if (user.role === eRole.ADMIN) {
+                            router.push(AppRoutes.dashboard.main)
+                        } else {
+                            router.push(AppRoutes.home)
+                        }
+                    })
 
 
                     setSubmitting(false);

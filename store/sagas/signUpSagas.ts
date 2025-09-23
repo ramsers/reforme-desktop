@@ -1,15 +1,11 @@
 import {PayloadAction} from "@reduxjs/toolkit";
-import { AxiosError, AxiosResponse } from 'axios'
+import {AxiosResponse} from 'axios'
 import {AccessTokenResponse, eRole, LoginPayload, SignUpPayload} from "@reformetypes/authTypes";
-import {call, put, select, takeEvery, takeLatest} from 'redux-saga/effects'
+import {call, put, takeLatest} from 'redux-saga/effects'
 import {postLogin, postSignUp} from "@api/auth";
-import signUpSlice from "@store/slices/signUpSlice";
-import {signUp, login, logout} from "@store/slices/signUpSlice"
+import {login, logout, signUp} from "@store/slices/signUpSlice";
 import {connectApi} from "../../config/axios.config";
-import {fetchUserSuccess} from "@store/slices/userSlice"
-import AppRoutes from "../../config/appRoutes";
-import {reset} from "@store/slices/userSlice"
-import {Router} from "next/router";
+import {fetchUserSuccess, reset} from "@store/slices/userSlice"
 
 
 export function* setAccessToken(accessToken: string) {
@@ -47,10 +43,6 @@ export function* loginSaga(action: PayloadAction<LoginPayload>) {
         yield call(setAccessToken, response.data.access)
         yield call(connectApi)
         yield put(fetchUserSuccess(response.data.user))
-
-        if (action.payload.onSuccess) {
-            yield call(action.payload.onSuccess, response.data.user)
-        }
     } catch (e) {
 
     }

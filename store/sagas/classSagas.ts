@@ -1,16 +1,17 @@
 import {PayloadAction} from "@reduxjs/toolkit";
 import {call, takeLatest, put} from "redux-saga/effects";
-import {fetchClasses, fetchClassesSuccess, createClass} from "@store/slices/classSlice"
+import {
+    fetchClasses, fetchClassesSuccess, createClass,
+    fetchClass, fetchClassSuccess, partialUpdateClass, partialUpdateClassSuccess, clearClass
+}
+from "@store/slices/classSlice"
 import {AxiosResponse} from "axios";
-import {AccessTokenResponse} from "@reformetypes/authTypes";
-import {postLogin} from "@api/auth";
-import {Class, ClassList, CreateClassPayload} from "@reformetypes/classTypes";
-import {getClasses, postCreateClass} from "@api/classes";
+import {Class, CreateClassPayload, PartialUpdateClassPayload} from "@reformetypes/classTypes";
+import {getClass, getClasses, patchUpdateClass, postCreateClass} from "@api/classes";
 import {ShortPaginatedResponse} from "@reformetypes/common/PaginatedResponseTypes";
 
 export function* fetchClassesSaga(action: PayloadAction<Record<string, any>>) {
     try {
-        console.log('HITTTING loginSaga =============', action.payload)
         try {
             const response: AxiosResponse<ShortPaginatedResponse<Class>> = yield call(getClasses, action.payload)
             yield put(fetchClassesSuccess(response.data))
@@ -24,9 +25,30 @@ export function* fetchClassesSaga(action: PayloadAction<Record<string, any>>) {
 
 export function* createClassSaga(action: PayloadAction<CreateClassPayload>) {
     try {
-        const response: AxiosResponse<Class> = yield call(postCreateClass, action.payload)
+        yield call(postCreateClass, action.payload)
+        yield put(fetchClasses({}))
+    } catch (e) {
 
-        console.log('REsponse CREATE CLASS =======================', response)
+    }
+}
+
+export function* fetchClassSaga(action: PayloadAction<string>) {
+    try {
+        const response: AxiosResponse<Class> = yield call(getClass, action.payload)
+        yield put(fetchClassSuccess(response.data))
+    } catch (e) {
+
+    }
+}
+
+export function* partialUpdateClassSaga(action: PayloadAction<PartialUpdateClassPayload>) {
+
+    try {
+        const response: AxiosResponse<Class> = yield call(patchUpdateClass, action.payload)
+
+        yield put(partialUpdateClassSuccess(response.data))
+        yield put(clearClass())
+
     } catch (e) {
 
     }
@@ -35,6 +57,8 @@ export function* createClassSaga(action: PayloadAction<CreateClassPayload>) {
 function* classesSagas() {
     yield takeLatest(fetchClasses.type, fetchClassesSaga)
     yield takeLatest(createClass.type, createClassSaga)
+    yield takeLatest(fetchClass.type, fetchClassSaga)
+    yield takeLatest(partialUpdateClass.type, partialUpdateClassSaga)
 }
 
 export default classesSagas
