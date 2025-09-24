@@ -1,29 +1,35 @@
-import {CreateUserPayload, User} from "@reformetypes/userTypes";
-import {eRole} from "@reformetypes/authTypes";
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import { CreateUserPayload, User } from '@reformetypes/userTypes'
+import { eRole } from '@reformetypes/authTypes'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export type UserSliceType = {
+    id: string | null
     name: string | null
     email: string | null
     phoneNumber: string | null
     password: string | null
     role: eRole | null
+    createdAt?: string | null
     instructors: User[]
+    instructor: User | null
 }
 
 const INITIAL_USER_STATE: UserSliceType = {
+    id: '',
     name: '',
     email: '',
     phoneNumber: '',
     password: '',
     role: null,
-    instructors: []
+    createdAt: null,
+    instructors: [],
+    instructor: null,
 }
 
 const userSlice = createSlice({
     name: 'userSlice',
     initialState: INITIAL_USER_STATE,
-    reducers:{
+    reducers: {
         fetchUser: (state) => state,
         fetchUserSuccess: (state, action: PayloadAction<User>) => {
             console.log('I AM HITTING SUCCESS ==========', action.payload)
@@ -41,7 +47,7 @@ const userSlice = createSlice({
             state.email = ''
             state.phoneNumber = ''
             state.password = ''
-            state.role = ''
+            state.role = null
             return state
         },
         fetchAllInstructors: (state) => state,
@@ -51,17 +57,34 @@ const userSlice = createSlice({
         },
         createUser: (state, action: PayloadAction<CreateUserPayload>) => state,
         createUserSuccess: (state, action: PayloadAction<User>) => {
-
             if (action.payload.role === eRole.INSTRUCTOR) {
                 state.instructors.push(action.payload)
             }
 
             return state
-        }
-    }
+        },
+        retrieveUser: (state, action: PayloadAction<string>) => state,
+        updateUser: (state, action: PayloadAction<{ id: string; data: Partial<CreateUserPayload> }>) => state,
+        updateUserSuccess: (state, action: PayloadAction<User>) => {
+            const index = state.instructors.findIndex((inst) => inst.id === action.payload.id)
+            if (index !== -1) {
+                state.instructors[index] = action.payload
+            }
+            return state
+        },
+    },
 })
 
 export const {
-    fetchUser, fetchUserSuccess, reset, fetchAllInstructors, fetchAllInstructorsSuccess, createUser, createUserSuccess
-} = userSlice.actions;
+    fetchUser,
+    fetchUserSuccess,
+    reset,
+    fetchAllInstructors,
+    fetchAllInstructorsSuccess,
+    createUser,
+    createUserSuccess,
+    retrieveUser,
+    updateUser,
+    updateUserSuccess,
+} = userSlice.actions
 export default userSlice.reducer

@@ -1,17 +1,15 @@
-import {PayloadAction} from "@reduxjs/toolkit";
-import {AxiosResponse} from 'axios'
-import {AccessTokenResponse, eRole, LoginPayload, SignUpPayload} from "@reformetypes/authTypes";
-import {call, put, takeLatest} from 'redux-saga/effects'
-import {postLogin, postSignUp} from "@api/auth";
-import {login, logout, signUp} from "@store/slices/signUpSlice";
-import {connectApi} from "../../config/axios.config";
-import {fetchUserSuccess, reset} from "@store/slices/userSlice"
-
+import { PayloadAction } from '@reduxjs/toolkit'
+import { AxiosResponse } from 'axios'
+import { AccessTokenResponse, eRole, LoginPayload, SignUpPayload } from '@reformetypes/authTypes'
+import { call, put, takeLatest } from 'redux-saga/effects'
+import { postLogin, postSignUp } from '@api/auth'
+import { login, logout, signUp } from '@store/slices/signUpSlice'
+import { connectApi } from '../../config/axios.config'
+import { fetchUserSuccess, reset } from '@store/slices/userSlice'
 
 export function* setAccessToken(accessToken: string) {
     localStorage.setItem('accessToken', accessToken)
 }
-
 
 export function* signUpSaga(action: PayloadAction<SignUpPayload>) {
     try {
@@ -21,7 +19,7 @@ export function* signUpSaga(action: PayloadAction<SignUpPayload>) {
             email: action.payload.email,
             phoneNumber: action.payload.phoneNumber,
             password: action.payload.password,
-            role: action.payload.role
+            role: action.payload.role,
         })
         yield call(setAccessToken, response.data.access)
         yield call(connectApi)
@@ -30,31 +28,24 @@ export function* signUpSaga(action: PayloadAction<SignUpPayload>) {
         if (action.payload.onSuccess) {
             yield call(action.payload.onSuccess())
         }
-
-    } catch (e) {
-
-    }
+    } catch (e) {}
 }
 
 export function* loginSaga(action: PayloadAction<LoginPayload>) {
     try {
-          const response: AxiosResponse<AccessTokenResponse> = yield call(postLogin, action.payload)
+        const response: AxiosResponse<AccessTokenResponse> = yield call(postLogin, action.payload)
 
         yield call(setAccessToken, response.data.access)
         yield call(connectApi)
         yield put(fetchUserSuccess(response.data.user))
-    } catch (e) {
-
-    }
+    } catch (e) {}
 }
 
 export function* logoutSaga() {
     try {
-        localStorage.removeItem("accessToken");
+        localStorage.removeItem('accessToken')
         yield put(reset())
-    } catch (e) {
-
-    }
+    } catch (e) {}
 }
 
 function* signUpFormSaga() {

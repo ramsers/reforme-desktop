@@ -1,8 +1,8 @@
-import {eRole} from "@reformetypes/authTypes";
+import { eRole } from '@reformetypes/authTypes'
 
 export type User = {
-    createAt: Date
     id: string
+    createdAt: Date
     email: string
     name: string
     phoneNumber: string

@@ -1,6 +1,6 @@
-import {Class, ClassList, CreateClassPayload, PartialUpdateClassPayload} from "@reformetypes/classTypes";
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {ShortPaginatedResponse} from "@reformetypes/common/PaginatedResponseTypes";
+import { Class, ClassList, CreateClassPayload, PartialUpdateClassPayload } from '@reformetypes/classTypes'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
 
 export type ClassSliceType = {
     class: Class | null
@@ -14,9 +14,8 @@ const initialState: ClassSliceType = {
         next: null,
         previous: null,
         results: [],
-    }
+    },
 }
-
 
 const classSlice = createSlice({
     name: 'classSlice',
@@ -42,7 +41,9 @@ const classSlice = createSlice({
         },
         partialUpdateClass: (state, action: PayloadAction<PartialUpdateClassPayload>) => state,
         partialUpdateClassSuccess: (state, action: PayloadAction<Class>) => {
-            const indexToUpdate = state.classes.results.findIndex(classToUpdate => classToUpdate.id === action.payload.id)
+            const indexToUpdate = state.classes.results.findIndex(
+                (classToUpdate) => classToUpdate.id === action.payload.id
+            )
 
             state.classes.results[indexToUpdate] = action.payload
             return state
@@ -50,12 +51,19 @@ const classSlice = createSlice({
         clearClass: (state) => {
             state.class = null
             return state
-        }
-    }
+        },
+    },
 })
 
 export const {
-    fetchClasses, fetchClassesSuccess, createClass, createClassSuccess, fetchClass, fetchClassSuccess, partialUpdateClass,
-    partialUpdateClassSuccess, clearClass
-} = classSlice.actions;
+    fetchClasses,
+    fetchClassesSuccess,
+    createClass,
+    createClassSuccess,
+    fetchClass,
+    fetchClassSuccess,
+    partialUpdateClass,
+    partialUpdateClassSuccess,
+    clearClass,
+} = classSlice.actions
 export default classSlice.reducer

@@ -1,16 +1,15 @@
-import {RootState} from '@store/index'
-import React, {Fragment} from 'react'
-import {connect} from 'react-redux'
-import {Dispatch} from 'redux'
-import { Dialog, Transition } from "@headlessui/react";
-import {XMarkIcon} from "@heroicons/react/24/solid";
-
+import { RootState } from '@store/index'
+import React, { Fragment } from 'react'
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
+import { Dialog, Transition } from '@headlessui/react'
+import { XMarkIcon } from '@heroicons/react/24/solid'
 
 type SlidingModalOwnProps = {
     isOpen: boolean
     setIsOpen: (opened: boolean) => void
     title: string
-    children: JSX.Element
+    children: React.ReactNode
     onClick: () => void
     content: string
     onClose?: () => void
@@ -20,14 +19,20 @@ type SlidingModalSliceProps = {}
 
 type SlidingModalDispatchProps = {}
 
-type SlidingModalProps = SlidingModalOwnProps &
-    SlidingModalSliceProps &
-    SlidingModalDispatchProps
+type SlidingModalProps = SlidingModalOwnProps & SlidingModalSliceProps & SlidingModalDispatchProps
 
-const SlidingModal: React.FC<SlidingModalProps> = ({isOpen, setIsOpen, title, children, onClick, content, onClose}) => {
+const SlidingModal: React.FC<SlidingModalProps> = ({
+    isOpen,
+    setIsOpen,
+    title,
+    children,
+    onClick,
+    content,
+    onClose,
+}) => {
     return (
         <Transition show={isOpen} as={Fragment}>
-            <Dialog as="div" className="relative z-50" onClose={() => onClose && onClose() || setIsOpen(false)}>
+            <Dialog as="div" className="relative z-50" onClose={() => (onClose && onClose()) || setIsOpen(false)}>
                 {/* Overlay */}
                 <Transition.Child
                     as={Fragment}
@@ -53,32 +58,31 @@ const SlidingModal: React.FC<SlidingModalProps> = ({isOpen, setIsOpen, title, ch
                             leaveFrom="translate-x-0"
                             leaveTo="translate-x-full"
                         >
-                            <Dialog.Panel className="relative w-screen max-w-md bg-white shadow-xl h-full flex flex-col">
+                            <Dialog.Panel className="relative flex h-full w-screen max-w-md flex-col bg-white shadow-xl">
                                 <button
-                                    onClick={() => onClose && onClose() || setIsOpen(false)}
+                                    onClick={() => (onClose && onClose()) || setIsOpen(false)}
                                     className="absolute top-4 right-4 text-gray-600 hover:text-gray-900"
                                 >
                                     <XMarkIcon className="h-6 w-6" />
                                 </button>
 
-                                <div className="overflow-y-auto p-6 pb-24 gap-4 flex flex-col">
-                                    <Dialog.Title className="text-2xl font-bold">
-                                        {title}
-                                    </Dialog.Title>
+                                <div className="flex flex-col gap-4 overflow-y-auto p-6 pb-24">
+                                    <Dialog.Title className="text-2xl font-bold">{title}</Dialog.Title>
                                     {children}
                                 </div>
 
-                                <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-10 inset-shadow-2xs p-4 flex justify-end gap-2">
+                                <div className="border-gray-10 absolute right-0 bottom-0 left-0 flex justify-end gap-2 border-t bg-white p-4 inset-shadow-2xs">
                                     <button
-                                        onClick={() => onClose && onClose() || setIsOpen(false)}
-                                        className="px-4 py-2 rounded-md border border-gray-300 text-gray-700 w-full"
+                                        onClick={() => (onClose && onClose()) || setIsOpen(false)}
+                                        className="w-full rounded-md border border-gray-300 px-4 py-2 text-gray-700"
                                     >
                                         Cancel
                                     </button>
                                     <button
                                         onClick={() => onClick()}
-                                        type={"submit"}
-                                        className="px-4 py-2 rounded-md bg-brown-default text-white font-semibold w-full"
+                                        type={'submit'}
+                                        disabled={false}
+                                        className="bg-brown-default w-full rounded-md px-4 py-2 font-semibold text-white"
                                     >
                                         {content}
                                     </button>
@@ -92,12 +96,8 @@ const SlidingModal: React.FC<SlidingModalProps> = ({isOpen, setIsOpen, title, ch
     )
 }
 
-const mapStateToProps = (store: RootState): SlidingModalSliceProps => (
-    {}
-)
+const mapStateToProps = (store: RootState): SlidingModalSliceProps => ({})
 
-const mapDispatchToProps = (dispatch: Dispatch): SlidingModalDispatchProps => (
-    {}
-)
+const mapDispatchToProps = (dispatch: Dispatch): SlidingModalDispatchProps => ({})
 
 export default connect(mapStateToProps, mapDispatchToProps)(SlidingModal)

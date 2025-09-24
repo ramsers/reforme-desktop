@@ -6,17 +6,18 @@ const APIRoutes = {
     CLASSES: {
         MAIN: '/classes',
         BY_ID: (id: string) => `/classes/${id}`,
-        PARTIAL_UPDATE: (id: string) => `/classes/${id}`
+        PARTIAL_UPDATE: (id: string) => `/classes/${id}`,
     },
     USER: {
         MAIN: '/users',
         ME: '/users/me',
-        ALL_INSTRUCTORS: '/users/all-instructors'
+        ALL_INSTRUCTORS: '/users/all-instructors',
+        BY_ID: (id: string) => `/users/${id}`,
     },
     BOOKING: {
         MAIN: '/bookings',
-        DELETE: (id: string) => `/bookings/${id}`
-    }
+        DELETE: (id: string) => `/bookings/${id}`,
+    },
 }
 
-export default APIRoutes;
+export default APIRoutes

@@ -1,26 +1,26 @@
-"use client"
-import ClassesCalendar from "@features/classes/ClassesCalendar";
-import React, {useEffect, useState} from "react";
-import {PlusIcon} from "@heroicons/react/24/solid";
-import ClassesTable from "@features/dashboard/classes/ClassesTable";
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "@store/index";
-import {fetchClasses} from "@store/slices/classSlice";
-import SlidingModal from "@components/slidingModal/SlidingModal";
-import CreateClassForm from "@features/dashboard/classes/CreateEditClassForm";
-import CreateClassButtonModal from "@features/dashboard/classes/CreateClassButtonModal";
+'use client'
+import ClassesCalendar from '@features/classes/ClassesCalendar'
+import React, { useEffect, useState } from 'react'
+import { PlusIcon } from '@heroicons/react/24/solid'
+import ClassesTable from '@features/dashboard/classes/ClassesTable'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '@store/index'
+import { fetchClasses } from '@store/slices/classSlice'
+import SlidingModal from '@components/slidingModal/SlidingModal'
+import CreateClassForm from '@features/dashboard/classes/CreateEditClassForm'
+import CreateClassButtonModal from '@features/dashboard/classes/CreateClassButtonModal'
 
 const DashboardClassesPage: React.FC = () => {
     // List of of classes prefiltered to this week.
     // list is like a table with date, class name, instructor, edit
     // filter for date range (with current 7 days already selected)
     // Classes model are going to need a frequency so admin can set i think (may be nice to have)
-    const dispatch = useDispatch();
-    const classes = useSelector((state: RootState) => state.class?.classes?.results);
-    const [isOpen, setIsOpen] = useState(false);
+    const dispatch = useDispatch()
+    const classes = useSelector((state: RootState) => state.class?.classes?.results)
+    const [isOpen, setIsOpen] = useState(false)
 
     useEffect(() => {
-        dispatch(fetchClasses({ }));
+        dispatch(fetchClasses({}))
     }, [])
 
     console.log('Classes ============', classes)
@@ -33,9 +33,9 @@ const DashboardClassesPage: React.FC = () => {
                 </div>
                 <CreateClassButtonModal />
             </div>
-            <ClassesTable classes={classes} isOpen={isOpen} setIsOpen={setIsOpen}/>
+            <ClassesTable classes={classes} isOpen={isOpen} setIsOpen={setIsOpen} />
         </div>
     )
 }
 
-export default DashboardClassesPage;
+export default DashboardClassesPage
