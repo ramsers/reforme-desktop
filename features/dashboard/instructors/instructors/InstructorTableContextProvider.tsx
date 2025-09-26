@@ -2,7 +2,8 @@ import React, { createContext, ReactNode, useCallback, useMemo, useState } from 
 
 type InstructorTableContextType = {
     instructorId: string
-    handleOpenInstructorModal: (id: string) => void
+    isOpen: boolean
+    handleOpenInstructorModal: () => void
     handleCloseInstructorModal: () => void
     handleSetInstructorId: (id: string) => void
 }
@@ -17,12 +18,9 @@ const InstructorTableContextProvider: React.FC<InstructorTableContextProviderPro
     const [instructorId, setInstructorId] = useState('')
     const [isOpen, setIsOpen] = useState(false)
 
-    const handleOpenInstructorModal = useCallback(
-        (id: string) => {
-            setIsOpen(true)
-        },
-        [setIsOpen]
-    )
+    const handleOpenInstructorModal = useCallback(() => {
+        setIsOpen(true)
+    }, [setIsOpen])
 
     const handleCloseInstructorModal = useCallback(() => {
         setIsOpen(false)
