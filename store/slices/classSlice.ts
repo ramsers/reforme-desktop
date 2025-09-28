@@ -1,5 +1,5 @@
 import { Class, ClassList, CreateClassPayload, PartialUpdateClassPayload } from '@reformetypes/classTypes'
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, current, PayloadAction } from '@reduxjs/toolkit'
 import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
 
 export type ClassSliceType = {
@@ -52,6 +52,24 @@ const classSlice = createSlice({
             state.class = null
             return state
         },
+        removeClassBooking: (state, action: PayloadAction<{ classId: string; bookingId: string }>) => {
+            const { classId, bookingId } = action.payload
+            const classToUpdate = state.classes.results.find((cls) => cls.id === classId)
+
+            console.log('Class to update =============', classToUpdate)
+
+            if (classToUpdate) {
+                const bookingIndex = classToUpdate.bookings.findIndex((booking) => booking.id === bookingId)
+                if (bookingIndex !== -1) {
+                    classToUpdate.bookings.splice(bookingIndex, 1)
+                    classToUpdate.bookingsCount -= 1
+                    console.log('bookingIndex =============', classToUpdate.bookingsCount)
+
+                    classToUpdate.isFull = classToUpdate.bookingsCount >= classToUpdate.size
+                }
+            }
+            return state
+        },
     },
 })
 
@@ -65,5 +83,6 @@ export const {
     partialUpdateClass,
     partialUpdateClassSuccess,
     clearClass,
+    removeClassBooking,
 } = classSlice.actions
 export default classSlice.reducer

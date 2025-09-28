@@ -22,8 +22,6 @@ const DashboardBookingsPage: React.FC = () => {
         dispatch(fetchClasses({ has_bookings: true, start_date: startOfWeek, end_date: endOfWeek }))
     }, [])
 
-    console.log('CLASSESWITHBOOKINGS', classes)
-
     return (
         <div className="flex flex-col gap-5">
             <div className="flex flex-row justify-between">

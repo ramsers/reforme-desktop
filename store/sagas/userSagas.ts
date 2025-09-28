@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { getAllInstructors, getUserInfo, patchUpdateUser, postCreateUser } from '@api/user'
+import { getAllClients, getAllInstructors, getUserInfo, patchUpdateUser, postCreateUser } from '@api/user'
 import { call, put, takeEvery } from 'redux-saga/effects'
 import {
     fetchUserSuccess,
@@ -10,6 +10,8 @@ import {
     createUserSuccess,
     updateUserSuccess,
     updateUser,
+    fetchAllClientsSuccess,
+    fetchAllClients,
 } from '@store/slices/userSlice'
 import { CreateUserPayload, User } from '@reformetypes/userTypes'
 import { PayloadAction } from '@reduxjs/toolkit'
@@ -47,11 +49,20 @@ export function* updateUserSaga(action: PayloadAction<Partial<User>>) {
     } catch (e) {}
 }
 
+export function* fetchAllClientsSaga() {
+    try {
+        const response: AxiosResponse<User[]> = yield call(getAllClients)
+
+        yield put(fetchAllClientsSuccess(response.data))
+    } catch (e) {}
+}
+
 function* userSagas() {
     yield takeEvery(fetchUser.type, fetchUserSaga)
     yield takeEvery(fetchAllInstructors.type, fetchAllInstructorsSaga)
     yield takeEvery(createUser.type, createUserSaga)
     yield takeEvery(updateUser.type, updateUserSaga)
+    yield takeEvery(fetchAllClients.type, fetchAllClientsSaga)
 }
 
 export default userSagas

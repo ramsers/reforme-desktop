@@ -1,5 +1,5 @@
-import {User} from "@reformetypes/userTypes";
-import {Class} from "@reformetypes/classTypes";
+import { User } from '@reformetypes/userTypes'
+import { Class } from '@reformetypes/classTypes'
 
 export type CreateBookingPayload = {
     clientId: string
@@ -10,4 +10,9 @@ export type Booking = {
     id: string
     client: User
     bookedClass: Class
+}
+
+export type BookingClient = {
+    id: string
+    client: User
 }

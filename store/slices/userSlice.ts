@@ -12,6 +12,8 @@ export type UserSliceType = {
     createdAt?: string | null
     instructors: User[]
     instructor: User | null
+    client: User | null
+    clients: User[]
 }
 
 const INITIAL_USER_STATE: UserSliceType = {
@@ -24,6 +26,8 @@ const INITIAL_USER_STATE: UserSliceType = {
     createdAt: null,
     instructors: [],
     instructor: null,
+    client: null,
+    clients: [],
 }
 
 const userSlice = createSlice({
@@ -55,6 +59,11 @@ const userSlice = createSlice({
             state.instructors = action.payload
             return state
         },
+        fetchAllClients: (state) => state,
+        fetchAllClientsSuccess: (state, action: PayloadAction<User[]>) => {
+            state.clients = action.payload
+            return state
+        },
         createUser: (state, action: PayloadAction<CreateUserPayload>) => state,
         createUserSuccess: (state, action: PayloadAction<User>) => {
             if (action.payload.role === eRole.INSTRUCTOR) {
@@ -64,7 +73,7 @@ const userSlice = createSlice({
             return state
         },
         retrieveUser: (state, action: PayloadAction<string>) => state,
-        updateUser: (state, action: PayloadAction<{ id: string; data: Partial<CreateUserPayload> }>) => state,
+        updateUser: (state, action: PayloadAction<{ data: Partial<User> }>) => state,
         updateUserSuccess: (state, action: PayloadAction<User>) => {
             const index = state.instructors.findIndex((inst) => inst.id === action.payload.id)
             if (index !== -1) {
@@ -86,5 +95,7 @@ export const {
     retrieveUser,
     updateUser,
     updateUserSuccess,
+    fetchAllClients,
+    fetchAllClientsSuccess,
 } = userSlice.actions
 export default userSlice.reducer

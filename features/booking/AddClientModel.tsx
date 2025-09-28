@@ -1,0 +1,58 @@
+import SlidingModal from '@components/slidingModal/SlidingModal'
+import UserSelect from '@features/user/UserSelect'
+import { RootState } from '@store/index'
+import { createBooking } from '@store/slices/bookingSlice'
+import { fetchAllClients } from '@store/slices/userSlice'
+import { use, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+
+type AddClientModalProps = {
+    isOpen: boolean
+    setIsOpen: (opened: boolean) => void
+    onClose: () => void
+    classId: string | null
+}
+
+const AddClientModal: React.FC<AddClientModalProps> = ({ isOpen, onClose, setIsOpen, classId }) => {
+    const dispatch = useDispatch()
+    const clients = useSelector((state: RootState) => state.user.clients)
+    const [selectedClientId, setSelectedClientId] = useState<string | null>(null)
+
+    useEffect(() => {
+        if (!clients.length) {
+            console.log('IS infinite loop===================')
+            dispatch(fetchAllClients())
+        }
+    }, [clients])
+
+    const handleSetSelectedClient = (id: string) => {
+        setSelectedClientId(id)
+    }
+
+    const handleCreateBooking = () => {
+        console.log('handleCreateBooking===================', selectedClientId, classId)
+        return selectedClientId ? dispatch(createBooking({ clientId: selectedClientId, classId: classId })) : null
+    }
+
+    console.log('selectedClientId ================', selectedClientId)
+
+    return (
+        <SlidingModal
+            title={'Manage Bookings'}
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            content={'Save'}
+            onClick={handleCreateBooking}
+            onClose={() => {
+                setIsOpen(false)
+            }}
+        >
+            <>
+                <p>Yolo</p>
+                <UserSelect users={clients} selectedUserId={selectedClientId} onChange={handleSetSelectedClient} />
+            </>
+        </SlidingModal>
+    )
+}
+
+export default AddClientModal

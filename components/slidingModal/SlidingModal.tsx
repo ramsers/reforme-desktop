@@ -66,7 +66,7 @@ const SlidingModal: React.FC<SlidingModalProps> = ({
                                     <XMarkIcon className="h-6 w-6" />
                                 </button>
 
-                                <div className="flex flex-col gap-4 overflow-y-auto p-6 pb-24">
+                                <div className="flex flex-col gap-4 overflow-visible p-6 pb-24">
                                     <Dialog.Title className="text-2xl font-bold">{title}</Dialog.Title>
                                     {children}
                                 </div>

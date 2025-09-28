@@ -23,7 +23,6 @@ const DashboardClassesPage: React.FC = () => {
         dispatch(fetchClasses({}))
     }, [])
 
-    console.log('Classes ============', classes)
     return (
         <div className="flex flex-col gap-5">
             <div className="flex flex-row justify-between">
@@ -33,7 +32,7 @@ const DashboardClassesPage: React.FC = () => {
                 </div>
                 <CreateClassButtonModal />
             </div>
-            <ClassesTable classes={classes} isOpen={isOpen} setIsOpen={setIsOpen} />
+            <ClassesTable classes={classes} />
         </div>
     )
 }

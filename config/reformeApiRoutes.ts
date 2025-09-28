@@ -12,6 +12,7 @@ const APIRoutes = {
         MAIN: '/users',
         ME: '/users/me',
         ALL_INSTRUCTORS: '/users/all-instructors',
+        ALL_CLIENTS: '/users/all-clients',
         BY_ID: (id: string) => `/users/${id}`,
     },
     BOOKING: {

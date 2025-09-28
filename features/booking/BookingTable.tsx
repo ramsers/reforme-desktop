@@ -1,9 +1,13 @@
 import Modal from '@components/modal/Modal'
-import { PencilIcon } from '@heroicons/react/24/solid'
+import { PencilIcon, PlusIcon } from '@heroicons/react/24/solid'
 import { Booking } from '@reformetypes/bookingTypes'
 import { Class } from '@reformetypes/classTypes'
 import dayjs from 'dayjs'
 import React, { useState } from 'react'
+import ManageClassBookingModal from './ManageClassBookingModal'
+import { useSelector } from 'react-redux'
+import { RootState } from '@store/index'
+import AddClientModal from './AddClientModel'
 
 type BookingTableProps = {
     classes: Class[]
@@ -11,10 +15,26 @@ type BookingTableProps = {
 
 const BookingTable: React.FC<BookingTableProps> = ({ classes }) => {
     const [isOpen, setIsOpen] = useState(false)
+    const [isAddClientOpen, setIsAddClientOpen] = useState(false)
+    const [selectedClassId, setSelectedClassId] = useState<string | null>(null)
+    const bookedClass = useSelector((state: RootState) =>
+        selectedClassId ? state.class.classes?.results.find((cls) => cls.id === selectedClassId) || null : null
+    )
+
+    const handleOpenModal = (cls: Class) => {
+        setSelectedClassId(cls.id)
+        setIsOpen(true)
+    }
+
+    const handleOpenAddClientModal = (cls: Class) => {
+        setSelectedClassId(cls.id)
+        setIsAddClientOpen(true)
+    }
+
+    console.log('BOOKING TABLE CLASSES===================', selectedClassId)
 
     return (
         <div className="border-dashboard-action rounded-lg border bg-white p-5 shadow-md">
-            {/*{Table header}*/}
             <div className="grid grid-cols-24 border-b text-sm font-bold text-gray-600">
                 <p className="col-span-5 p-2">Date</p>
                 <p className="col-span-5 p-2">Class</p>
@@ -22,7 +42,6 @@ const BookingTable: React.FC<BookingTableProps> = ({ classes }) => {
                 <p className="col-span-4 p-2 text-center">Booked/Capacity</p>
                 <p className="col-span-4 p-2 text-center"></p>
             </div>
-            {/*/!*{Table body}*!/*/}
 
             {classes?.map((cls) => (
                 <div key={cls.id} className="flex grid grid-cols-24 flex-row items-center border-b text-sm">
@@ -38,26 +57,37 @@ const BookingTable: React.FC<BookingTableProps> = ({ classes }) => {
                     <div className="col-span-4 p-2 text-center">
                         <p>{`${cls.bookingsCount}/${cls.size}`}</p>
                     </div>
-                    <div className="col-span-4 p-2 text-center">
-                        <button className="hover:text-dashboard-action text-blue-600" onClick={() => setIsOpen(true)}>
+                    <div className="col-span-4 flex flex-row items-center justify-center gap-3 p-2 text-center">
+                        <button
+                            className="hover:text-dashboard-action text-blue-600"
+                            onClick={() => handleOpenModal(cls)}
+                        >
                             <PencilIcon className={'h-4 w-4'} />
+                        </button>
+
+                        <button
+                            className="hover:text-dashboard-action flex flex-row items-center justify-center gap-1 text-blue-600"
+                            onClick={() => setIsAddClientOpen(true)}
+                        >
+                            <PlusIcon className={'h-4 w-4'} />
+                            <p>add client</p>
                         </button>
                     </div>
                 </div>
             ))}
-            {/* isOpen: boolean
-              onClose: () => void
-              title: string
-              content: React.ReactNode
-              confirmText?: string
-              onConfirm?: () => void */}
-            <Modal
-                content={<div className="p-5">Modal Content Here</div>}
+            <ManageClassBookingModal
                 isOpen={isOpen}
                 onClose={() => setIsOpen(false)}
-                title="hello"
+                bookedClass={bookedClass}
+                handleSubmit={() => console.log('hello')}
+                setIsOpen={setIsOpen}
             />
-            {/* <CreateClassForm title={'Edit class'} isOpen={isOpen} setIsOpen={setIsOpen} /> */}
+            <AddClientModal
+                isOpen={isAddClientOpen}
+                onClose={() => setIsAddClientOpen(false)}
+                setIsOpen={setIsAddClientOpen}
+                classId={selectedClassId}
+            />
         </div>
     )
 }

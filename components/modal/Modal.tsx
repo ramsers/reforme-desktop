@@ -39,7 +39,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, content, confirmT
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                            <Dialog.Panel className="gap-4transform flex w-full max-w-lg flex-col gap-4 overflow-hidden rounded-xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                                 {/* Header */}
                                 <Dialog.Title
                                     as="h3"
@@ -52,7 +52,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, content, confirmT
                                 </Dialog.Title>
 
                                 {/* Content */}
-                                <div className="mt-4">{content}</div>
+                                <div>{content}</div>
 
                                 {/* Footer */}
                                 <div className="mt-6 flex justify-end gap-2">

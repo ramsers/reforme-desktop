@@ -12,6 +12,10 @@ export const getAllInstructors = (): Promise<AxiosResponse<User[]>> => {
     return apiClient.get(APIRoutes.USER.ALL_INSTRUCTORS)
 }
 
+export const getAllClients = (): Promise<AxiosResponse<User[]>> => {
+    return apiClient.get(APIRoutes.USER.ALL_CLIENTS)
+}
+
 export const postCreateUser = (data: CreateUserPayload): Promise<AxiosResponse<User>> => {
     return apiClient.post(APIRoutes.USER.MAIN, { ...data })
 }
