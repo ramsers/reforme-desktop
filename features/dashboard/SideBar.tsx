@@ -45,6 +45,12 @@ const SideBar: React.FC<SideBarProps> = ({ open, setOpen }) => {
                 >
                     Bookings
                 </button>
+                <button
+                    onClick={() => router.push(AppRoutes.dashboard.clients.list)}
+                    className="block w-full rounded p-2 text-left hover:bg-gray-700"
+                >
+                    Clients
+                </button>
                 <a href="#" className="block w-full rounded p-2 text-left hover:bg-gray-700">
                     Settings
                 </a>

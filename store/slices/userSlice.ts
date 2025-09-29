@@ -69,11 +69,12 @@ const userSlice = createSlice({
             if (action.payload.role === eRole.INSTRUCTOR) {
                 state.instructors.push(action.payload)
             }
+            state.clients.push(action.payload)
 
             return state
         },
         retrieveUser: (state, action: PayloadAction<string>) => state,
-        updateUser: (state, action: PayloadAction<{ data: Partial<User> }>) => state,
+        updateUser: (state, action: PayloadAction<Partial<User>>) => state,
         updateUserSuccess: (state, action: PayloadAction<User>) => {
             const index = state.instructors.findIndex((inst) => inst.id === action.payload.id)
             if (index !== -1) {

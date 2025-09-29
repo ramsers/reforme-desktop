@@ -59,14 +59,16 @@ const SlidingModal: React.FC<SlidingModalProps> = ({
                             leaveTo="translate-x-full"
                         >
                             <Dialog.Panel className="relative flex h-full w-screen max-w-md flex-col bg-white shadow-xl">
-                                <button
-                                    onClick={() => (onClose && onClose()) || setIsOpen(false)}
-                                    className="absolute top-4 right-4 text-gray-600 hover:text-gray-900"
-                                >
-                                    <XMarkIcon className="h-6 w-6" />
-                                </button>
+                                <div className="flex w-full flex-row justify-end px-6 pt-3">
+                                    <button
+                                        onClick={() => (onClose && onClose()) || setIsOpen(false)}
+                                        className="text-gray-600 hover:text-gray-900"
+                                    >
+                                        <XMarkIcon className="h-7 w-7" />
+                                    </button>
+                                </div>
 
-                                <div className="flex flex-col gap-4 overflow-visible p-6 pb-24">
+                                <div className="flex min-h-0 flex-grow flex-col gap-4 overflow-y-auto p-6 pb-24">
                                     <Dialog.Title className="text-2xl font-bold">{title}</Dialog.Title>
                                     {children}
                                 </div>

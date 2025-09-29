@@ -17,6 +17,9 @@ const AppRoutes = {
         bookings: {
             list: '/dashboard/bookings',
         },
+        clients: {
+            list: '/dashboard/clients',
+        },
     },
 }
 

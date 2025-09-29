@@ -14,10 +14,9 @@ import {
 import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
 
 export function* createBookingSaga(action: PayloadAction<CreateBookingPayload>) {
-    console.log('ACTION PAYLOAD SAGA ==============', action.payload)
     try {
         const response: AxiosResponse<Booking> = yield call(postCreateBooking, action.payload)
-        console.log('RESPONSE ================', response)
+        yield put(createBookingSuccess(response.data))
     } catch (e) {
         console.log('Error:', e)
     }
@@ -25,10 +24,8 @@ export function* createBookingSaga(action: PayloadAction<CreateBookingPayload>) 
 
 export function* fetchBookingsSaga(action: PayloadAction<Record<string, any>>) {
     try {
-        const response: AxiosResponse<ShortPaginatedResponse<Booking[]>> = yield call(getFetchBookings, action.payload)
+        const response: AxiosResponse<Booking[]> = yield call(getFetchBookings, action.payload)
         yield put(fetchBookingsSuccess(response.data))
-
-        console.log('RESPONSE FETCH BooKING ===============', response.data)
     } catch (e) {}
 }
 

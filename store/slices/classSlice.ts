@@ -1,6 +1,8 @@
 import { Class, ClassList, CreateClassPayload, PartialUpdateClassPayload } from '@reformetypes/classTypes'
 import { createSlice, current, PayloadAction } from '@reduxjs/toolkit'
 import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
+import { createBookingSuccess } from './bookingSlice'
+import { Booking } from '@reformetypes/bookingTypes'
 
 export type ClassSliceType = {
     class: Class | null
@@ -70,6 +72,22 @@ const classSlice = createSlice({
             }
             return state
         },
+    },
+    extraReducers: (builder) => {
+        builder.addCase(createBookingSuccess, (state, action: PayloadAction<Booking>) => {
+            const classToUpdateIndex = state.classes.results.findIndex(
+                (cls) => cls.id === action.payload.bookedClass.id
+            )
+
+            if (classToUpdateIndex !== -1) {
+                const classToUpdate = state.classes.results[classToUpdateIndex]
+                classToUpdate.bookings.push({ id: action.payload.id, client: action.payload.client })
+                classToUpdate.bookingsCount += 1
+                classToUpdate.isFull = classToUpdate.bookingsCount >= classToUpdate.size
+            }
+
+            return state
+        })
     },
 })
 

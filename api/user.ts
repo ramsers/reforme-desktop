@@ -26,6 +26,5 @@ export const getUser = (id: string): Promise<AxiosResponse<User>> => {
 
 export const patchUpdateUser = (data: Partial<User>): Promise<AxiosResponse<User>> => {
     const { id, ...rest } = data
-    console.log('hitting api=================', id, data)
-    return apiClient.patch(APIRoutes.USER.BY_ID(id), { ...rest })
+    return apiClient.patch(APIRoutes.USER.BY_ID(id as string), { ...rest })
 }

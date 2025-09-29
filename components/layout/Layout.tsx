@@ -5,7 +5,7 @@ type LayoutProps = {
     children?: ReactNode
 }
 
-export default function Layout({ title, children }) {
+export default function Layout({ title = '', children }) {
     return (
         <div className="bg-main flex h-full flex-row">
             <main

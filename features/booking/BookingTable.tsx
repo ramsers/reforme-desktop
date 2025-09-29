@@ -31,8 +31,6 @@ const BookingTable: React.FC<BookingTableProps> = ({ classes }) => {
         setIsAddClientOpen(true)
     }
 
-    console.log('BOOKING TABLE CLASSES===================', selectedClassId)
-
     return (
         <div className="border-dashboard-action rounded-lg border bg-white p-5 shadow-md">
             <div className="grid grid-cols-24 border-b text-sm font-bold text-gray-600">
@@ -40,7 +38,7 @@ const BookingTable: React.FC<BookingTableProps> = ({ classes }) => {
                 <p className="col-span-5 p-2">Class</p>
                 <p className="col-span-6 p-2">Instructor</p>
                 <p className="col-span-4 p-2 text-center">Booked/Capacity</p>
-                <p className="col-span-4 p-2 text-center"></p>
+                <p className="col-span-4 p-2 text-center" />
             </div>
 
             {classes?.map((cls) => (
@@ -67,7 +65,7 @@ const BookingTable: React.FC<BookingTableProps> = ({ classes }) => {
 
                         <button
                             className="hover:text-dashboard-action flex flex-row items-center justify-center gap-1 text-blue-600"
-                            onClick={() => setIsAddClientOpen(true)}
+                            onClick={() => handleOpenAddClientModal(cls)}
                         >
                             <PlusIcon className={'h-4 w-4'} />
                             <p>add client</p>

@@ -12,8 +12,6 @@ type UserSelectProps = {
 export default function UserSelect({ users, selectedUserId, onChange }: UserSelectProps) {
     const [query, setQuery] = useState('')
 
-    console.log('USERS IN SELECT================', users, selectedUserId)
-
     const filteredUsers =
         query === ''
             ? users

@@ -28,7 +28,7 @@ const bookingSlice = createSlice({
             return state
         },
         createBooking: (state, action: PayloadAction<CreateBookingPayload>) => state,
-        createBookingSuccess: (state, action: PayloadAction<ShortPaginatedResponse<Booking>>) => {
+        createBookingSuccess: (state, action: PayloadAction<Booking>) => {
             state.booking = action.payload
             return state
         },

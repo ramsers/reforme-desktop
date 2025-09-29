@@ -19,6 +19,8 @@ const DashboardBookingsPage: React.FC = () => {
     useEffect(() => {
         const startOfWeek = dayjs().startOf('week').toISOString()
         const endOfWeek = dayjs().endOf('week').toISOString()
+
+        console.log('startOfWeek===================', startOfWeek, endOfWeek)
         dispatch(fetchClasses({ has_bookings: true, start_date: startOfWeek, end_date: endOfWeek }))
     }, [])
 

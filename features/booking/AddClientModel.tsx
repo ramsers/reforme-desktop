@@ -31,10 +31,10 @@ const AddClientModal: React.FC<AddClientModalProps> = ({ isOpen, onClose, setIsO
 
     const handleCreateBooking = () => {
         console.log('handleCreateBooking===================', selectedClientId, classId)
-        return selectedClientId ? dispatch(createBooking({ clientId: selectedClientId, classId: classId })) : null
+        if (!selectedClientId || !classId) return null
+        dispatch(createBooking({ clientId: selectedClientId, classId: classId }))
+        setIsOpen(false)
     }
-
-    console.log('selectedClientId ================', selectedClientId)
 
     return (
         <SlidingModal

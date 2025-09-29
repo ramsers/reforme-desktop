@@ -19,8 +19,6 @@ const ManageClassBookingModal: React.FC<ManageClassBookingModalProps> = ({
     setIsOpen,
     handleSubmit,
 }) => {
-    console.log('TESTO ==============', bookedClass)
-    //                 )
     return (
         <SlidingModal
             title={'Manage Bookings'}
