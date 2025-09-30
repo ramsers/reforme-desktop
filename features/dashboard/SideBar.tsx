@@ -1,8 +1,10 @@
 'use client'
 import { XMarkIcon } from '@heroicons/react/24/solid'
-import React from 'react'
+import React, { use } from 'react'
 import AppRoutes from '../../config/appRoutes'
 import { useRouter } from 'next/navigation'
+import { useDispatch } from 'react-redux'
+import { logout } from '@store/slices/signUpSlice'
 
 type SideBarProps = {
     open: boolean
@@ -11,9 +13,13 @@ type SideBarProps = {
 
 const SideBar: React.FC<SideBarProps> = ({ open, setOpen }) => {
     const router = useRouter()
+    const dispatch = useDispatch()
 
-    const handleRedirect = (path: string) => {
-        router.push(path)
+    const handleLogout = () => {
+        // Implement logout functionality here
+        dispatch(logout())
+        router.push(AppRoutes.home)
+        console.log('Logging out...')
     }
 
     return (
@@ -54,9 +60,9 @@ const SideBar: React.FC<SideBarProps> = ({ open, setOpen }) => {
                 <a href="#" className="block w-full rounded p-2 text-left hover:bg-gray-700">
                     Settings
                 </a>
-                <a href="#" className="block w-full rounded p-2 text-left hover:bg-gray-700">
+                <button onClick={handleLogout} className="block w-full rounded p-2 text-left hover:bg-gray-700">
                     Logout
-                </a>
+                </button>
             </nav>
         </aside>
     )
