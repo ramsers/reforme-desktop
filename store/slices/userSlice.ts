@@ -76,9 +76,16 @@ const userSlice = createSlice({
         retrieveUser: (state, action: PayloadAction<string>) => state,
         updateUser: (state, action: PayloadAction<Partial<User>>) => state,
         updateUserSuccess: (state, action: PayloadAction<User>) => {
-            const index = state.instructors.findIndex((inst) => inst.id === action.payload.id)
-            if (index !== -1) {
-                state.instructors[index] = action.payload
+            if (action.payload.role === eRole.INSTRUCTOR) {
+                const index = state.instructors.findIndex((inst) => inst.id === action.payload.id)
+                if (index !== -1) {
+                    state.instructors[index] = action.payload
+                }
+            } else {
+                const index = state.clients.findIndex((cli) => cli.id === action.payload.id)
+                if (index !== -1) {
+                    state.clients[index] = action.payload
+                }
             }
             return state
         },
