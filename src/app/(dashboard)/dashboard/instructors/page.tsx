@@ -10,14 +10,17 @@ import { PlusIcon } from '@heroicons/react/24/solid'
 import CreateInstructorButtonModal from '@features/dashboard/instructors/CreateInstructorButtonModal'
 import InstructorsTable from '@features/dashboard/instructors/InstructorsTable'
 import InstructorTableContextProvider from '@features/dashboard/instructors/instructors/InstructorTableContextProvider'
+import page from 'src/app/(authentication)/authenticate/login/page'
 
 const DashBoardInstructorsPage: React.FC = () => {
     const dispatch = useDispatch()
     const instructors = useSelector((state: RootState) => state.user?.instructors)
+    const [currentPage, setCurrentPage] = useState(1)
+    const [searchQuery, setSearchQuery] = useState('')
 
     useEffect(() => {
-        dispatch(fetchAllInstructors())
-    }, [])
+        dispatch(fetchAllInstructors({ page: currentPage, search: searchQuery }))
+    }, [currentPage, searchQuery])
 
     return (
         <div className="flex flex-col gap-5">
@@ -30,8 +33,21 @@ const DashBoardInstructorsPage: React.FC = () => {
                     <CreateInstructorButtonModal />
                 </InstructorTableContextProvider>
             </div>
+            <div className="flex flex-row justify-end">
+                <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => {
+                        setSearchQuery(e.target.value)
+                        setCurrentPage(1)
+                    }}
+                    placeholder="Search by class or instructor name"
+                    className="w-64 rounded rounded-lg border bg-white p-2 text-sm"
+                />
+            </div>
+
             <InstructorTableContextProvider>
-                <InstructorsTable instructors={instructors} />
+                <InstructorsTable instructors={instructors} currentPage={currentPage} setCurrentPage={setCurrentPage} />
             </InstructorTableContextProvider>
         </div>
     )

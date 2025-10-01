@@ -3,16 +3,18 @@ import ClientTable from '@features/dashboard/clients/ClientTable'
 import CreateClientButtonModal from '@features/dashboard/clients/CreateClientButtonModal'
 import { RootState } from '@store/index'
 import { fetchAllClients } from '@store/slices/userSlice'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 const DashboardClientsPage = () => {
     const dispatch = useDispatch()
-    const clients = useSelector((state: RootState) => state.user?.clients)
+    const clients = useSelector((state: RootState) => state.user.clients)
+    const [currentPage, setCurrentPage] = useState(1)
+    const [searchQuery, setSearchQuery] = useState('')
 
     useEffect(() => {
-        dispatch(fetchAllClients())
-    }, [])
+        dispatch(fetchAllClients({ currentPage: currentPage, search: searchQuery }))
+    }, [currentPage, searchQuery])
 
     console.log('Clients:', clients)
 
@@ -28,7 +30,19 @@ const DashboardClientsPage = () => {
                 </InstructorTableContextProvider> */}
                 <CreateClientButtonModal />
             </div>
-            <ClientTable clients={clients} />
+            <div className="flex flex-row justify-end gap-2">
+                <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => {
+                        setSearchQuery(e.target.value)
+                        setCurrentPage(1)
+                    }}
+                    placeholder="Search by clas name or instructor"
+                    className="w-64 rounded rounded-lg border bg-white p-2 text-sm"
+                />
+            </div>
+            <ClientTable clients={clients} currentPage={currentPage} setCurrentPage={setCurrentPage} />
         </div>
     )
 }

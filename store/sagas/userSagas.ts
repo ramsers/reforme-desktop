@@ -17,6 +17,7 @@ import {
 } from '@store/slices/userSlice'
 import { CreateUserPayload, User } from '@reformetypes/userTypes'
 import { PayloadAction } from '@reduxjs/toolkit'
+import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
 
 export function* fetchUserInfoSaga() {
     try {
@@ -26,9 +27,9 @@ export function* fetchUserInfoSaga() {
     } catch (e) {}
 }
 
-export function* fetchAllInstructorsSaga() {
+export function* fetchAllInstructorsSaga(action: PayloadAction<Record<string, any>>) {
     try {
-        const response: AxiosResponse<User[]> = yield call(getAllInstructors)
+        const response: AxiosResponse<ShortPaginatedResponse<User>> = yield call(getAllInstructors, action.payload)
 
         yield put(fetchAllInstructorsSuccess(response.data))
     } catch (e) {}
@@ -44,16 +45,15 @@ export function* createUserSaga(action: PayloadAction<CreateUserPayload>) {
 
 export function* updateUserSaga(action: PayloadAction<Partial<User>>) {
     try {
-        console.log('hitting sagap=================')
         const response: AxiosResponse<User> = yield call(patchUpdateUser, action.payload)
 
         yield put(updateUserSuccess(response.data))
     } catch (e) {}
 }
 
-export function* fetchAllClientsSaga() {
+export function* fetchAllClientsSaga(action: PayloadAction<Record<string, any>>) {
     try {
-        const response: AxiosResponse<User[]> = yield call(getAllClients)
+        const response: AxiosResponse<ShortPaginatedResponse<User>> = yield call(getAllClients, action.payload)
 
         yield put(fetchAllClientsSuccess(response.data))
     } catch (e) {}
@@ -61,7 +61,6 @@ export function* fetchAllClientsSaga() {
 
 export function* retrieveUserSaga(action: PayloadAction<string>) {
     try {
-        console.log('hitting fetch user by id saga=================', action.payload)
         const response: AxiosResponse<User> = yield call(getUser, action.payload)
         yield put(retrieveUserSuccess(response.data))
     } catch (e) {}

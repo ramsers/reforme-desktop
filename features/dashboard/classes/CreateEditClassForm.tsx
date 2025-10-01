@@ -15,6 +15,7 @@ import { createClass, partialUpdateClass, clearClass } from '@store/slices/class
 import { fetchAllInstructors } from '@store/slices/userSlice'
 import { Class } from '@reformetypes/classTypes'
 import { User } from '@reformetypes/userTypes'
+import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
 
 type CreateEditClassFormOwnProps = {
     isOpen: boolean
@@ -32,7 +33,7 @@ type CreateEditClassFormProps = CreateEditClassFormOwnProps &
 
 const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIsOpen, title }) => {
     const dispatch = useDispatch()
-    const instructors: User[] = useSelector((state: RootState) => state.user?.instructors)
+    const instructors: ShortPaginatedResponse<User> = useSelector((state: RootState) => state.user?.instructors)
     const currentClass: Class | null = useSelector((state: RootState) => state.class?.class)
 
     const ClassSchema = Yup.object().shape({
@@ -44,7 +45,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
     })
 
     useEffect(() => {
-        dispatch(fetchAllInstructors())
+        dispatch(fetchAllInstructors({}))
     }, [dispatch])
 
     // console.log('TESTO =============', instructors)
@@ -142,7 +143,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                                     className="focus:ring-brown-default mt-1 w-full rounded-lg border px-3 py-2 focus:ring"
                                 >
                                     <option value="">Select instructor</option>
-                                    {instructors.map((instructor) => (
+                                    {instructors?.results.map((instructor) => (
                                         <option value={instructor.id}>{instructor.name}</option>
                                     ))}
                                 </Field>

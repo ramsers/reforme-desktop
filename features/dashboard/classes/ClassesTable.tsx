@@ -32,7 +32,7 @@ const ClassesTable: React.FC<ClassesTableProps> = ({ classes, setCurrentPage, cu
         setIsOpen(true)
     }
 
-    const pageSize = 10 // match your DRF PAGE_SIZE
+    const pageSize = 10
     const totalPages = Math.ceil(classes.count / pageSize)
 
     return (
@@ -46,31 +46,33 @@ const ClassesTable: React.FC<ClassesTableProps> = ({ classes, setCurrentPage, cu
             </div>
             {/*/!*{Table body}*!/*/}
 
-            {classes?.results?.map((cls) => (
-                <div key={cls.id} className="flex grid grid-cols-24 flex-row items-center border-b text-sm">
-                    <div className="col-span-6 p-2">
-                        <div className="bg-brown-10 w-fit rounded-lg p-3 font-bold">
-                            <p>{dayjs(cls.date).format('D MMM')}</p>
+            {(classes.count > 0 &&
+                classes?.results?.map((cls) => (
+                    <div key={cls.id} className="flex grid grid-cols-24 flex-row items-center border-b text-sm">
+                        <div className="col-span-6 p-2">
+                            <div className="bg-brown-10 w-fit rounded-lg p-3 font-bold">
+                                <p>{dayjs(cls.date).format('D MMM')}</p>
+                            </div>
+                        </div>
+                        <div className="col-span-8 p-2">
+                            <p className="font-semibold">{cls.title}</p>
+                        </div>
+                        <div className="col-span-6 p-2">
+                            <p className="font-semibold">{cls?.instructor?.name || null}</p>
+                        </div>
+                        <div className="col-span-4 p-2 text-center">
+                            <button
+                                className="hover:text-dashboard-action text-blue-600"
+                                onClick={() => handleFetchClass(cls.id)}
+                            >
+                                <PencilIcon className={'h-4 w-4'} />
+                            </button>
                         </div>
                     </div>
-                    <div className="col-span-8 p-2">
-                        <p className="font-semibold">{cls.title}</p>
-                    </div>
-                    <div className="col-span-6 p-2">
-                        <p className="font-semibold">{cls?.instructor?.name || null}</p>
-                    </div>
-                    <div className="col-span-4 p-2 text-center">
-                        <button
-                            className="hover:text-dashboard-action text-blue-600"
-                            onClick={() => handleFetchClass(cls.id)}
-                        >
-                            <PencilIcon className={'h-4 w-4'} />
-                        </button>
-                    </div>
-                </div>
-            ))}
+                ))) ||
+                null}
             <CreateClassForm title={'Edit class'} isOpen={isOpen} setIsOpen={setIsOpen} />
-            <div className="mt-4 flex gap-2">
+            <div className="mt-4 flex justify-end gap-2">
                 {Array.from({ length: totalPages }, (_, i) => (
                     <button
                         key={i}

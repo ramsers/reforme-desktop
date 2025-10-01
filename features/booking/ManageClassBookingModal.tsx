@@ -32,7 +32,7 @@ const ManageClassBookingModal: React.FC<ManageClassBookingModalProps> = ({
         >
             <>
                 {bookedClass?.bookings.map((booking) => {
-                    return <BookerModalRow booking={booking} bookedClassId={bookedClass.id} />
+                    return <BookerModalRow key={booking.id} booking={booking} bookedClassId={bookedClass.id} />
                 })}
             </>
         </SlidingModal>

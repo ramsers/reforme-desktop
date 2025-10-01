@@ -8,12 +8,12 @@ export const getUserInfo = (): Promise<AxiosResponse<User>> => {
     return apiClient.get(APIRoutes.USER.ME)
 }
 
-export const getAllInstructors = (): Promise<AxiosResponse<User[]>> => {
-    return apiClient.get(APIRoutes.USER.ALL_INSTRUCTORS)
+export const getAllInstructors = (filters?: Record<string, any>): Promise<AxiosResponse<User[]>> => {
+    return apiClient.get(APIRoutes.USER.ALL_INSTRUCTORS, { params: filters })
 }
 
-export const getAllClients = (): Promise<AxiosResponse<User[]>> => {
-    return apiClient.get(APIRoutes.USER.ALL_CLIENTS)
+export const getAllClients = (filters?: Record<string, any>): Promise<AxiosResponse<User[]>> => {
+    return apiClient.get(APIRoutes.USER.ALL_CLIENTS, { params: filters })
 }
 
 export const postCreateUser = (data: CreateUserPayload): Promise<AxiosResponse<User>> => {

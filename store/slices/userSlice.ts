@@ -1,6 +1,7 @@
 import { CreateUserPayload, User } from '@reformetypes/userTypes'
 import { eRole } from '@reformetypes/authTypes'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
 
 export type UserSliceType = {
     id: string | null
@@ -10,10 +11,10 @@ export type UserSliceType = {
     password: string | null
     role: eRole | null
     createdAt?: string | null
-    instructors: User[]
+    instructors: ShortPaginatedResponse<User>
     instructor: User | null
     client: User | null
-    clients: User[]
+    clients: ShortPaginatedResponse<User>
 }
 
 const INITIAL_USER_STATE: UserSliceType = {
@@ -24,10 +25,20 @@ const INITIAL_USER_STATE: UserSliceType = {
     password: '',
     role: null,
     createdAt: null,
-    instructors: [],
+    instructors: {
+        count: 0,
+        next: null,
+        previous: null,
+        results: [],
+    },
     instructor: null,
     client: null,
-    clients: [],
+    clients: {
+        count: 0,
+        next: null,
+        previous: null,
+        results: [],
+    },
 }
 
 const userSlice = createSlice({
@@ -54,22 +65,29 @@ const userSlice = createSlice({
             state.role = null
             return state
         },
-        fetchAllInstructors: (state) => state,
-        fetchAllInstructorsSuccess: (state, action: PayloadAction<User[]>) => {
-            state.instructors = action.payload
+        fetchAllInstructors: (state, action: PayloadAction<Record<string, any>>) => state,
+        fetchAllInstructorsSuccess: (state, action: PayloadAction<ShortPaginatedResponse<User>>) => {
+            state.instructors.count = action.payload.count
+            state.instructors.next = action.payload.next
+            state.instructors.previous = action.payload.previous
+            state.instructors.results = action.payload.results
+
             return state
         },
-        fetchAllClients: (state) => state,
-        fetchAllClientsSuccess: (state, action: PayloadAction<User[]>) => {
-            state.clients = action.payload
+        fetchAllClients: (state, action: PayloadAction<Record<string, any>>) => state,
+        fetchAllClientsSuccess: (state, action: PayloadAction<ShortPaginatedResponse<User>>) => {
+            state.clients.count = action.payload.count
+            state.clients.next = action.payload.next
+            state.clients.previous = action.payload.previous
+            state.clients.results = action.payload.results
             return state
         },
         createUser: (state, action: PayloadAction<CreateUserPayload>) => state,
         createUserSuccess: (state, action: PayloadAction<User>) => {
             if (action.payload.role === eRole.INSTRUCTOR) {
-                state.instructors.push(action.payload)
+                state.instructors.results.push(action.payload)
             } else {
-                state.clients.push(action.payload)
+                state.clients.results.push(action.payload)
             }
 
             return state
@@ -86,14 +104,14 @@ const userSlice = createSlice({
         updateUser: (state, action: PayloadAction<Partial<User>>) => state,
         updateUserSuccess: (state, action: PayloadAction<User>) => {
             if (action.payload.role === eRole.INSTRUCTOR) {
-                const index = state.instructors.findIndex((inst) => inst.id === action.payload.id)
+                const index = state.instructors.results.findIndex((inst) => inst.id === action.payload.id)
                 if (index !== -1) {
-                    state.instructors[index] = action.payload
+                    state.instructors.results[index] = action.payload
                 }
             } else {
-                const index = state.clients.findIndex((cli) => cli.id === action.payload.id)
+                const index = state.clients.results.findIndex((cli) => cli.id === action.payload.id)
                 if (index !== -1) {
-                    state.clients[index] = action.payload
+                    state.clients.results[index] = action.payload
                 }
             }
             return state

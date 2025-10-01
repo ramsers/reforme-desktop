@@ -1,3 +1,4 @@
+'use client'
 import { RootState } from '@store/index'
 import React, { useContext } from 'react'
 import { connect, useDispatch, useSelector } from 'react-redux'
@@ -30,7 +31,10 @@ const CreateEditInstructorForm: React.FC<CreateEditInstructorFormProps> = ({ isO
     const context = useContext(InstructorTableContext)
 
     const instructor: User | null = useSelector(
-        (state: RootState) => state?.user.instructors.find((inst) => inst.id === context?.instructorId) || null
+        (state: RootState) =>
+            (state?.user?.instructors?.results.length &&
+                state?.user?.instructors.results.find((inst) => inst.id === context?.instructorId)) ||
+            null
     )
 
     if (!context) return null
