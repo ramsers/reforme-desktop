@@ -2,6 +2,7 @@ import SlidingModal from '@components/slidingModal/SlidingModal'
 import { eRole } from '@reformetypes/authTypes'
 import { User } from '@reformetypes/userTypes'
 import { createUser, updateUser } from '@store/slices/userSlice'
+import AppRoutes from 'config/appRoutes'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useDispatch } from 'react-redux'
@@ -39,16 +40,11 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ title, isOpen
             validationSchema={CreateUserSchema}
             onSubmit={(values, { setSubmitting }) => {
                 console.log('VALUES =============', values)
-                const {
-                    id,
-                    ...payload
-                    // onSuccess: () => router.push(AppRoutes.home),
-                } = values
+                const { id, ...payload } = values
 
                 if (!id) {
                     dispatch(createUser(payload))
                 } else {
-                    console.log('UPDATING USER =============', values)
                     dispatch(updateUser(values))
                 }
 
@@ -100,6 +96,13 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ title, isOpen
                             <ErrorMessage name="phoneNumber" component="div" className="text-sm text-red-500" />
                         </div>
                     </Form>
+
+                    <button
+                        className="hover:text-foreground cursor-pointer text-left text-blue-600"
+                        onClick={() => client?.id && router.push(AppRoutes.dashboard.clients.client(client.id))}
+                    >
+                        View full client info
+                    </button>
                 </SlidingModal>
             )}
         </Formik>

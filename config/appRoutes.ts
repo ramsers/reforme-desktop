@@ -19,6 +19,7 @@ const AppRoutes = {
         },
         clients: {
             list: '/dashboard/clients',
+            client: (id: string) => `/dashboard/clients/${id}`,
         },
     },
 }

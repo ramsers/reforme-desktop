@@ -5,7 +5,7 @@ import { call, put, takeLatest } from 'redux-saga/effects'
 import { postLogin, postSignUp } from '@api/auth'
 import { login, logout, signUp } from '@store/slices/signUpSlice'
 import { connectApi } from '../../config/axios.config'
-import { fetchUserSuccess, reset } from '@store/slices/userSlice'
+import { fetchUserInfoSuccess, reset } from '@store/slices/userSlice'
 
 export function* setAccessToken(accessToken: string) {
     localStorage.setItem('accessToken', accessToken)
@@ -23,7 +23,7 @@ export function* signUpSaga(action: PayloadAction<SignUpPayload>) {
         })
         yield call(setAccessToken, response.data.access)
         yield call(connectApi)
-        yield put(fetchUserSuccess(response.data.user))
+        yield put(fetchUserInfoSuccess(response.data.user))
         // console.log('HITTTING SAGA =============', response)
         if (action.payload.onSuccess) {
             yield call(action.payload.onSuccess())
@@ -37,7 +37,7 @@ export function* loginSaga(action: PayloadAction<LoginPayload>) {
 
         yield call(setAccessToken, response.data.access)
         yield call(connectApi)
-        yield put(fetchUserSuccess(response.data.user))
+        yield put(fetchUserInfoSuccess(response.data.user))
     } catch (e) {}
 }
 

@@ -7,7 +7,7 @@ import { PencilIcon } from '@heroicons/react/24/solid'
 import CreateClassForm from '@features/dashboard/classes/CreateEditClassForm'
 import { User } from '@reformetypes/userTypes'
 import CreateEditInstructorForm from './CreateEditInstructorForm'
-import { fetchUser } from '@store/slices/userSlice'
+import { fetchUserInfo } from '@store/slices/userSlice'
 import { InstructorTableContext } from './instructors/InstructorTableContextProvider'
 
 type InstructorsTableOwnProps = {

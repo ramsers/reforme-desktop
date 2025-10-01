@@ -34,8 +34,8 @@ const userSlice = createSlice({
     name: 'userSlice',
     initialState: INITIAL_USER_STATE,
     reducers: {
-        fetchUser: (state) => state,
-        fetchUserSuccess: (state, action: PayloadAction<User>) => {
+        fetchUserInfo: (state) => state,
+        fetchUserInfoSuccess: (state, action: PayloadAction<User>) => {
             console.log('I AM HITTING SUCCESS ==========', action.payload)
             state.id = action.payload.id
             state.name = action.payload.name
@@ -68,12 +68,21 @@ const userSlice = createSlice({
         createUserSuccess: (state, action: PayloadAction<User>) => {
             if (action.payload.role === eRole.INSTRUCTOR) {
                 state.instructors.push(action.payload)
+            } else {
+                state.clients.push(action.payload)
             }
-            state.clients.push(action.payload)
 
             return state
         },
         retrieveUser: (state, action: PayloadAction<string>) => state,
+        retrieveUserSuccess: (state, action: PayloadAction<User>) => {
+            if (action.payload.role === eRole.INSTRUCTOR) {
+                state.instructor = action.payload
+            } else {
+                state.client = action.payload
+            }
+            return state
+        },
         updateUser: (state, action: PayloadAction<Partial<User>>) => state,
         updateUserSuccess: (state, action: PayloadAction<User>) => {
             if (action.payload.role === eRole.INSTRUCTOR) {
@@ -93,14 +102,15 @@ const userSlice = createSlice({
 })
 
 export const {
-    fetchUser,
-    fetchUserSuccess,
+    fetchUserInfo,
+    fetchUserInfoSuccess,
     reset,
     fetchAllInstructors,
     fetchAllInstructorsSuccess,
     createUser,
     createUserSuccess,
     retrieveUser,
+    retrieveUserSuccess,
     updateUser,
     updateUserSuccess,
     fetchAllClients,
