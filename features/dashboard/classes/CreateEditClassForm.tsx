@@ -48,9 +48,6 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
         dispatch(fetchAllInstructors({}))
     }, [dispatch])
 
-    // console.log('TESTO =============', instructors)
-    console.log('CURRENT CLASS =============', currentClass)
-
     return (
         <div className="flex flex-col gap-5">
             <Formik
@@ -62,7 +59,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                     date:
                         (currentClass?.date && dayjs(currentClass.date).format('YYYY-MM-DD HH:mm')) ||
                         dayjs().format('YYYY-MM-DD HH:mm'),
-                    instructorId: null,
+                    instructorId: currentClass?.instructor?.id || null,
                 }}
                 validationSchema={ClassSchema}
                 onSubmit={(values, { setSubmitting, resetForm }) => {

@@ -45,6 +45,7 @@ const ClientTable: React.FC<ClientTableProps> = ({ clients, setCurrentPage, curr
                         <TableRow
                             key={client.id}
                             spans={[6, 6, 6, 4, 2]}
+                            onClick={() => handleOpenClientModal(client)}
                             children={[
                                 <div className="font-bold">
                                     <p>{dayjs(client.createdAt).format('D MMM YY')}</p>

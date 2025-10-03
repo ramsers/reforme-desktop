@@ -65,7 +65,7 @@ const BookingTable: React.FC<BookingTableProps> = ({ classes, setCurrentPage, cu
                                 <p className="font-semibold">{cls.title}</p>,
                                 <p className="text-center font-semibold">{cls.instructor?.name}</p>,
                                 <p className="text-center font-semibold">{`${cls.bookingsCount}/${cls.size}`}</p>,
-                                <div className="flex flex-row items-center gap-3 justify-self-center p-2 text-center">
+                                <div className="justify-self-centertext-center flex flex-row items-center gap-3">
                                     <button
                                         className="hover:text-dashboard-action text-blue-600"
                                         onClick={() => handleOpenModal(cls)}

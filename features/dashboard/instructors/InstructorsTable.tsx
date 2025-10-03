@@ -47,6 +47,7 @@ const InstructorsTable: React.FC<InstructorsTableProps> = ({ instructors, setCur
                     instructors?.results.map((instructor) => (
                         <TableRow
                             key={instructor.id}
+                            onClick={() => handleSetUser(instructor.id)}
                             spans={[6, 6, 6, 4, 2]}
                             children={[
                                 <div className="font-bold">

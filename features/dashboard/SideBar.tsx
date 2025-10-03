@@ -57,9 +57,12 @@ const SideBar: React.FC<SideBarProps> = ({ open, setOpen }) => {
                 >
                     Clients
                 </button>
-                <a href="#" className="block w-full rounded p-2 text-left hover:bg-gray-700">
+                <button
+                    onClick={() => router.push(AppRoutes.dashboard.settings)}
+                    className="block w-full rounded p-2 text-left hover:bg-gray-700"
+                >
                     Settings
-                </a>
+                </button>
                 <button onClick={handleLogout} className="block w-full rounded p-2 text-left hover:bg-gray-700">
                     Logout
                 </button>

@@ -1,3 +1,5 @@
+import { profile } from 'console'
+
 const AppRoutes = {
     home: '/',
     authenticate: {
@@ -21,6 +23,7 @@ const AppRoutes = {
             list: '/dashboard/clients',
             client: (id: string) => `/dashboard/clients/${id}`,
         },
+        settings: '/dashboard/settings',
     },
 }
 

@@ -4,13 +4,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
 
 export type UserSliceType = {
-    id: string | null
-    name: string | null
-    email: string | null
-    phoneNumber: string | null
-    password: string | null
-    role: eRole | null
-    createdAt?: string | null
+    // id: string | null
+    // name: string | null
+    // email: string | null
+    // phoneNumber: string | null
+    // password: string | null
+    // role: eRole | null
+    // createdAt?: string | null
+    currentUser?: User | null
     instructors: ShortPaginatedResponse<User>
     instructor: User | null
     client: User | null
@@ -18,13 +19,7 @@ export type UserSliceType = {
 }
 
 const INITIAL_USER_STATE: UserSliceType = {
-    id: '',
-    name: '',
-    email: '',
-    phoneNumber: '',
-    password: '',
-    role: null,
-    createdAt: null,
+    currentUser: null,
     instructors: {
         count: 0,
         next: null,
@@ -47,22 +42,11 @@ const userSlice = createSlice({
     reducers: {
         fetchUserInfo: (state) => state,
         fetchUserInfoSuccess: (state, action: PayloadAction<User>) => {
-            console.log('I AM HITTING SUCCESS ==========', action.payload)
-            state.id = action.payload.id
-            state.name = action.payload.name
-            state.email = action.payload.email
-            state.phoneNumber = action.payload.phoneNumber
-            state.password = action.payload.password
-            state.role = action.payload.role
+            state.currentUser = action.payload
             return state
         },
         reset: (state) => {
-            state.id = ''
-            state.name = ''
-            state.email = ''
-            state.phoneNumber = ''
-            state.password = ''
-            state.role = null
+            state.currentUser = null
             return state
         },
         fetchAllInstructors: (state, action: PayloadAction<Record<string, any>>) => state,
