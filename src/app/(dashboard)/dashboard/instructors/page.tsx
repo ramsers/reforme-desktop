@@ -29,9 +29,7 @@ const DashBoardInstructorsPage: React.FC = () => {
                     <p className="text-lg">Instructors</p>
                     <p className="text-sm">View and manage your instructors</p>
                 </div>
-                <InstructorTableContextProvider>
-                    <CreateInstructorButtonModal />
-                </InstructorTableContextProvider>
+                <CreateInstructorButtonModal />
             </div>
             <div className="flex flex-row justify-end">
                 <input
@@ -41,14 +39,14 @@ const DashBoardInstructorsPage: React.FC = () => {
                         setSearchQuery(e.target.value)
                         setCurrentPage(1)
                     }}
-                    placeholder="Search by class or instructor name"
+                    placeholder="Search by class or instructor"
                     className="w-64 rounded rounded-lg border bg-white p-2 text-sm"
                 />
             </div>
 
-            <InstructorTableContextProvider>
-                <InstructorsTable instructors={instructors} currentPage={currentPage} setCurrentPage={setCurrentPage} />
-            </InstructorTableContextProvider>
+            {/* <InstructorTableContextProvider> */}
+            <InstructorsTable instructors={instructors} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+            {/* </InstructorTableContextProvider> */}
         </div>
     )
 }

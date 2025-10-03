@@ -19,9 +19,9 @@ const AddClientModal: React.FC<AddClientModalProps> = ({ isOpen, onClose, setIsO
     const [selectedClientId, setSelectedClientId] = useState<string | null>(null)
 
     useEffect(() => {
-        if (!clients.length) {
+        if (!clients.results.length) {
             console.log('IS infinite loop===================')
-            dispatch(fetchAllClients())
+            dispatch(fetchAllClients({ page: 1 }))
         }
     }, [clients])
 
@@ -49,7 +49,11 @@ const AddClientModal: React.FC<AddClientModalProps> = ({ isOpen, onClose, setIsO
         >
             <>
                 <p>Yolo</p>
-                <UserSelect users={clients} selectedUserId={selectedClientId} onChange={handleSetSelectedClient} />
+                <UserSelect
+                    users={clients.results}
+                    selectedUserId={selectedClientId}
+                    onChange={handleSetSelectedClient}
+                />
             </>
         </SlidingModal>
     )

@@ -9,6 +9,10 @@ import { useSelector } from 'react-redux'
 import { RootState } from '@store/index'
 import AddClientModal from './AddClientModel'
 import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
+import TableContainer from '@components/table/TableContainer'
+import TableHeader from '@components/table/TableHeader'
+import TableRow from '@components/table/TableRow'
+import PaginationButtons from '@components/table/PaginationButtons'
 
 type BookingTableProps = {
     classes: ShortPaginatedResponse<Class>
@@ -38,48 +42,50 @@ const BookingTable: React.FC<BookingTableProps> = ({ classes, setCurrentPage, cu
     const totalPages = Math.ceil(classes.count / pageSize)
 
     return (
-        <div className="border-dashboard-action rounded-lg border bg-white p-5 shadow-md">
-            <div className="grid grid-cols-24 border-b text-sm font-bold text-gray-600">
-                <p className="col-span-5 p-2">Date</p>
-                <p className="col-span-5 p-2">Class</p>
-                <p className="col-span-6 p-2">Instructor</p>
-                <p className="col-span-4 p-2 text-center">Booked/Capacity</p>
-                <p className="col-span-4 p-2 text-center" />
-            </div>
+        <>
+            <TableContainer>
+                <TableHeader
+                    columns={[
+                        { label: 'Date', span: 6 },
+                        { label: 'Class', span: 6 },
+                        { label: 'Instructor', span: 6, align: 'center' },
+                        { label: 'Capacity', span: 2, align: 'center' },
+                        { label: '', span: 4, align: 'center' },
+                    ]}
+                />
+                {classes.count > 0 &&
+                    classes?.results.map((cls) => (
+                        <TableRow
+                            key={cls.id}
+                            spans={[6, 6, 6, 2, 4]}
+                            children={[
+                                <div className="font-bold">
+                                    <p>{dayjs(cls.date).format('D MMM')}</p>
+                                </div>,
+                                <p className="font-semibold">{cls.title}</p>,
+                                <p className="text-center font-semibold">{cls.instructor?.name}</p>,
+                                <p className="text-center font-semibold">{`${cls.bookingsCount}/${cls.size}`}</p>,
+                                <div className="flex flex-row items-center gap-3 justify-self-center p-2 text-center">
+                                    <button
+                                        className="hover:text-dashboard-action text-blue-600"
+                                        onClick={() => handleOpenModal(cls)}
+                                    >
+                                        <PencilIcon className={'h-4 w-4'} />
+                                    </button>
 
-            {classes.count > 0 &&
-                classes?.results.map((cls) => (
-                    <div key={cls.id} className="flex grid grid-cols-24 flex-row items-center border-b text-sm">
-                        <div className="col-span-5 p-2">
-                            <p>{dayjs(cls.date).format('D MMM')}</p>
-                        </div>
-                        <div className="col-span-5 p-2">
-                            <p className="font-semibold">{cls.title}</p>
-                        </div>
-                        <div className="col-span-6 p-2">
-                            <p className="font-semibold">{cls.instructor?.name}</p>
-                        </div>
-                        <div className="col-span-4 p-2 text-center">
-                            <p>{`${cls.bookingsCount}/${cls.size}`}</p>
-                        </div>
-                        <div className="col-span-4 flex flex-row items-center justify-center gap-3 p-2 text-center">
-                            <button
-                                className="hover:text-dashboard-action text-blue-600"
-                                onClick={() => handleOpenModal(cls)}
-                            >
-                                <PencilIcon className={'h-4 w-4'} />
-                            </button>
-
-                            <button
-                                className="hover:text-dashboard-action flex flex-row items-center justify-center gap-1 text-blue-600"
-                                onClick={() => handleOpenAddClientModal(cls)}
-                            >
-                                <PlusIcon className={'h-4 w-4'} />
-                                <p>add client</p>
-                            </button>
-                        </div>
-                    </div>
-                ))}
+                                    <button
+                                        className="hover:text-dashboard-action flex flex-row items-center justify-center gap-1 text-blue-600"
+                                        onClick={() => handleOpenAddClientModal(cls)}
+                                    >
+                                        <PlusIcon className={'h-4 w-4'} />
+                                        <p>add client</p>
+                                    </button>
+                                </div>,
+                            ]}
+                        />
+                    ))}
+                <PaginationButtons totalPages={totalPages} currentPage={currentPage} onPageChange={setCurrentPage} />
+            </TableContainer>
             <ManageClassBookingModal
                 isOpen={isOpen}
                 onClose={() => setIsOpen(false)}
@@ -93,18 +99,7 @@ const BookingTable: React.FC<BookingTableProps> = ({ classes, setCurrentPage, cu
                 setIsOpen={setIsAddClientOpen}
                 classId={selectedClassId}
             />
-            <div className="mt-4 flex justify-end gap-2">
-                {Array.from({ length: totalPages }, (_, i) => (
-                    <button
-                        key={i}
-                        onClick={() => setCurrentPage(i + 1)}
-                        className={`rounded px-3 py-1 ${currentPage === i + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
-                    >
-                        {i + 1}
-                    </button>
-                ))}
-            </div>
-        </div>
+        </>
     )
 }
 

@@ -17,16 +17,12 @@ type CreateInstructorButtonModalProps = CreateInstructorButtonModalOwnProps &
     CreateInstructorButtonModalDispatchProps
 
 const CreateInstructorButtonModal: React.FC<CreateInstructorButtonModalProps> = () => {
-    const context = useContext(InstructorTableContext)
-
-    if (!context) return null
-
-    const { isOpen, handleOpenInstructorModal, handleCloseInstructorModal } = context
+    const [isOpen, setIsOpen] = useState(false)
 
     return (
         <div>
             <button
-                onClick={() => handleOpenInstructorModal()}
+                onClick={() => setIsOpen(true)}
                 className="group bg-dashboard-action text-main flex cursor-pointer flex-row items-center gap-1 rounded-lg px-3 py-2 font-semibold transition-colors hover:bg-white"
             >
                 <PlusIcon className="group-hover:text-dashboard-action h-5 w-5" />
@@ -34,11 +30,7 @@ const CreateInstructorButtonModal: React.FC<CreateInstructorButtonModalProps> = 
                 <span className="group-hover:text-dashboard-action">Create instructor</span>
             </button>
 
-            <CreateEditInstructorForm
-                title={'Create instructor'}
-                isOpen={isOpen}
-                setIsOpen={handleCloseInstructorModal}
-            />
+            <CreateEditInstructorForm title={'Create instructor'} isOpen={isOpen} setIsOpen={() => setIsOpen(false)} />
         </div>
     )
 }

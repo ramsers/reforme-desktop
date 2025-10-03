@@ -32,12 +32,13 @@
     --font-body: 'EastmanVariable';
     --font-heading: 'Revans-Light';
     --color-brown-default: #a38d78;
-    --color-brown-70: #A38D78;
+    --color-brown-70: #a38d78;
     --color-brown-50: #cbb9a4;
     --color-brown-10: #e6dbc9;
     --color-main: #faf9f5;
     --color-gray-10: #f5f1ea;
-    --color-dashboard-action: #1E2938;
+    --color-gray-20: #e6dfd6;
+    --color-dashboard-action: #1e2938;
 }
 
 @keyframes bounce-once {

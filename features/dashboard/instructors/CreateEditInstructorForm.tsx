@@ -1,21 +1,20 @@
 'use client'
 import { RootState } from '@store/index'
-import React, { useContext } from 'react'
+import React from 'react'
 import { connect, useDispatch, useSelector } from 'react-redux'
 import { Dispatch } from 'redux'
 import * as Yup from 'yup'
 import { User } from '@reformetypes/userTypes'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
-import dayjs from 'dayjs'
-import { createUser, updateUser, UserSliceType } from '@store/slices/userSlice'
+import { createUser, updateUser } from '@store/slices/userSlice'
 import SlidingModal from '@components/slidingModal/SlidingModal'
 import { eRole } from '@reformetypes/authTypes'
-import { InstructorTableContext } from './instructors/InstructorTableContextProvider'
 
 type CreateEditInstructorFormOwnProps = {
     isOpen: boolean
     setIsOpen: () => void
     title: string
+    selectedInstructorId?: string | null
 }
 
 type CreateEditInstructorFormSliceProps = {}
@@ -26,18 +25,20 @@ type CreateEditInstructorFormProps = CreateEditInstructorFormOwnProps &
     CreateEditInstructorFormSliceProps &
     CreateEditInstructorFormDispatchProps
 
-const CreateEditInstructorForm: React.FC<CreateEditInstructorFormProps> = ({ isOpen, setIsOpen, title }) => {
+const CreateEditInstructorForm: React.FC<CreateEditInstructorFormProps> = ({
+    isOpen,
+    setIsOpen,
+    title,
+    selectedInstructorId,
+}) => {
     const dispatch = useDispatch()
-    const context = useContext(InstructorTableContext)
 
     const instructor: User | null = useSelector(
         (state: RootState) =>
             (state?.user?.instructors?.results.length &&
-                state?.user?.instructors.results.find((inst) => inst.id === context?.instructorId)) ||
+                state?.user?.instructors.results.find((inst) => inst.id === selectedInstructorId)) ||
             null
     )
-
-    if (!context) return null
 
     const InstructorSchema = Yup.object().shape({
         name: Yup.string().required('Name is required'),
@@ -59,34 +60,12 @@ const CreateEditInstructorForm: React.FC<CreateEditInstructorFormProps> = ({ isO
                 onSubmit={(values, { resetForm }) => {
                     const { id, ...payload } = values
 
-                    // const payload = {
-                    //     ...values,
-                    //     role: eRole.INSTRUCTOR,
-                    // }
-
-                    console.log('PAYLOAD ===========')
-
                     if (!values.id) {
-                        dispatch(createUser(payload))
+                        dispatch(createUser({ ...payload, role: eRole.INSTRUCTOR }))
                     } else {
-                        console.log('Hitting update user=================')
                         dispatch(updateUser(values))
                     }
 
-                    // const { id,
-                    //     ...payload
-                    // } = values
-                    //
-                    // if (values.id) {
-                    //     console.log('hitting partial update=================', values)
-                    //
-                    //     dispatch(partialUpdateClass(values))
-                    // } else {
-                    //     dispatch(createClass(payload))
-                    // }
-                    //
-                    //
-                    // setSubmitting(false);
                     setIsOpen()
                     resetForm()
                 }}
