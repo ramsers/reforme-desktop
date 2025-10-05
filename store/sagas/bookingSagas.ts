@@ -12,13 +12,15 @@ import {
     deleteUserBookingSuccess,
 } from '@store/slices/bookingSlice'
 import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
+import { toastError, toastSuccess } from 'lib/toast'
 
 export function* createBookingSaga(action: PayloadAction<CreateBookingPayload>) {
     try {
         const response: AxiosResponse<Booking> = yield call(postCreateBooking, action.payload)
         yield put(createBookingSuccess(response.data))
+        toastSuccess('Class booked!')
     } catch (e) {
-        console.log('Error:', e)
+        toastError('Error booking class. Please try again')
     }
 }
 

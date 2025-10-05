@@ -39,6 +39,7 @@ const classSlice = createSlice({
         createClass: (state, action: PayloadAction<CreateClassPayload>) => state,
         createClassSuccess: (state, action: PayloadAction<Class>) => {
             state.class = action.payload
+            state.classes.results.push(action.payload)
             return state
         },
         partialUpdateClass: (state, action: PayloadAction<PartialUpdateClassPayload>) => state,
