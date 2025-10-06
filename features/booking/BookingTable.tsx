@@ -62,10 +62,10 @@ const BookingTable: React.FC<BookingTableProps> = ({ classes, setCurrentPage, cu
                                 <div className="font-bold">
                                     <p>{dayjs(cls.date).format('D MMM')}</p>
                                 </div>,
-                                <p className="font-semibold">{cls.title}</p>,
-                                <p className="text-center font-semibold">{cls.instructor?.name}</p>,
+                                <p className="truncate font-semibold">{cls.title}</p>,
+                                <p className="truncate text-center font-semibold">{cls.instructor?.name}</p>,
                                 <p className="text-center font-semibold">{`${cls.bookingsCount}/${cls.size}`}</p>,
-                                <div className="justify-self-centertext-center flex flex-row items-center gap-3">
+                                <div className="justify-self-centertext-center flex flex-row flex-wrap items-center justify-center gap-3">
                                     <button
                                         className="hover:text-dashboard-action text-blue-600"
                                         onClick={() => handleOpenModal(cls)}
@@ -74,7 +74,7 @@ const BookingTable: React.FC<BookingTableProps> = ({ classes, setCurrentPage, cu
                                     </button>
 
                                     <button
-                                        className="hover:text-dashboard-action flex flex-row items-center justify-center gap-1 text-blue-600"
+                                        className="hover:text-dashboard-action flex flex-row items-center justify-center text-blue-600"
                                         onClick={() => handleOpenAddClientModal(cls)}
                                     >
                                         <PlusIcon className={'h-4 w-4'} />

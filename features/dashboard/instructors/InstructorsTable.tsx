@@ -51,11 +51,13 @@ const InstructorsTable: React.FC<InstructorsTableProps> = ({ instructors, setCur
                             spans={[6, 6, 6, 4, 2]}
                             children={[
                                 <div className="font-bold">
-                                    <p className="font-semibold">{instructor?.name || null}</p>
+                                    <p className="truncate font-semibold">{instructor?.name || null}</p>
                                 </div>,
-                                <p className="font-semibold">{instructor?.email || null}</p>,
-                                <p className="font-semibold">{instructor?.phoneNumber || null}</p>,
-                                <p className="font-semibold">{dayjs(instructor.createdAt).format('DD/MM/YYYY')}</p>,
+                                <p className="truncate font-semibold">{instructor?.email || null}</p>,
+                                <p className="truncate font-semibold">{instructor?.phoneNumber || null}</p>,
+                                <p className="truncate font-semibold">
+                                    {dayjs(instructor.createdAt).format('DD/MM/YYYY')}
+                                </p>,
                                 <button
                                     className="hover:text-dashboard-action flex justify-self-center text-blue-600"
                                     onClick={() => handleSetUser(instructor.id)}

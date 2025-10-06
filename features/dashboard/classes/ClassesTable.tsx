@@ -47,7 +47,7 @@ const ClassesTable: React.FC<ClassesTableProps> = ({ classes, setCurrentPage, cu
                         { label: 'Date', span: 6 },
                         { label: 'Class Name', span: 6 },
                         { label: 'Instructor', span: 6 },
-                        { label: '', span: 6, align: 'center' },
+                        { label: '', span: 6, align: 'right' },
                     ]}
                 />
 
@@ -64,7 +64,7 @@ const ClassesTable: React.FC<ClassesTableProps> = ({ classes, setCurrentPage, cu
                                 <p className="font-semibold">{cls.title}</p>,
                                 <p className="font-semibold">{cls?.instructor?.name ?? ''}</p>,
                                 <button
-                                    className="hover:text-dashboard-action flex justify-self-center text-blue-600"
+                                    className="hover:text-dashboard-action flex justify-self-end text-blue-600"
                                     onClick={() => handleFetchClass(cls.id)}
                                 >
                                     <PencilIcon className="h-4 w-4" />

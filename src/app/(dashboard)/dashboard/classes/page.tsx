@@ -51,9 +51,9 @@ const DashboardClassesPage: React.FC = () => {
                 </div>
                 <CreateClassButtonModal />
             </div>
-            <div className="flex flex-row justify-end gap-2">
-                <Popover>
-                    <Popover.Button className="w-64 rounded-lg border bg-white px-3 py-2 text-left text-sm">
+            <div className="flex w-full flex-row flex-wrap justify-end gap-2">
+                <Popover className={'w-full lg:w-64'}>
+                    <Popover.Button className="w-full rounded-lg border bg-white px-3 py-2 text-left text-sm lg:w-64">
                         {dayjs(dateRange[0].startDate).format('MMM D, YYYY')} –{' '}
                         {dayjs(dateRange[0].endDate).format('MMM D, YYYY')}
                     </Popover.Button>
@@ -75,7 +75,7 @@ const DashboardClassesPage: React.FC = () => {
                         setCurrentPage(1)
                     }}
                     placeholder="Search by clas name or instructor"
-                    className="w-64 rounded rounded-lg border bg-white p-2 text-sm"
+                    className="w-full rounded rounded-lg border bg-white p-2 text-sm lg:w-64"
                 />
             </div>
             <ClassesTable classes={classes} currentPage={currentPage} setCurrentPage={setCurrentPage} />

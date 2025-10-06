@@ -50,9 +50,9 @@ const ClientTable: React.FC<ClientTableProps> = ({ clients, setCurrentPage, curr
                                 <div className="font-bold">
                                     <p>{dayjs(client.createdAt).format('D MMM YY')}</p>
                                 </div>,
-                                <p className="font-semibold">{client.name}</p>,
-                                <p className="font-semibold">{client.email}</p>,
-                                <p className="text-center font-semibold">{client.phoneNumber}</p>,
+                                <p className="truncate font-semibold">{client.name}</p>,
+                                <p className="truncate font-semibold">{client.email}</p>,
+                                <p className="truncate text-center font-semibold">{client.phoneNumber}</p>,
                                 <button
                                     className="hover:text-dashboard-action text-blue-600"
                                     onClick={() => handleOpenClientModal(client)}

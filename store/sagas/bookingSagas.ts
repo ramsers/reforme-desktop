@@ -35,7 +35,10 @@ export function* deleteUserBookingSaga(action: PayloadAction<string>) {
     try {
         yield call(deleteBooking, action.payload)
         yield put(deleteUserBookingSuccess(action.payload))
-    } catch (e) {}
+        toastSuccess('Booking deleted')
+    } catch (e) {
+        toastError('There was error deleting your booking. Please try again.')
+    }
 }
 
 function* bookingSagas() {

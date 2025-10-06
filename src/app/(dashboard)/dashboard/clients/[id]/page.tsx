@@ -28,12 +28,20 @@ const ClientPage: React.FC<ClientPageProps> = ({ params }) => {
         <div>
             <TabGroup className={'flex flex-col gap-6'}>
                 <TabList
-                    className={'flex flex-row gap-5 border-b-2 font-semibold ' + 'border-brown-default max-w-[30vw]'}
+                    className={'flex flex-row gap-5 border-b-2 font-semibold ' + 'border-brown-default lg:max-w-[30vw]'}
                 >
-                    <Tab className={'data-selected:bg-brown-default/40 rounded-t-md px-3 py-1.5 focus:outline-none'}>
+                    <Tab
+                        className={
+                            'data-selected:bg-brown-default/40 w-[50%] rounded-t-md px-3 py-1.5 focus:outline-none'
+                        }
+                    >
                         Account info
                     </Tab>
-                    <Tab className={'data-selected:bg-brown-default/40 rounded-t-md px-3 py-1.5 focus:outline-none'}>
+                    <Tab
+                        className={
+                            'data-selected:bg-brown-default/40 w-[50%] rounded-t-md px-3 py-1.5 focus:outline-none'
+                        }
+                    >
                         Payment Info
                     </Tab>
                 </TabList>

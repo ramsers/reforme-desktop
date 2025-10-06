@@ -43,7 +43,8 @@ const CalendarList: React.FC<CalendarListProps> = ({ items, emptyMessage = '' })
                                 <div className="text-lg font-bold">{item.title}</div>
                                 <div className="text-sm text-gray-600">{item.description}</div>
                                 <span className="text-sm">
-                                    {item.instructorName} • {dayjs(item.date).format('h:mm A')}
+                                    {item.instructorName || 'Instructor not assigned'} •{' '}
+                                    {dayjs(item.date).format('h:mm A')}
                                 </span>
                             </div>
                             {item.actions && <div className="flex flex-row gap-2">{item.actions}</div>}

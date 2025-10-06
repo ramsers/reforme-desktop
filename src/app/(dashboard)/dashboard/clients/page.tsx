@@ -25,9 +25,6 @@ const DashboardClientsPage = () => {
                     <p className="text-lg">Clients</p>
                     <p className="text-sm">View and manage your clients</p>
                 </div>
-                {/* <InstructorTableContextProvider>
-                    <CreateInstructorButtonModal />
-                </InstructorTableContextProvider> */}
                 <CreateClientButtonModal />
             </div>
             <div className="flex flex-row justify-end gap-2">
