@@ -58,7 +58,7 @@ const DashboardBookingsPage: React.FC = () => {
                 {/* <CreateClassButtonModal /> */}
             </div>
             <div className="flex flex-row flex-wrap justify-end gap-2">
-                <Popover className="w-full">
+                <Popover className="w-full lg:w-64">
                     <Popover.Button className="w-full rounded-lg border bg-white px-3 py-2 text-left text-sm lg:w-64">
                         {dayjs(dateRange[0].startDate).format('MMM D, YYYY')} –{' '}
                         {dayjs(dateRange[0].endDate).format('MMM D, YYYY')}

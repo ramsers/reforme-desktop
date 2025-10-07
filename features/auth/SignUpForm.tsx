@@ -1,43 +1,41 @@
-"use client";
+'use client'
 
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import {AppDispatch, RootState} from '@store/index'
+import { Formik, Form, Field, ErrorMessage } from 'formik'
+import { AppDispatch, RootState } from '@store/index'
 import React from 'react'
-import {connect, useDispatch} from 'react-redux'
-import {Dispatch} from 'redux'
-import * as Yup from "yup";
-import {eRole, SignUpPayload} from "@reformetypes/authTypes";
-import { signUp } from "@store/slices/signUpSlice"
-import {useRouter} from "next/navigation";
-import AppRoutes from "../../config/appRoutes";
+import { connect, useDispatch } from 'react-redux'
+import { Dispatch } from 'redux'
+import * as Yup from 'yup'
+import { eRole, SignUpPayload } from '@reformetypes/authTypes'
+import { signUp } from '@store/slices/signUpSlice'
+import { useRouter } from 'next/navigation'
+import AppRoutes from '../../config/appRoutes'
 
 type SignUpFormOwnProps = {}
 
 type SignUpFormProps = SignUpFormOwnProps
 
 const SignUpForm: React.FC<SignUpFormProps> = () => {
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useDispatch<AppDispatch>()
     const router = useRouter()
 
     const SignupSchema = Yup.object().shape({
-        name: Yup.string().required("Name is required"),
-        email: Yup.string()
-            .email("Invalid email")
-            .required("Email is required"),
-        password: Yup.string().required("Password is required"),
+        name: Yup.string().required('Name is required'),
+        email: Yup.string().email('Invalid email').required('Email is required'),
+        password: Yup.string().required('Password is required'),
         phoneNumber: Yup.string()
-            .matches(/^\+?[0-9]{7,15}$/, "Invalid phone number")
+            .matches(/^\+?[0-9]{7,15}$/, 'Invalid phone number')
             .notRequired(),
-    });
+    })
 
     return (
         <div className="flex flex-col gap-5">
             <Formik
                 initialValues={{
-                    name: "",
-                    email: "",
-                    password: "",
-                    phoneNumber: "",
+                    name: '',
+                    email: '',
+                    password: '',
+                    phoneNumber: '',
                 }}
                 validationSchema={SignupSchema}
                 onSubmit={(values, { setSubmitting }) => {
@@ -45,34 +43,29 @@ const SignUpForm: React.FC<SignUpFormProps> = () => {
                         ...values,
                         phoneNumber: values.phoneNumber || '',
                         role: eRole.CLIENT,
-                        onSuccess: () => router.push(AppRoutes.home)
+                        onSuccess: () => router.push(AppRoutes.home),
                     }
                     dispatch(signUp(payload))
 
-
-                    setSubmitting(false);
+                    setSubmitting(false)
                 }}
             >
-                {({ isSubmitting }) => (
+                {({ isSubmitting, handleSubmit }) => (
                     <Form className="flex flex-col gap-4">
                         <div>
                             <label className="font-semibold">Name</label>
-                            <Field name="name" className="border border-2 border-brown-default p-2 w-full rounded-lg" />
-                            <ErrorMessage
-                                name="name"
-                                component="div"
-                                className="text-red-500 text-sm"
-                            />
+                            <Field name="name" className="border-brown-default w-full rounded-lg border border-2 p-2" />
+                            <ErrorMessage name="name" component="div" className="text-sm text-red-500" />
                         </div>
 
                         <div>
                             <label className="font-semibold">Email</label>
-                            <Field name="email" type="email" className="border p-2 w-full border-2 border-brown-default rounded-lg" />
-                            <ErrorMessage
+                            <Field
                                 name="email"
-                                component="div"
-                                className="text-red-500 text-sm"
+                                type="email"
+                                className="border-brown-default w-full rounded-lg border border-2 p-2"
                             />
+                            <ErrorMessage name="email" component="div" className="text-sm text-red-500" />
                         </div>
 
                         <div>
@@ -80,30 +73,29 @@ const SignUpForm: React.FC<SignUpFormProps> = () => {
                             <Field
                                 name="password"
                                 type="password"
-                                className="border p-2 w-full border-2 border-brown-default rounded-lg"
+                                className="border-brown-default w-full rounded-lg border border-2 p-2"
                             />
-                            <ErrorMessage
-                                name="password"
-                                component="div"
-                                className="text-red-500 text-sm"
-                            />
+                            <ErrorMessage name="password" component="div" className="text-sm text-red-500" />
                         </div>
 
                         <div>
                             <label className="font-semibold">Phone Number (optional)</label>
-                            <Field name="phoneNumber" className="border p-2 w-full border-2 border-brown-default rounded-lg" />
-                            <ErrorMessage
+                            <Field
                                 name="phoneNumber"
-                                component="div"
-                                className="text-red-500 text-sm"
+                                className="border-brown-default w-full rounded-lg border border-2 p-2"
                             />
+                            <ErrorMessage name="phoneNumber" component="div" className="text-sm text-red-500" />
                         </div>
 
-                        <button type="button" className="bg-brown-default p-4 rounded-lg text-main font-semibold hover:bg-brown-50 transition-colors">
-                        {/*    type="submit"*/}
-                        {/*    // disabled={isSubmitting}*/}
-                        {/*    className="bg-blue-600 text-white px-4 py-2 rounded"*/}
-                        {/*>*/}
+                        <button
+                            type="submit"
+                            className="bg-brown-default text-main hover:bg-brown-50 rounded-lg p-4 font-semibold transition-colors"
+                            // onClick={() => handleSubmit()}
+                        >
+                            {/*    type="submit"*/}
+                            {/*    // disabled={isSubmitting}*/}
+                            {/*    className="bg-blue-600 text-white px-4 py-2 rounded"*/}
+                            {/*>*/}
                             Submit
                         </button>
                     </Form>
@@ -111,12 +103,15 @@ const SignUpForm: React.FC<SignUpFormProps> = () => {
             </Formik>
             <div className="flex flex-row gap-1">
                 <p>Already have an account?</p>
-                <button onClick={() => router.push(AppRoutes.authenticate.login)}
-                        className="underline text-blue-600 cursor-pointer">Login
+                <button
+                    onClick={() => router.push(AppRoutes.authenticate.login)}
+                    className="cursor-pointer text-blue-600 underline"
+                >
+                    Login
                 </button>
             </div>
         </div>
-    );
+    )
 }
 
 export default SignUpForm

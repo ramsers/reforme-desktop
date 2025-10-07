@@ -12,7 +12,7 @@ const PaginationButtons: React.FC<PaginationButtonsProps> = ({ totalPages, curre
             <button
                 key={i}
                 onClick={() => onPageChange(i + 1)}
-                className={`rounded px-3 py-1 ${currentPage === i + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
+                className={`rounded px-3 py-1 ${currentPage === i + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200'} cursor-pointer`}
             >
                 {i + 1}
             </button>
