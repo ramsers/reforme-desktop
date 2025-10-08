@@ -12,8 +12,9 @@ import { Class } from '@reformetypes/classTypes'
 import { createBooking } from '@store/slices/bookingSlice'
 import CalendarBar from '@components/calendar/CalendarBar'
 import CalendarList from '@components/calendar/CalendarList'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { deleteBooking } from '@api/booking'
+import AppRoutes from 'config/appRoutes'
 
 type ClassesCalendarOwnProps = {}
 
@@ -25,6 +26,7 @@ type ClassesCalendarProps = ClassesCalendarOwnProps & ClassesCalendarSliceProps 
 
 const ClassesCalendar: React.FC<ClassesCalendarProps> = () => {
     const dispatch = useDispatch()
+    const router = useRouter()
     const classes = useSelector((state: RootState) => state.class?.classes?.results)
     const user = useSelector((state: RootState) => state.user)
     console.log('classes ==============', classes)
@@ -56,14 +58,18 @@ const ClassesCalendar: React.FC<ClassesCalendarProps> = () => {
                     description: cls.description,
                     instructorName: cls?.instructor?.name,
                     date: cls.date,
-                    actions: user?.name ? (
+                    actions: (
                         <button
-                            onClick={() => handleCreateBooking(cls.id)}
-                            className="hover:bg-gray-10 hover:text-brown-default bg-brown-default text-main rounded-lg px-3 py-1 font-semibold transition-colors"
+                            onClick={() =>
+                                user?.currentUser
+                                    ? router.push(AppRoutes.classes.detail(cls.id))
+                                    : router.push(AppRoutes.authenticate.login)
+                            }
+                            className="hover:bg-gray-10 hover:text-brown-default bg-brown-default text-main cursor-pointer rounded-lg px-3 py-1 font-semibold transition-colors"
                         >
-                            Book now
+                            {(user.currentUser && 'Book now') || 'Login'}
                         </button>
-                    ) : null,
+                    ),
                 }))}
                 emptyMessage="No classes scheduled for this day"
             />

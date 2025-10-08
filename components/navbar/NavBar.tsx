@@ -1,13 +1,12 @@
-"use client"
+'use client'
 import MobileNavBar from '@components/navbar/MobileNavBar'
 import appRoutes from 'config/appRoutes'
-import {useSelector} from "react-redux";
-import {RootState} from "@store/index";
-import AccountDropdown from "@components/navbar/AccountDropdown";
-
+import { useSelector } from 'react-redux'
+import { RootState } from '@store/index'
+import AccountDropdown from '@components/navbar/AccountDropdown'
 
 export default function NavBar() {
-    const user = useSelector((state: RootState) => state.user);
+    const user = useSelector((state: RootState) => state.user)
 
     return (
         <nav className="bg-main px-3 py-4 md:px-8">
@@ -57,15 +56,14 @@ export default function NavBar() {
                             </a>
                         </li>
                         <li>
-                            {
-                                user?.name && <AccountDropdown /> || <a
+                            {(user?.currentUser && <AccountDropdown />) || (
+                                <a
                                     href={appRoutes.authenticate.login}
                                     className="block rounded-sm px-3 py-2 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
                                 >
                                     Login
                                 </a>
-                            }
-
+                            )}
                         </li>
                     </ul>
                 </div>

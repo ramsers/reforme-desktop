@@ -19,6 +19,10 @@ const APIRoutes = {
         MAIN: '/bookings',
         DELETE: (id: string) => `/bookings/${id}`,
     },
+    PAYMENT: {
+        CREATE_SESSION: '/payment/create-checkout-session',
+        LIST_PRODUCTS: 'payment/products',
+    },
 }
 
 export default APIRoutes
