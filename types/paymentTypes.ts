@@ -7,3 +7,9 @@ export type Product = {
     currency: string
     isSubscription: boolean
 }
+
+export type CreateCheckoutSessionPayload = {
+    priceId: string
+    productName: string
+    isSubscription: boolean
+}

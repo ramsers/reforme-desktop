@@ -1,36 +1,74 @@
 'use client'
 
 import { UserCircleIcon } from '@heroicons/react/24/outline'
+import { DivideIcon } from '@heroicons/react/24/solid'
 import { Class } from '@reformetypes/classTypes'
 import { Product } from '@reformetypes/paymentTypes'
 import { RootState } from '@store/index'
 import { fetchClass } from '@store/slices/classSlice'
-import { fetchProducts } from '@store/slices/paymentSlice'
+import { createCheckoutSession, fetchProducts } from '@store/slices/paymentSlice'
 import dayjs from 'dayjs'
 import { stat } from 'fs'
-import React, { useEffect } from 'react'
+import React, { Fragment, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { formatCurrency } from 'utils/currencyUtils'
+import { loadStripe, Stripe } from '@stripe/stripe-js'
+import Modal from '@components/modal/Modal'
+import { Transition } from '@headlessui/react'
 
 type ClassPageProps = {
     params: { id: string }
 }
+const stripePromise: Promise<Stripe | null> = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!)
 
 const ClassPage: React.FC<ClassPageProps> = ({ params }) => {
     const dispatch = useDispatch()
     const currentClass: Class | null = useSelector((state: RootState) => state.class.class)
     const productsList: Product[] = useSelector((state: RootState) => state.payment.products)
+    const sessionId = useSelector((state: RootState) => state.payment.sessionId)
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const checkoutRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         if (!currentClass) {
             dispatch(fetchClass(params.id))
         }
 
-        if (!productsList.length) {
+        if (productsList.length === 0) {
             dispatch(fetchProducts())
         }
     }, [currentClass])
-    console.log('HI im on classes page ============', currentClass)
-    console.log('HI products ============', productsList)
+    // console.log('HI im on classes page ============', currentClass)
+
+    useEffect(() => {
+        if (!sessionId) return
+        stripePromise.then((stripe) => {
+            if (!stripe || !checkoutRef.current) return
+            // console.group('Session id inner ==============', sessionId)
+            try {
+                console.group('Session id inner ==============', sessionId)
+                console.group('checkout ref ==============', checkoutRef.current)
+
+                stripe.initCheckout({ sessionId, element: checkoutRef.current })
+            } catch (e) {
+                console.log(' ERRROR ===================', e)
+            }
+        })
+    }, [sessionId, isModalOpen])
+
+    // console.group('Session id outer ==============', sessionId)
+
+    const handleClick = (product: Product) => {
+        // console.log('yo bro')
+        dispatch(
+            createCheckoutSession({
+                priceId: product.priceId,
+                productName: product.name,
+                isSubscription: product.isSubscription,
+            })
+        )
+        setIsModalOpen(true)
+    }
 
     return (
         <div className="flex flex-col items-center justify-center gap-5">
@@ -52,6 +90,50 @@ const ClassPage: React.FC<ClassPageProps> = ({ params }) => {
                     </p>
                 </div>
             </div>
+
+            {productsList.map((product) => {
+                return (
+                    <div key={product.id} className="w-84 rounded-xl border border-gray-200 bg-white p-3 shadow">
+                        <div className="flex w-full flex-col gap-3">
+                            <div className="flex flex-col gap-1">
+                                <div className="text-lg font-bold">{product.name}</div>
+                                <div className="flex flex-row items-center justify-between gap-2">
+                                    <div className="text-sm text-gray-600">{product.description}</div>
+                                    <p className="text-sm font-bold">{formatCurrency(product.priceAmount)}</p>
+                                </div>
+                            </div>
+                            <button
+                                onClick={
+                                    () => handleClick(product)
+                                    // console.log('YO clicked =========')
+                                }
+                                className="hover:bg-gray-10 hover:text-brown-default bg-brown-default text-main cursor-pointer rounded-lg px-3 py-1 font-semibold transition-colors"
+                            >
+                                Book now
+                            </button>
+                        </div>
+                    </div>
+                )
+            })}
+            <Modal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                title="Complete your booking"
+                content={<div ref={checkoutRef} id="checkout-element" className="min-h-[500px]" />}
+            />
+
+            {/* <Transition
+                appear
+                show={isModalOpen}
+                as={Fragment}
+                afterEnter={() => {
+                    if (!sessionId || !checkoutRef.current) return
+                    ;(stripePromise as any).then((stripe) => {
+                        if (!stripe) return
+                        stripe.initCheckout({ sessionId, element: checkoutRef.current })
+                    })
+                }}
+            ></Transition> */}
         </div>
     )
 }
