@@ -1,14 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { CreateCheckoutSessionPayload, Product } from '@reformetypes/paymentTypes'
+import { CreatePurchaseIntentPayload, Product, PurchaseIntentResponse } from '@reformetypes/paymentTypes'
 import { stat } from 'fs'
 
 export type PaymentSliceType = {
-    sessionId: string | null
+    clientSecret: string | null
     products: Product[]
 }
 
 const initialState: PaymentSliceType = {
-    sessionId: null,
+    clientSecret: null,
     products: [],
 }
 
@@ -21,14 +21,15 @@ const paymentSlice = createSlice({
             state.products = action.payload
             return state
         },
-        createCheckoutSession: (state, action: PayloadAction<CreateCheckoutSessionPayload>) => state,
-        createCheckoutSessionSuccess: (state, action: PayloadAction<string>) => {
-            state.sessionId = action.payload
+        createPurchaseIntent: (state, action: PayloadAction<CreatePurchaseIntentPayload>) => state,
+        createPurchaseIntentSuccess: (state, action: PayloadAction<string>) => {
+            state.clientSecret = action.payload
+
             return state
         },
     },
 })
 
-export const { fetchProducts, fetchProductsSuccess, createCheckoutSession, createCheckoutSessionSuccess } =
+export const { fetchProducts, fetchProductsSuccess, createPurchaseIntent, createPurchaseIntentSuccess } =
     paymentSlice.actions
 export default paymentSlice.reducer

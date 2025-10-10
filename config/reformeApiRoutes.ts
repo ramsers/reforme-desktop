@@ -20,7 +20,7 @@ const APIRoutes = {
         DELETE: (id: string) => `/bookings/${id}`,
     },
     PAYMENT: {
-        CREATE_SESSION: '/payment/create-checkout-session',
+        PAYMENT_INTENT: '/payment/create-purchase-intent',
         LIST_PRODUCTS: 'payment/products',
     },
 }

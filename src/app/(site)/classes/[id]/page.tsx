@@ -6,7 +6,7 @@ import { Class } from '@reformetypes/classTypes'
 import { Product } from '@reformetypes/paymentTypes'
 import { RootState } from '@store/index'
 import { fetchClass } from '@store/slices/classSlice'
-import { createCheckoutSession, fetchProducts } from '@store/slices/paymentSlice'
+import { createPurchaseIntent, fetchProducts } from '@store/slices/paymentSlice'
 import dayjs from 'dayjs'
 import { stat } from 'fs'
 import React, { Fragment, useEffect, useRef, useState } from 'react'
@@ -15,6 +15,7 @@ import { formatCurrency } from 'utils/currencyUtils'
 import { loadStripe, Stripe } from '@stripe/stripe-js'
 import Modal from '@components/modal/Modal'
 import { Transition } from '@headlessui/react'
+import StripeModal from '@features/payments/StripeModal'
 
 type ClassPageProps = {
     params: { id: string }
@@ -25,9 +26,9 @@ const ClassPage: React.FC<ClassPageProps> = ({ params }) => {
     const dispatch = useDispatch()
     const currentClass: Class | null = useSelector((state: RootState) => state.class.class)
     const productsList: Product[] = useSelector((state: RootState) => state.payment.products)
-    const sessionId = useSelector((state: RootState) => state.payment.sessionId)
+    const clientSecret = useSelector((state: RootState) => state.payment.clientSecret)
+
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const checkoutRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         if (!currentClass) {
@@ -38,36 +39,23 @@ const ClassPage: React.FC<ClassPageProps> = ({ params }) => {
             dispatch(fetchProducts())
         }
     }, [currentClass])
-    // console.log('HI im on classes page ============', currentClass)
 
     useEffect(() => {
-        if (!sessionId) return
-        stripePromise.then((stripe) => {
-            if (!stripe || !checkoutRef.current) return
-            // console.group('Session id inner ==============', sessionId)
-            try {
-                console.group('Session id inner ==============', sessionId)
-                console.group('checkout ref ==============', checkoutRef.current)
-
-                stripe.initCheckout({ sessionId, element: checkoutRef.current })
-            } catch (e) {
-                console.log(' ERRROR ===================', e)
-            }
-        })
-    }, [sessionId, isModalOpen])
-
-    // console.group('Session id outer ==============', sessionId)
+        if (!clientSecret) return
+        setIsModalOpen(true)
+    }, [clientSecret])
 
     const handleClick = (product: Product) => {
-        // console.log('yo bro')
+        console.log('PRODUCT ===============', product)
         dispatch(
-            createCheckoutSession({
+            createPurchaseIntent({
                 priceId: product.priceId,
                 productName: product.name,
                 isSubscription: product.isSubscription,
+                currency: product.currency,
+                priceAmount: product.priceAmount,
             })
         )
-        setIsModalOpen(true)
     }
 
     return (
@@ -115,22 +103,25 @@ const ClassPage: React.FC<ClassPageProps> = ({ params }) => {
                     </div>
                 )
             })}
-            <Modal
+            {clientSecret && (
+                <StripeModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} clientSecret={clientSecret} />
+            )}
+            {/* <Modal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 title="Complete your booking"
                 content={<div ref={checkoutRef} id="checkout-element" className="min-h-[500px]" />}
-            />
+            /> */}
 
             {/* <Transition
                 appear
                 show={isModalOpen}
                 as={Fragment}
                 afterEnter={() => {
-                    if (!sessionId || !checkoutRef.current) return
+                    if (!clientSecret || !checkoutRef.current) return
                     ;(stripePromise as any).then((stripe) => {
                         if (!stripe) return
-                        stripe.initCheckout({ sessionId, element: checkoutRef.current })
+                        stripe.initCheckout({ clientSecret, element: checkoutRef.current })
                     })
                 }}
             ></Transition> */}

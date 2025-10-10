@@ -1,9 +1,9 @@
-import { getProductList, postCreateCheckoutSession } from '@api/payment'
+import { getProductList, postcreatePurchaseIntent } from '@api/payment'
 import { PayloadAction } from '@reduxjs/toolkit'
-import { CreateCheckoutSessionPayload, Product } from '@reformetypes/paymentTypes'
+import { CreatePurchaseIntentPayload, Product } from '@reformetypes/paymentTypes'
 import {
-    createCheckoutSession,
-    createCheckoutSessionSuccess,
+    createPurchaseIntent,
+    createPurchaseIntentSuccess,
     fetchProducts,
     fetchProductsSuccess,
 } from '@store/slices/paymentSlice'
@@ -17,18 +17,21 @@ export function* fetchProductsSaga() {
     } catch (e) {}
 }
 
-export function* createCheckoutSessionSaga(action: PayloadAction<CreateCheckoutSessionPayload>) {
-    console.log('HITTING DISPATCH =======', action.payload)
+export function* createPurchaseIntentSaga(action: PayloadAction<CreatePurchaseIntentPayload>) {
     try {
-        const response: AxiosResponse<string> = yield call(postCreateCheckoutSession, action.payload)
-        yield put(createCheckoutSessionSuccess(response.data))
-        console.log('REsponse =============', response.data)
+        const response: AxiosResponse<string> = yield call(postcreatePurchaseIntent, action.payload)
+
+        if (action.payload.isSubscription) {
+            window.location.href = response.data
+        } else {
+            yield put(createPurchaseIntentSuccess(response.data))
+        }
     } catch (e) {}
 }
 
 function* PaymentSagas() {
     yield takeLatest(fetchProducts.type, fetchProductsSaga)
-    yield takeLatest(createCheckoutSession.type, createCheckoutSessionSaga)
+    yield takeLatest(createPurchaseIntent.type, createPurchaseIntentSaga)
 }
 
 export default PaymentSagas

@@ -8,8 +8,15 @@ export type Product = {
     isSubscription: boolean
 }
 
-export type CreateCheckoutSessionPayload = {
+export type CreatePurchaseIntentPayload = {
     priceId: string
     productName: string
     isSubscription: boolean
+    priceAmount: number
+    currency: string
+}
+
+export type PurchaseIntentResponse = {
+    isSubscription: boolean
+    intentData: string
 }
