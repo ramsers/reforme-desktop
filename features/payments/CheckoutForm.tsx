@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js'
+import toast from 'react-hot-toast'
 
 type CheckoutFormProps = {
     onClose: () => void
@@ -17,15 +18,17 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ onClose }) => {
 
         setLoading(true)
 
-        const { error } = await stripe.confirmPayment({
+        const result = await stripe.confirmPayment({
             elements,
-            confirmParams: {
-                return_url: window.location.href, // optional
-            },
+            confirmParams: {},
+            redirect: 'if_required',
         })
 
-        if (error) {
-            setErrorMessage(error.message || 'Payment failed')
+        if (result.error) {
+            setErrorMessage(result.error.message || 'Payment failed')
+        } else if (result.paymentIntent && result.paymentIntent.status === 'succeeded') {
+            toast.success('Payment successful!')
+            onClose()
         }
 
         setLoading(false)

@@ -6,6 +6,7 @@ export type Product = {
     priceAmount: number
     currency: string
     isSubscription: boolean
+    durationDays: string
 }
 
 export type CreatePurchaseIntentPayload = {
@@ -14,9 +15,20 @@ export type CreatePurchaseIntentPayload = {
     isSubscription: boolean
     priceAmount: number
     currency: string
+    durationDays: string
 }
 
 export type PurchaseIntentResponse = {
     isSubscription: boolean
     intentData: string
+}
+
+export type PassPurchase = {
+    stripeProductId: string
+    stripeCustomerId: string
+    passName: string
+    isSubscription: string
+    active: boolean
+    startDate: string
+    endDate: string
 }

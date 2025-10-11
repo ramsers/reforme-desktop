@@ -46,7 +46,6 @@ const ClassPage: React.FC<ClassPageProps> = ({ params }) => {
     }, [clientSecret])
 
     const handleClick = (product: Product) => {
-        console.log('PRODUCT ===============', product)
         dispatch(
             createPurchaseIntent({
                 priceId: product.priceId,
@@ -54,6 +53,7 @@ const ClassPage: React.FC<ClassPageProps> = ({ params }) => {
                 isSubscription: product.isSubscription,
                 currency: product.currency,
                 priceAmount: product.priceAmount,
+                durationDays: product.durationDays,
             })
         )
     }

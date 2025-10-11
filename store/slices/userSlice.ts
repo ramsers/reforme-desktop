@@ -4,13 +4,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
 
 export type UserSliceType = {
-    // id: string | null
-    // name: string | null
-    // email: string | null
-    // phoneNumber: string | null
-    // password: string | null
-    // role: eRole | null
-    // createdAt?: string | null
     currentUser?: User | null
     instructors: ShortPaginatedResponse<User>
     instructor: User | null

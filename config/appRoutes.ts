@@ -8,6 +8,7 @@ const AppRoutes = {
     },
     classes: { list: '/classes', detail: (id: string) => `/classes/${id}` },
     bookings: { list: '/bookings' },
+    account: '/account',
     dashboard: {
         main: '/dashboard',
         classes: {

@@ -1,4 +1,5 @@
 import { eRole } from '@reformetypes/authTypes'
+import { PassPurchase } from './paymentTypes'
 
 export type User = {
     id: string
@@ -7,6 +8,7 @@ export type User = {
     name: string
     phoneNumber: string
     role: eRole
+    purchases: PassPurchase[]
 }
 
 export type CreateUserPayload = {

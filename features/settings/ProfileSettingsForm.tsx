@@ -24,7 +24,6 @@ const ProfileSettingsForm: React.FC = () => {
         }
     }, [currentUser])
 
-    console.log('TESTING CURRENT USER =============', currentUser)
     const defaultHiddenPassword = '*********'
 
     return (
@@ -44,7 +43,7 @@ const ProfileSettingsForm: React.FC = () => {
                 }}
                 enableReinitialize
             >
-                {({ isSubmitting, handleSubmit }) => (
+                {() => (
                     <Form className="flex max-w-lg flex-col gap-4">
                         <div>
                             <label className="block text-sm font-medium text-gray-700">Name</label>
@@ -82,13 +81,30 @@ const ProfileSettingsForm: React.FC = () => {
                                 name="password"
                                 type="password"
                                 className="focus:ring-brown-default mt-1 w-full rounded-lg border px-3 py-2 focus:ring"
-                            />
+                            >
+                                {({ field, form }) => (
+                                    <input
+                                        {...field}
+                                        type="password"
+                                        className="focus:ring-brown-default mt-1 w-full rounded-lg border px-3 py-2 focus:ring"
+                                        onKeyDown={(e) => {
+                                            const defaultHiddenPassword = '*********'
+                                            if (
+                                                e.key === 'Backspace' &&
+                                                form.values.password === defaultHiddenPassword
+                                            ) {
+                                                e.preventDefault()
+                                                form.setFieldValue('password', '')
+                                            }
+                                        }}
+                                    />
+                                )}
+                            </Field>
                             <ErrorMessage name="password" component="div" className="text-sm text-red-500" />
                         </div>
 
                         <div className="flex flex-row gap-2">
                             <button
-                                onClick={() => handleSubmit()}
                                 type={'submit'}
                                 disabled={false}
                                 className="bg-brown-default w-full rounded-md px-4 py-2 font-semibold text-white"
