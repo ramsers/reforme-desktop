@@ -106,25 +106,6 @@ const ClassPage: React.FC<ClassPageProps> = ({ params }) => {
             {clientSecret && (
                 <StripeModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} clientSecret={clientSecret} />
             )}
-            {/* <Modal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                title="Complete your booking"
-                content={<div ref={checkoutRef} id="checkout-element" className="min-h-[500px]" />}
-            /> */}
-
-            {/* <Transition
-                appear
-                show={isModalOpen}
-                as={Fragment}
-                afterEnter={() => {
-                    if (!clientSecret || !checkoutRef.current) return
-                    ;(stripePromise as any).then((stripe) => {
-                        if (!stripe) return
-                        stripe.initCheckout({ clientSecret, element: checkoutRef.current })
-                    })
-                }}
-            ></Transition> */}
         </div>
     )
 }
