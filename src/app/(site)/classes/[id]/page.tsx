@@ -1,34 +1,35 @@
 'use client'
 
 import { UserCircleIcon } from '@heroicons/react/24/outline'
-import { DivideIcon } from '@heroicons/react/24/solid'
 import { Class } from '@reformetypes/classTypes'
 import { Product } from '@reformetypes/paymentTypes'
 import { RootState } from '@store/index'
-import { fetchClass } from '@store/slices/classSlice'
+import { fetchClass, removeClassBooking } from '@store/slices/classSlice'
 import { createPurchaseIntent, fetchProducts } from '@store/slices/paymentSlice'
 import dayjs from 'dayjs'
-import { stat } from 'fs'
 import React, { Fragment, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { formatCurrency } from 'utils/currencyUtils'
 import { loadStripe, Stripe } from '@stripe/stripe-js'
-import Modal from '@components/modal/Modal'
-import { Transition } from '@headlessui/react'
 import StripeModal from '@features/payments/StripeModal'
+import { useRouter } from 'next/navigation'
+import AppRoutes from 'config/appRoutes'
+import { createBooking, deleteUserBooking } from '@store/slices/bookingSlice'
 
 type ClassPageProps = {
     params: { id: string }
 }
-const stripePromise: Promise<Stripe | null> = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!)
 
 const ClassPage: React.FC<ClassPageProps> = ({ params }) => {
     const dispatch = useDispatch()
     const currentClass: Class | null = useSelector((state: RootState) => state.class.class)
     const productsList: Product[] = useSelector((state: RootState) => state.payment.products)
     const clientSecret = useSelector((state: RootState) => state.payment.clientSecret)
-
+    const user = useSelector((state: RootState) => state.user)
+    const router = useRouter()
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const userHasActivePass = !!user?.currentUser?.purchases?.some((purchase) => purchase.isActive)
+    console.log('ACTIVE ==============', user?.currentUser)
 
     useEffect(() => {
         if (!currentClass) {
@@ -58,6 +59,31 @@ const ClassPage: React.FC<ClassPageProps> = ({ params }) => {
         )
     }
 
+    const handleCreateBooking = (classId: string) => {
+        dispatch(createBooking({ clientId: user?.currentUser?.id!, classId: classId }))
+    }
+
+    const userBooking = currentClass?.bookings?.find((bk: any) => bk.client?.id === user.currentUser?.id)
+
+    let isBooked = !!userBooking
+
+    const handlePassHolders = () => {
+        if (isBooked) {
+            user.currentUser && dispatch(deleteUserBooking(userBooking?.id || ''))
+            currentClass && dispatch(removeClassBooking({ classId: currentClass.id, bookingId: userBooking?.id || '' }))
+        } else {
+            currentClass && handleCreateBooking(currentClass.id)
+        }
+    }
+
+    const handlePassClick = (product: Product) => {
+        const currentPath = window.location.pathname
+
+        !!user.currentUser && !userHasActivePass
+            ? handleClick(product)
+            : router.push(`${AppRoutes.authenticate.signUp}?redirect=${encodeURIComponent(currentPath)}`)
+    }
+
     return (
         <div className="flex flex-col items-center justify-center gap-5">
             <div className="flex max-w-[60%] flex-row items-center gap-3">
@@ -79,30 +105,39 @@ const ClassPage: React.FC<ClassPageProps> = ({ params }) => {
                 </div>
             </div>
 
-            {productsList.map((product) => {
-                return (
-                    <div key={product.id} className="w-84 rounded-xl border border-gray-200 bg-white p-3 shadow">
-                        <div className="flex w-full flex-col gap-3">
-                            <div className="flex flex-col gap-1">
-                                <div className="text-lg font-bold">{product.name}</div>
-                                <div className="flex flex-row items-center justify-between gap-2">
-                                    <div className="text-sm text-gray-600">{product.description}</div>
-                                    <p className="text-sm font-bold">{formatCurrency(product.priceAmount)}</p>
+            {(userHasActivePass && (
+                <button
+                    onClick={() => handlePassHolders()}
+                    className={`cursor-pointer rounded-lg px-4 py-2 font-semibold transition-colors ${
+                        isBooked
+                            ? 'bg-red-700 text-white hover:bg-red-500'
+                            : 'bg-brown-default text-main hover:bg-brown-700 hover:text-white'
+                    }`}
+                >
+                    {(isBooked && 'Cancel Booking') || 'Book now'}
+                </button>
+            )) ||
+                productsList.map((product) => {
+                    return (
+                        <div key={product.id} className="w-84 rounded-xl border border-gray-200 bg-white p-3 shadow">
+                            <div className="flex w-full flex-col gap-3">
+                                <div className="flex flex-col gap-1">
+                                    <div className="text-lg font-bold">{product.name}</div>
+                                    <div className="flex flex-row items-center justify-between gap-2">
+                                        <div className="text-sm text-gray-600">{product.description}</div>
+                                        <p className="text-sm font-bold">{formatCurrency(product.priceAmount)}</p>
+                                    </div>
                                 </div>
+                                <button
+                                    onClick={() => handlePassClick(product)}
+                                    className="hover:bg-gray-10 hover:text-brown-default bg-brown-default text-main cursor-pointer rounded-lg px-3 py-1 font-semibold transition-colors"
+                                >
+                                    {!!user.currentUser && !userHasActivePass ? 'Purchase pass' : 'Create account'}
+                                </button>
                             </div>
-                            <button
-                                onClick={
-                                    () => handleClick(product)
-                                    // console.log('YO clicked =========')
-                                }
-                                className="hover:bg-gray-10 hover:text-brown-default bg-brown-default text-main cursor-pointer rounded-lg px-3 py-1 font-semibold transition-colors"
-                            >
-                                Book now
-                            </button>
                         </div>
-                    </div>
-                )
-            })}
+                    )
+                })}
             {clientSecret && (
                 <StripeModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} clientSecret={clientSecret} />
             )}

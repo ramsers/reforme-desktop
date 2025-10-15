@@ -8,7 +8,7 @@ import { Dispatch } from 'redux'
 import * as Yup from 'yup'
 import { eRole, SignUpPayload } from '@reformetypes/authTypes'
 import { signUp } from '@store/slices/signUpSlice'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import AppRoutes from '../../config/appRoutes'
 
 type SignUpFormOwnProps = {}
@@ -18,6 +18,8 @@ type SignUpFormProps = SignUpFormOwnProps
 const SignUpForm: React.FC<SignUpFormProps> = () => {
     const dispatch = useDispatch<AppDispatch>()
     const router = useRouter()
+    const searchParams = useSearchParams()
+    const redirectUrl = searchParams.get('redirect') || AppRoutes.home
 
     const SignupSchema = Yup.object().shape({
         name: Yup.string().required('Name is required'),
@@ -43,7 +45,7 @@ const SignUpForm: React.FC<SignUpFormProps> = () => {
                         ...values,
                         phoneNumber: values.phoneNumber || '',
                         role: eRole.CLIENT,
-                        onSuccess: () => router.push(AppRoutes.home),
+                        onSuccess: () => router.push(redirectUrl),
                     }
                     dispatch(signUp(payload))
 

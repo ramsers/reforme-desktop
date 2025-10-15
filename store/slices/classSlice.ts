@@ -3,6 +3,7 @@ import { createSlice, current, PayloadAction } from '@reduxjs/toolkit'
 import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
 import { createBookingSuccess } from './bookingSlice'
 import { Booking } from '@reformetypes/bookingTypes'
+import { act } from 'react'
 
 export type ClassSliceType = {
     class: Class | null
@@ -71,6 +72,16 @@ const classSlice = createSlice({
                     classToUpdate.isFull = classToUpdate.bookingsCount >= classToUpdate.size
                 }
             }
+
+            if (state.class && state.class.id === classId) {
+                const bookingIndex = state.class.bookings.findIndex((booking) => booking.id === bookingId)
+                if (bookingIndex !== -1) {
+                    state.class.bookings.splice(bookingIndex, 1)
+                    state.class.bookingsCount -= 1
+                    state.class.isFull = state.class.bookingsCount >= state.class.size
+                }
+            }
+
             return state
         },
     },
@@ -85,6 +96,12 @@ const classSlice = createSlice({
                 classToUpdate.bookings.push({ id: action.payload.id, client: action.payload.client })
                 classToUpdate.bookingsCount += 1
                 classToUpdate.isFull = classToUpdate.bookingsCount >= classToUpdate.size
+            }
+
+            if (state.class && state.class.id === action.payload.bookedClass.id) {
+                state.class.bookings.push(action.payload)
+                state.class.bookingsCount += 1
+                state.class.isFull = state.class.bookingsCount >= state.class.size
             }
 
             return state

@@ -17,7 +17,7 @@ const APIRoutes = {
     },
     BOOKING: {
         MAIN: '/bookings',
-        DELETE: (id: string) => `/bookings/${id}`,
+        DELETE: (id: string) => `/bookings/${id}/delete`,
     },
     PAYMENT: {
         PAYMENT_INTENT: '/payment/create-purchase-intent',

@@ -28,7 +28,7 @@ export type PassPurchase = {
     stripeCustomerId: string
     passName: string
     isSubscription: string
-    active: boolean
+    isActive: boolean
     startDate: string
     endDate: string
 }

@@ -46,7 +46,9 @@ const AccountPage: React.FC = () => {
                                             <p className="font-semibold text-green-600">Active</p>
                                         )) || <p className="font-semibold text-red-600">Expired</p>}
                                         {purchase.isSubscription && (
-                                            <p className="font-semibold text-red-600">Cancel</p>
+                                            <p className="cursor-pointer font-semibold text-red-600 hover:text-black">
+                                                Cancel
+                                            </p>
                                         )}
                                     </div>
                                 </div>
