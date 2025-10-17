@@ -13,7 +13,7 @@ import dayjs from 'dayjs'
 import SlidingModal from '@components/slidingModal/SlidingModal'
 import { createClass, partialUpdateClass, clearClass } from '@store/slices/classSlice'
 import { fetchAllInstructors } from '@store/slices/userSlice'
-import { Class } from '@reformetypes/classTypes'
+import { Class, eRecurrenceType } from '@reformetypes/classTypes'
 import { User } from '@reformetypes/userTypes'
 import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
 
@@ -42,6 +42,8 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
         size: Yup.number().required('Class size is required'),
         date: Yup.date().required('Class date is required'),
         instructorId: Yup.string().optional().nullable(),
+        recurrenceType: Yup.mixed<eRecurrenceType>().oneOf(Object.values(eRecurrenceType)).nullable(),
+        recurrenceDays: Yup.array().of(Yup.number().min(0).max(6)).nullable(),
     })
 
     useEffect(() => {
@@ -60,6 +62,8 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                         (currentClass?.date && dayjs(currentClass.date).format('YYYY-MM-DD HH:mm')) ||
                         dayjs().format('YYYY-MM-DD HH:mm'),
                     instructorId: currentClass?.instructor?.id || null,
+                    recurrenceType: currentClass?.recurrenceType || null,
+                    recurrenceDays: currentClass?.recurrenceDays || [],
                 }}
                 validationSchema={ClassSchema}
                 onSubmit={(values, { setSubmitting, resetForm }) => {
@@ -79,7 +83,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                 }}
                 enableReinitialize
             >
-                {({ isSubmitting, handleSubmit }) => (
+                {({ isSubmitting, handleSubmit, values }) => (
                     <SlidingModal
                         title={title}
                         isOpen={isOpen}
@@ -93,6 +97,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                     >
                         <Form className="flex flex-col gap-4">
                             <div>
+                                {/* {console.log('valueeees ===================', values)} */}
                                 <label className="block text-sm font-medium text-gray-700">Title</label>
                                 <Field
                                     name="title"
@@ -131,6 +136,42 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                                 />
                                 <ErrorMessage name="date" component="div" className="text-sm text-red-500" />
                             </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Recurrence Type</label>
+                                <Field
+                                    as="select"
+                                    name="recurrenceType"
+                                    className="focus:ring-brown-default mt-1 w-full rounded-lg border px-3 py-2 focus:ring"
+                                >
+                                    <option value="">No recurrence</option>
+                                    {Object.entries(eRecurrenceType).map(([key, value]) => (
+                                        <option key={key} value={value}>
+                                            {key.charAt(0) + key.slice(1).toLowerCase()}
+                                        </option>
+                                    ))}
+                                </Field>
+                                <ErrorMessage name="recurrenceType" component="div" className="text-sm text-red-500" />
+                            </div>
+
+                            {values.recurrenceType === eRecurrenceType.WEEKLY && (
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700">Days of the Week</label>
+                                    <div className="mt-1 flex gap-2">
+                                        {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, idx) => (
+                                            <label key={day} className="inline-flex items-center gap-1">
+                                                <Field type="checkbox" name="recurrenceDays" value={idx.toString()} />
+                                                <span>{day}</span>
+                                            </label>
+                                        ))}
+                                    </div>
+                                    <ErrorMessage
+                                        name="recurrenceDays"
+                                        component="div"
+                                        className="text-sm text-red-500"
+                                    />
+                                </div>
+                            )}
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">Instructor</label>

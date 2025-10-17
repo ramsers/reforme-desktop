@@ -12,6 +12,8 @@ export type Class = {
     bookingsCount: number
     isFull: boolean
     bookings: BookingClient[]
+    recurrenceType: eRecurrenceType
+    recurrenceDays: number[]
 }
 
 export type ClassList = {
@@ -37,10 +39,9 @@ export type PartialUpdateClassPayload = {
     instructorId?: User | null
 }
 
-// class Classes(TimestampModel, UUIDModel):
-// title = models.CharField(max_length=45)
-// description = models.CharField(max_length=255)
-// size = models.IntegerField(default=15)
-// length = models.IntegerField(default=45)
-// date = models.DateTimeField(null=True)
-// instructor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='classes')
+export enum eRecurrenceType {
+    DAILY = 'DAILY',
+    WEEKLY = 'WEEKLY',
+    MONTHLY = 'MONTHLY',
+    YEARLY = 'YEARLY',
+}
