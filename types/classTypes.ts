@@ -37,6 +37,7 @@ export type PartialUpdateClassPayload = {
     length?: number
     date?: Date
     instructorId?: User | null
+    updateSeries?: boolean
 }
 
 export enum eRecurrenceType {

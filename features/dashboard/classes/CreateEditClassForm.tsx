@@ -1,12 +1,9 @@
 'use client'
 
 import { RootState } from '@store/index'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect, useDispatch, useSelector } from 'react-redux'
 import { Dispatch } from 'redux'
-import { eRole } from '@reformetypes/authTypes'
-import AppRoutes from '../../../config/appRoutes'
-import { signUp } from '@store/slices/signUpSlice'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import dayjs from 'dayjs'
@@ -16,6 +13,8 @@ import { fetchAllInstructors } from '@store/slices/userSlice'
 import { Class, eRecurrenceType } from '@reformetypes/classTypes'
 import { User } from '@reformetypes/userTypes'
 import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
+import utc from 'dayjs/plugin/utc'
+dayjs.extend(utc)
 
 type CreateEditClassFormOwnProps = {
     isOpen: boolean
@@ -44,6 +43,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
         instructorId: Yup.string().optional().nullable(),
         recurrenceType: Yup.mixed<eRecurrenceType>().oneOf(Object.values(eRecurrenceType)).nullable(),
         recurrenceDays: Yup.array().of(Yup.number().min(0).max(6)).nullable(),
+        updateSeries: Yup.boolean().optional().nullable(),
     })
 
     useEffect(() => {
@@ -63,16 +63,25 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                         dayjs().format('YYYY-MM-DD HH:mm'),
                     instructorId: currentClass?.instructor?.id || null,
                     recurrenceType: currentClass?.recurrenceType || null,
-                    recurrenceDays: currentClass?.recurrenceDays || [],
+                    recurrenceDays: currentClass?.recurrenceDays?.map((d) => d.toString()) || [],
+                    updateSeries: false,
                 }}
                 validationSchema={ClassSchema}
                 onSubmit={(values, { setSubmitting, resetForm }) => {
                     const { id, ...payload } = values
+                    const utcDate = dayjs(values.date).utc().format() // e.g. "2025-11-26T16:00:00Z"
+                    const updatedPayload = {
+                        id,
+                        ...payload,
+                        date: utcDate,
+                        recurrenceDays: values.recurrenceDays.map((d: string) => parseInt(d, 10)),
+                    }
+                    console.log('UPDATED PAYLOAD ==========', updatedPayload)
 
                     if (values.id) {
                         console.log('hitting partial update=================', values)
 
-                        dispatch(partialUpdateClass(values))
+                        dispatch(partialUpdateClass(updatedPayload))
                     } else {
                         dispatch(createClass(payload))
                     }
@@ -187,6 +196,20 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                                 </Field>
                                 <ErrorMessage name="instructorId" component="div" className="text-sm text-red-500" />
                             </div>
+
+                            {values.id && (
+                                <div className="flex items-center gap-2">
+                                    <Field
+                                        type="checkbox"
+                                        name="updateSeries"
+                                        id="updateSeries"
+                                        className={'h-4 w-4'}
+                                    />
+                                    <label htmlFor="updateSeries" className="text-sm font-medium text-gray-700">
+                                        Apply changes to this and following classes
+                                    </label>
+                                </div>
+                            )}
                         </Form>
                     </SlidingModal>
                 )}
