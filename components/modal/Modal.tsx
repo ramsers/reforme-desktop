@@ -8,9 +8,18 @@ type ModalProps = {
     content: React.ReactNode
     confirmText?: string
     onConfirm?: () => void
+    btnColor?: string
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, content, confirmText = 'Confirm', onConfirm }) => {
+const Modal: React.FC<ModalProps> = ({
+    isOpen,
+    onClose,
+    title,
+    content,
+    confirmText = 'Confirm',
+    onConfirm,
+    btnColor = 'bg-blue-600',
+}) => {
     return (
         <Transition appear show={isOpen} as={Fragment}>
             <Dialog as="div" className="relative z-50" onClose={onClose}>
@@ -65,7 +74,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, content, confirmT
                                     {onConfirm && (
                                         <button
                                             onClick={onConfirm}
-                                            className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+                                            className={`rounded ${btnColor} px-4 py-2 text-white hover:bg-blue-700`}
                                         >
                                             {confirmText}
                                         </button>

@@ -84,6 +84,24 @@ const classSlice = createSlice({
 
             return state
         },
+        deleteClass: (state, action: PayloadAction<{ id: string; deleteSeries: boolean }>) => state,
+        deleteClassSuccess: (state, action: PayloadAction<{ id: string; deleteSeries: boolean }>) => {
+            const { id, deleteSeries } = action.payload
+
+            if (deleteSeries) {
+                // Remove all classes in the same series:
+                // - The root class (matches id)
+                // - Any child with parentClass.id === id
+                state.classes.results = state.classes.results.filter(
+                    (cls) => cls.id !== id && cls?.parentClassId !== id
+                )
+            } else {
+                // Just remove this single class
+                state.classes.results = state.classes.results.filter((cls) => cls.id !== id)
+            }
+
+            return state
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(createBookingSuccess, (state, action: PayloadAction<Booking>) => {
@@ -120,5 +138,7 @@ export const {
     partialUpdateClassSuccess,
     clearClass,
     removeClassBooking,
+    deleteClass,
+    deleteClassSuccess,
 } = classSlice.actions
 export default classSlice.reducer

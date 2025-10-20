@@ -14,6 +14,7 @@ export type Class = {
     bookings: BookingClient[]
     recurrenceType: eRecurrenceType
     recurrenceDays: number[]
+    parentClassId: string
 }
 
 export type ClassList = {

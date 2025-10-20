@@ -7,6 +7,7 @@ const APIRoutes = {
         MAIN: '/classes',
         BY_ID: (id: string) => `/classes/${id}`,
         PARTIAL_UPDATE: (id: string) => `/classes/${id}`,
+        DELETE: (id: string) => `/classes/${id}/delete`,
     },
     USER: {
         MAIN: '/users',

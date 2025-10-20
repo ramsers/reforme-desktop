@@ -9,12 +9,16 @@ import {
     partialUpdateClass,
     partialUpdateClassSuccess,
     clearClass,
+    deleteClass,
+    deleteClassSuccess,
 } from '@store/slices/classSlice'
 import { AxiosResponse } from 'axios'
 import { Class, CreateClassPayload, PartialUpdateClassPayload } from '@reformetypes/classTypes'
-import { getClass, getClasses, patchUpdateClass, postCreateClass } from '@api/classes'
+import { deleteClasses, getClass, getClasses, patchUpdateClass, postCreateClass } from '@api/classes'
 import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
 import { toastError, toastSuccess } from 'lib/toast'
+import { act } from 'react'
+import { id } from 'date-fns/locale'
 
 export function* fetchClassesSaga(action: PayloadAction<Record<string, any>>) {
     try {
@@ -54,11 +58,24 @@ export function* partialUpdateClassSaga(action: PayloadAction<PartialUpdateClass
     }
 }
 
+export function* deleteClassSaga(action: PayloadAction<{ id: string; deleteSeries: boolean }>) {
+    try {
+        console.log('TEST HITTING DELTE SAGA =====================', action.payload)
+        yield call(deleteClasses, action.payload.id, action.payload.deleteSeries)
+        yield put(deleteClassSuccess(action.payload))
+        toastSuccess('Class deleted!')
+    } catch (e) {
+        console.log('ERRROR =========', e)
+        toastError('Error deleting class. Please try again.')
+    }
+}
+
 function* classesSagas() {
     yield takeLatest(fetchClasses.type, fetchClassesSaga)
     yield takeLatest(createClass.type, createClassSaga)
     yield takeLatest(fetchClass.type, fetchClassSaga)
     yield takeLatest(partialUpdateClass.type, partialUpdateClassSaga)
+    yield takeLatest(deleteClass.type, deleteClassSaga)
 }
 
 export default classesSagas
