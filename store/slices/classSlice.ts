@@ -89,14 +89,10 @@ const classSlice = createSlice({
             const { id, deleteSeries } = action.payload
 
             if (deleteSeries) {
-                // Remove all classes in the same series:
-                // - The root class (matches id)
-                // - Any child with parentClass.id === id
                 state.classes.results = state.classes.results.filter(
                     (cls) => cls.id !== id && cls?.parentClassId !== id
                 )
             } else {
-                // Just remove this single class
                 state.classes.results = state.classes.results.filter((cls) => cls.id !== id)
             }
 

@@ -19,6 +19,7 @@ import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTy
 import { toastError, toastSuccess } from 'lib/toast'
 import { act } from 'react'
 import { id } from 'date-fns/locale'
+import dayjs from 'dayjs'
 
 export function* fetchClassesSaga(action: PayloadAction<Record<string, any>>) {
     try {
@@ -32,7 +33,12 @@ export function* fetchClassesSaga(action: PayloadAction<Record<string, any>>) {
 export function* createClassSaga(action: PayloadAction<CreateClassPayload>) {
     try {
         yield call(postCreateClass, action.payload)
-        yield put(fetchClasses({}))
+
+        const now = dayjs()
+        const start_date = now.startOf('week').toISOString() // Monday 00:00
+        const end_date = now.endOf('week').toISOString()
+
+        yield put(fetchClasses({ start_date, end_date }))
         toastSuccess('Class created!')
     } catch (e) {
         toastError('Error creating class. Please try again.')
@@ -62,7 +68,11 @@ export function* deleteClassSaga(action: PayloadAction<{ id: string; deleteSerie
     try {
         console.log('TEST HITTING DELTE SAGA =====================', action.payload)
         yield call(deleteClasses, action.payload.id, action.payload.deleteSeries)
-        yield put(deleteClassSuccess(action.payload))
+        const now = dayjs()
+        const start_date = now.startOf('week').toISOString() // Monday 00:00
+        const end_date = now.endOf('week').toISOString()
+
+        yield put(fetchClasses({ start_date, end_date }))
         toastSuccess('Class deleted!')
     } catch (e) {
         console.log('ERRROR =========', e)

@@ -52,6 +52,7 @@ const ClassesTable: React.FC<ClassesTableProps> = ({ classes, setCurrentPage, cu
                 deleteSeries, // the flag object for API
             })
         )
+        setIsDeleteClassModalOpen(false)
     }
 
     return (
