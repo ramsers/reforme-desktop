@@ -63,7 +63,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                         dayjs().format('YYYY-MM-DD HH:mm'),
                     instructorId: currentClass?.instructor?.id || null,
                     recurrenceType: currentClass?.recurrenceType || null,
-                    recurrenceDays: currentClass?.recurrenceDays?.map((d) => d.toString()) || [],
+                    recurrenceDays: currentClass?.recurrenceDays?.map((d) => d.toString()) || null,
                     updateSeries: false,
                 }}
                 validationSchema={ClassSchema}
@@ -74,7 +74,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                         id,
                         ...payload,
                         date: utcDate,
-                        recurrenceDays: values.recurrenceDays.map((d: string) => parseInt(d, 10)),
+                        recurrenceDays: values?.recurrenceDays?.map((d: string) => parseInt(d, 10)),
                     }
                     console.log('UPDATED PAYLOAD ==========', updatedPayload)
 

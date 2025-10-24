@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import toast from 'react-hot-toast'
+import { useDispatch } from 'react-redux'
+import { fetchUserInfo } from '@store/slices/userSlice'
+import { syncUserAfterPayment } from '@store/slices/paymentSlice'
 
 type CheckoutFormProps = {
     onClose: () => void
@@ -9,8 +12,14 @@ type CheckoutFormProps = {
 const CheckoutForm: React.FC<CheckoutFormProps> = ({ onClose }) => {
     const stripe = useStripe()
     const elements = useElements()
+    const dispatch = useDispatch()
     const [loading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
+    const handlePaymentSuccess = async () => {
+        onClose() // closes modal
+        dispatch(syncUserAfterPayment()) // force refetch user
+    }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -28,7 +37,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ onClose }) => {
             setErrorMessage(result.error.message || 'Payment failed')
         } else if (result.paymentIntent && result.paymentIntent.status === 'succeeded') {
             toast.success('Payment successful!')
-            onClose()
+            handlePaymentSuccess()
         }
 
         setLoading(false)

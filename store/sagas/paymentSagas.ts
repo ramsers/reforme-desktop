@@ -6,9 +6,28 @@ import {
     createPurchaseIntentSuccess,
     fetchProducts,
     fetchProductsSuccess,
+    syncUserAfterPayment,
 } from '@store/slices/paymentSlice'
+import { fetchUserInfo } from '@store/slices/userSlice'
 import { AxiosResponse } from 'axios'
-import { call, put, takeLatest } from 'redux-saga/effects'
+import { call, delay, put, select, takeLatest } from 'redux-saga/effects'
+import { RootState } from '..'
+
+export function* waitForUserUpdateSaga() {
+    console.log('being called =================')
+    for (let i = 0; i < 10; i++) {
+        console.log('BEING CALLEC IN LOOP WTF ====================')
+        yield delay(1000)
+        yield put(fetchUserInfo())
+        const user = yield select((state: RootState) => state.user.currentUser)
+
+        if (user?.purchases?.some((p) => p.isActive)) {
+            console.log('✅ User pass activated!')
+            return
+        }
+    }
+    console.warn('⚠️ No active pass after polling window.')
+}
 
 export function* fetchProductsSaga() {
     try {
@@ -26,12 +45,17 @@ export function* createPurchaseIntentSaga(action: PayloadAction<CreatePurchaseIn
         } else {
             yield put(createPurchaseIntentSuccess(response.data))
         }
-    } catch (e) {}
+    } catch (e) {
+        console.log('Error creating purchase intent:', e)
+    }
 }
 
 function* PaymentSagas() {
     yield takeLatest(fetchProducts.type, fetchProductsSaga)
     yield takeLatest(createPurchaseIntent.type, createPurchaseIntentSaga)
+    yield takeLatest(syncUserAfterPayment.type, waitForUserUpdateSaga)
+
+    // waitForUserUpdateSaga
 }
 
 export default PaymentSagas

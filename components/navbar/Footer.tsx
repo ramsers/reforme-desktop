@@ -1,8 +1,13 @@
 import React from 'react'
-import MobileNavBar from "@components/navbar/MobileNavBar";
-
+import MobileNavBar from '@components/navbar/MobileNavBar'
+import { useSelector } from 'react-redux'
+import { RootState } from '@store/index'
+import appRoutes from 'config/appRoutes'
+import AccountDropdown from './AccountDropdown'
 
 const Footer: React.FC = () => {
+    const user = useSelector((state: RootState) => state.user)
+
     return (
         <nav className="bg-main px-3 py-4 md:px-8">
             <div className="flex w-full flex-col items-start justify-between">
@@ -26,34 +31,20 @@ const Footer: React.FC = () => {
                         <li>
                             <a
                                 href="#"
-                                className="block rounded-sm px-3 py-2 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700"
-                            >
-                                About
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
                                 className="block rounded-sm px-3 py-2 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
                             >
                                 Classes
                             </a>
                         </li>
                         <li>
-                            <a
-                                href="#"
-                                className="block rounded-sm px-3 py-2 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
-                            >
-                                Pricing
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                className="block rounded-sm px-3 py-2 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
-                            >
-                                Contact
-                            </a>
+                            {(user?.currentUser && <AccountDropdown />) || (
+                                <a
+                                    href={appRoutes.authenticate.login}
+                                    className="block rounded-sm px-3 py-2 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
+                                >
+                                    Login
+                                </a>
+                            )}
                         </li>
                     </ul>
                 </div>

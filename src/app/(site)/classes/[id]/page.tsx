@@ -85,14 +85,14 @@ const ClassPage: React.FC<ClassPageProps> = ({ params }) => {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center gap-5">
-            <div className="flex max-w-[60%] flex-row items-center gap-3">
-                <div className="flex w-[50%] flex-col gap-2">
+        <div className="flex flex-col items-center justify-center gap-8">
+            <div className="flex w-full flex-col gap-3 lg:max-w-[60%] lg:flex-row lg:items-center">
+                <div className="flex flex-col gap-2 lg:w-[50%]">
                     <h2 className="text-4xl font-semibold">{currentClass?.title || null}</h2>
                     <p>{(currentClass?.date && dayjs(currentClass.date).format('dddd MMMM D YYYY h:mm A')) || ''}</p>
                     <p>{currentClass?.description}</p>
                 </div>
-                <div className="flex w-[50%] flex-col gap-2">
+                <div className="flex flex-col gap-2 lg:w-[50%]">
                     <UserCircleIcon className="text-brown-default h-24 w-24" />
                     <p>
                         <span className="font-bold">Instructor name:</span>{' '}
@@ -116,28 +116,34 @@ const ClassPage: React.FC<ClassPageProps> = ({ params }) => {
                 >
                     {(isBooked && 'Cancel Booking') || 'Book now'}
                 </button>
-            )) ||
-                productsList.map((product) => {
-                    return (
-                        <div key={product.id} className="w-84 rounded-xl border border-gray-200 bg-white p-3 shadow">
-                            <div className="flex w-full flex-col gap-3">
-                                <div className="flex flex-col gap-1">
-                                    <div className="text-lg font-bold">{product.name}</div>
-                                    <div className="flex flex-row items-center justify-between gap-2">
-                                        <div className="text-sm text-gray-600">{product.description}</div>
-                                        <p className="text-sm font-bold">{formatCurrency(product.priceAmount)}</p>
+            )) || (
+                <div className="flex flex-col gap-3 lg:flex-row">
+                    {productsList.map((product) => {
+                        return (
+                            <div
+                                key={product.id}
+                                className="w-full rounded-xl border border-gray-200 bg-white p-3 shadow"
+                            >
+                                <div className="flex h-full w-full flex-col justify-between gap-3">
+                                    <div className="flex flex-col gap-1">
+                                        <div className="text-lg font-bold">{product.name}</div>
+                                        <div className="flex flex-row items-center justify-between gap-2">
+                                            <div className="text-sm text-gray-600">{product.description}</div>
+                                            <p className="text-sm font-bold">{formatCurrency(product.priceAmount)}</p>
+                                        </div>
                                     </div>
+                                    <button
+                                        onClick={() => handlePassClick(product)}
+                                        className="hover:bg-gray-10 hover:text-brown-default bg-brown-default text-main cursor-pointer rounded-lg px-3 py-1 font-semibold transition-colors"
+                                    >
+                                        {!!user.currentUser && !userHasActivePass ? 'Purchase pass' : 'Create account'}
+                                    </button>
                                 </div>
-                                <button
-                                    onClick={() => handlePassClick(product)}
-                                    className="hover:bg-gray-10 hover:text-brown-default bg-brown-default text-main cursor-pointer rounded-lg px-3 py-1 font-semibold transition-colors"
-                                >
-                                    {!!user.currentUser && !userHasActivePass ? 'Purchase pass' : 'Create account'}
-                                </button>
                             </div>
-                        </div>
-                    )
-                })}
+                        )
+                    })}
+                </div>
+            )}
             {clientSecret && (
                 <StripeModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} clientSecret={clientSecret} />
             )}

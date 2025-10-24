@@ -23,7 +23,7 @@ const AddClientModal: React.FC<AddClientModalProps> = ({ isOpen, onClose, setIsO
             console.log('IS infinite loop===================')
             dispatch(fetchAllClients({ page: 1 }))
         }
-    }, [clients])
+    }, [])
 
     const handleSetSelectedClient = (id: string) => {
         setSelectedClientId(id)

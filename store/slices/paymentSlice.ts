@@ -27,9 +27,15 @@ const paymentSlice = createSlice({
 
             return state
         },
+        syncUserAfterPayment: (state) => state,
     },
 })
 
-export const { fetchProducts, fetchProductsSuccess, createPurchaseIntent, createPurchaseIntentSuccess } =
-    paymentSlice.actions
+export const {
+    fetchProducts,
+    fetchProductsSuccess,
+    createPurchaseIntent,
+    createPurchaseIntentSuccess,
+    syncUserAfterPayment,
+} = paymentSlice.actions
 export default paymentSlice.reducer

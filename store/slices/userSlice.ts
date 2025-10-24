@@ -35,6 +35,7 @@ const userSlice = createSlice({
     reducers: {
         fetchUserInfo: (state) => state,
         fetchUserInfoSuccess: (state, action: PayloadAction<User>) => {
+            console.log('ACTION =================', action.payload)
             state.currentUser = action.payload
             return state
         },

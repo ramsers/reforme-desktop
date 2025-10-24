@@ -54,7 +54,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ title, isOpen
             }}
             enableReinitialize
         >
-            {({ isSubmitting, handleSubmit }) => (
+            {({ isSubmitting, handleSubmit, values }) => (
                 <SlidingModal
                     title={title}
                     isOpen={isOpen}
@@ -96,13 +96,14 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ title, isOpen
                             <ErrorMessage name="phoneNumber" component="div" className="text-sm text-red-500" />
                         </div>
                     </Form>
-
-                    <button
-                        className="hover:text-foreground cursor-pointer text-left text-blue-600"
-                        onClick={() => client?.id && router.push(AppRoutes.dashboard.clients.client(client.id))}
-                    >
-                        View full client info
-                    </button>
+                    {values.id && (
+                        <button
+                            className="hover:text-foreground cursor-pointer text-left text-blue-600"
+                            onClick={() => client?.id && router.push(AppRoutes.dashboard.clients.client(client.id))}
+                        >
+                            View full client info
+                        </button>
+                    )}
                 </SlidingModal>
             )}
         </Formik>

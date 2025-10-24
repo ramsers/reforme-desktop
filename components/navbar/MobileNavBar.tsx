@@ -1,6 +1,10 @@
 import React from 'react'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Bars3Icon } from '@heroicons/react/24/outline'
+import { useSelector } from 'react-redux'
+import { RootState } from '@store/index'
+import AccountDropdown from './AccountDropdown'
+import appRoutes from 'config/appRoutes'
 
 type MobileNavBarOwnProps = {}
 
@@ -11,6 +15,8 @@ type MobileNavBarDispatchProps = {}
 type MobileNavBarProps = MobileNavBarOwnProps & MobileNavBarSliceProps & MobileNavBarDispatchProps
 
 const MobileNavBar: React.FC<MobileNavBarProps> = () => {
+    const user = useSelector((state: RootState) => state.user)
+
     return (
         <Menu>
             <MenuButton>
@@ -20,14 +26,6 @@ const MobileNavBar: React.FC<MobileNavBarProps> = () => {
                 <MenuItem>
                     <a href="#" className="block rounded-sm px-3 py-2 md:bg-transparent md:p-0" aria-current="page">
                         Home
-                    </a>
-                </MenuItem>
-                <MenuItem>
-                    <a
-                        href="#"
-                        className="block rounded-sm px-3 py-2 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
-                    >
-                        About
                     </a>
                 </MenuItem>
                 <MenuItem>
@@ -45,6 +43,16 @@ const MobileNavBar: React.FC<MobileNavBarProps> = () => {
                     >
                         Settings
                     </a>
+                </MenuItem>
+                <MenuItem>
+                    {(user?.currentUser && <AccountDropdown />) || (
+                        <a
+                            href={appRoutes.authenticate.login}
+                            className="block rounded-sm px-3 py-2 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
+                        >
+                            Login
+                        </a>
+                    )}
                 </MenuItem>
             </MenuItems>
         </Menu>

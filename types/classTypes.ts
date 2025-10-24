@@ -42,7 +42,6 @@ export type PartialUpdateClassPayload = {
 }
 
 export enum eRecurrenceType {
-    DAILY = 'DAILY',
     WEEKLY = 'WEEKLY',
     MONTHLY = 'MONTHLY',
     YEARLY = 'YEARLY',

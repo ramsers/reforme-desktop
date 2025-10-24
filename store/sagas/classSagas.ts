@@ -10,15 +10,12 @@ import {
     partialUpdateClassSuccess,
     clearClass,
     deleteClass,
-    deleteClassSuccess,
 } from '@store/slices/classSlice'
 import { AxiosResponse } from 'axios'
 import { Class, CreateClassPayload, PartialUpdateClassPayload } from '@reformetypes/classTypes'
 import { deleteClasses, getClass, getClasses, patchUpdateClass, postCreateClass } from '@api/classes'
 import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
 import { toastError, toastSuccess } from 'lib/toast'
-import { act } from 'react'
-import { id } from 'date-fns/locale'
 import dayjs from 'dayjs'
 
 export function* fetchClassesSaga(action: PayloadAction<Record<string, any>>) {
