@@ -9,8 +9,6 @@ import { RootState } from '@store/index'
 import { PlusIcon } from '@heroicons/react/24/solid'
 import CreateInstructorButtonModal from '@features/dashboard/instructors/CreateInstructorButtonModal'
 import InstructorsTable from '@features/dashboard/instructors/InstructorsTable'
-import InstructorTableContextProvider from '@features/dashboard/instructors/instructors/InstructorTableContextProvider'
-import page from 'src/app/(authentication)/authenticate/login/page'
 
 const DashBoardInstructorsPage: React.FC = () => {
     const dispatch = useDispatch()
@@ -44,9 +42,7 @@ const DashBoardInstructorsPage: React.FC = () => {
                 />
             </div>
 
-            {/* <InstructorTableContextProvider> */}
             <InstructorsTable instructors={instructors} currentPage={currentPage} setCurrentPage={setCurrentPage} />
-            {/* </InstructorTableContextProvider> */}
         </div>
     )
 }

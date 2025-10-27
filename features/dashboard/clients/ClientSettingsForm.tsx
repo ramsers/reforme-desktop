@@ -4,6 +4,7 @@ import { User } from '@reformetypes/userTypes'
 import * as Yup from 'yup'
 import { useDispatch } from 'react-redux'
 import { updateUser } from '@store/slices/userSlice'
+import Button from '@components/button/button'
 
 type ClientSettingsFormProps = {
     client: User
@@ -67,22 +68,8 @@ const ClientSettingsForm: React.FC<ClientSettingsFormProps> = ({ client }) => {
                     </div>
 
                     <div className="flex flex-row gap-2">
-                        <button
-                            // onClick={() => onClick()}
-                            type={'submit'}
-                            disabled={false}
-                            className="w-full rounded-md bg-red-700 px-4 py-2 font-semibold text-white"
-                        >
-                            Delete
-                        </button>
-                        <button
-                            onClick={() => handleSubmit()}
-                            type={'submit'}
-                            disabled={false}
-                            className="bg-brown-default w-full rounded-md px-4 py-2 font-semibold text-white"
-                        >
-                            Save
-                        </button>
+                        <Button type={'submit'} text="Delete" variant="danger" className="w-[50%]" />
+                        <Button type={'submit'} text="Save" className="w-[50%]" onClick={() => handleSubmit()} />
                     </div>
                 </Form>
             )}

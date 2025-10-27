@@ -8,6 +8,7 @@ import TableContainer from '@components/table/TableContainer'
 import TableHeader from '@components/table/TableHeader'
 import PaginationButtons from '@components/table/PaginationButtons'
 import TableRow from '@components/table/TableRow'
+import Button from '@components/button/button'
 
 type ClientTableProps = {
     clients: ShortPaginatedResponse<User>
@@ -53,12 +54,11 @@ const ClientTable: React.FC<ClientTableProps> = ({ clients, setCurrentPage, curr
                                 <p className="truncate font-semibold">{client.name}</p>,
                                 <p className="truncate font-semibold">{client.email}</p>,
                                 <p className="truncate text-center font-semibold">{client.phoneNumber}</p>,
-                                <button
-                                    className="hover:text-dashboard-action text-blue-600"
+                                <Button
                                     onClick={() => handleOpenClientModal(client)}
-                                >
-                                    <PencilIcon className={'h-4 w-4'} />
-                                </button>,
+                                    icon={<PencilIcon className={'h-4 w-4'} />}
+                                    variant="text"
+                                />,
                             ]}
                         />
                     ))) ||

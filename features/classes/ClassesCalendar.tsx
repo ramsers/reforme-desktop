@@ -14,6 +14,7 @@ import CalendarBar from '@components/calendar/CalendarBar'
 import CalendarList from '@components/calendar/CalendarList'
 import { useRouter, useSearchParams } from 'next/navigation'
 import AppRoutes from 'config/appRoutes'
+import Button from '@components/button/button'
 
 type ClassesCalendarOwnProps = {}
 
@@ -61,12 +62,7 @@ const ClassesCalendar: React.FC<ClassesCalendarProps> = () => {
                         instructorName: cls?.instructor?.name,
                         date: cls.date,
                         actions: (
-                            <button
-                                onClick={() => router.push(AppRoutes.classes.detail(cls.id))}
-                                className="hover:bg-gray-10 hover:text-brown-default bg-brown-default text-main cursor-pointer rounded-lg px-3 py-1 font-semibold transition-colors"
-                            >
-                                View class
-                            </button>
+                            <Button text={'View class'} onClick={() => router.push(AppRoutes.classes.detail(cls.id))} />
                         ),
                     }
                 })}

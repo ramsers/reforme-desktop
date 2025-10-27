@@ -1,11 +1,12 @@
-"use client"
+'use client'
 
-import {RootState} from '@store/index'
-import React, {useState} from 'react'
-import {connect} from 'react-redux'
-import {Dispatch} from 'redux'
-import {PlusIcon} from "@heroicons/react/24/solid";
-import CreateClassForm from "@features/dashboard/classes/CreateEditClassForm";
+import { RootState } from '@store/index'
+import React, { useState } from 'react'
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
+import { PlusIcon } from '@heroicons/react/24/solid'
+import CreateClassForm from '@features/dashboard/classes/CreateEditClassForm'
+import Button from '@components/button/button'
 
 type CreateClassButtonModalOwnProps = {}
 
@@ -18,31 +19,18 @@ type CreateClassButtonModalProps = CreateClassButtonModalOwnProps &
     CreateClassButtonModalDispatchProps
 
 const CreateClassButtonModal: React.FC<CreateClassButtonModalProps> = () => {
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false)
 
     return (
         <div>
-            <button
-                onClick={() => setIsOpen(true)}
-                className="group hover:bg-white transition-colors bg-dashboard-action cursor-pointer
-                font-semibold text-main rounded-lg px-3 py-2 flex flex-row items-center gap-1"
-            >
-                <PlusIcon className="h-5 w-5 group-hover:text-dashboard-action"/>
-
-                <span className="group-hover:text-dashboard-action">Create class</span>
-            </button>
-            <CreateClassForm title={"Create class"} isOpen={isOpen} setIsOpen={setIsOpen} />
+            <Button text={'Create class'} onClick={() => setIsOpen(true)} icon={<PlusIcon />} variant="dashboard" />
+            <CreateClassForm title={'Create class'} isOpen={isOpen} setIsOpen={setIsOpen} />
         </div>
-
     )
 }
 
-const mapStateToProps = (store: RootState): CreateClassButtonModalSliceProps => (
-    {}
-)
+const mapStateToProps = (store: RootState): CreateClassButtonModalSliceProps => ({})
 
-const mapDispatchToProps = (dispatch: Dispatch): CreateClassButtonModalDispatchProps => (
-    {}
-)
+const mapDispatchToProps = (dispatch: Dispatch): CreateClassButtonModalDispatchProps => ({})
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateClassButtonModal)

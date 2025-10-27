@@ -14,13 +14,12 @@ import TableRow from '@components/table/TableRow'
 import PaginationButtons from '@components/table/PaginationButtons'
 import { TrashIcon } from '@heroicons/react/24/outline'
 import Modal from '@components/modal/Modal'
+import Button from '@components/button/button'
 
 type ClassesTableOwnProps = {
     classes: ShortPaginatedResponse<Class>
     setCurrentPage: (page: number) => void
     currentPage: number
-    // isOpen: boolean
-    // setIsOpen: (opened: boolean) => void
 }
 
 type ClassesTableSliceProps = {}
@@ -80,23 +79,23 @@ const ClassesTable: React.FC<ClassesTableProps> = ({ classes, setCurrentPage, cu
                                 <p className="font-semibold">{cls.title}</p>,
                                 <p className="font-semibold">{cls?.instructor?.name ?? ''}</p>,
                                 <div className="flex flex-row items-center justify-end gap-2">
-                                    <button
-                                        className="hover:text-dashboard-action flex cursor-pointer justify-self-end p-1 text-blue-600"
+                                    <Button
                                         onClick={() => handleFetchClass(cls.id)}
-                                    >
-                                        <PencilIcon className="h-4 w-4" />
-                                    </button>
+                                        icon={<PencilIcon className="h-4 w-4" />}
+                                        variant="text"
+                                    />
 
-                                    <button
-                                        className="hover:text-dashboard-action flex cursor-pointer justify-self-end p-1 text-red-600"
+                                    <Button
                                         onClick={(e) => {
                                             e.stopPropagation()
                                             setIsDeleteClassModalOpen(true)
                                             setClassToDelete(cls.id)
                                         }}
-                                    >
-                                        <TrashIcon className="h-4 w-4" />
-                                    </button>
+                                        icon={
+                                            <TrashIcon className="h-4 w-4 text-red-600 transition-colors hover:text-black" />
+                                        }
+                                        variant="text"
+                                    />
                                 </div>,
                             ]}
                         />

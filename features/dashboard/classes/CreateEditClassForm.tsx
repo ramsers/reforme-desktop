@@ -69,18 +69,14 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                 validationSchema={ClassSchema}
                 onSubmit={(values, { setSubmitting, resetForm }) => {
                     const { id, ...payload } = values
-                    const utcDate = dayjs(values.date).utc().format() // e.g. "2025-11-26T16:00:00Z"
+                    const utcDate = dayjs(values.date).utc().format()
                     const updatedPayload = {
                         id,
                         ...payload,
                         date: utcDate,
                         recurrenceDays: values?.recurrenceDays?.map((d: string) => parseInt(d, 10)),
                     }
-                    console.log('UPDATED PAYLOAD ==========', updatedPayload)
-
                     if (values.id) {
-                        console.log('hitting partial update=================', values)
-
                         dispatch(partialUpdateClass(updatedPayload))
                     } else {
                         dispatch(createClass(payload))
@@ -106,7 +102,6 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                     >
                         <Form className="flex flex-col gap-4">
                             <div>
-                                {/* {console.log('valueeees ===================', values)} */}
                                 <label className="block text-sm font-medium text-gray-700">Title</label>
                                 <Field
                                     name="title"

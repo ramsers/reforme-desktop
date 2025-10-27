@@ -13,6 +13,7 @@ import TableContainer from '@components/table/TableContainer'
 import TableHeader from '@components/table/TableHeader'
 import TableRow from '@components/table/TableRow'
 import PaginationButtons from '@components/table/PaginationButtons'
+import Button from '@components/button/button'
 
 type BookingTableProps = {
     classes: ShortPaginatedResponse<Class>
@@ -66,20 +67,17 @@ const BookingTable: React.FC<BookingTableProps> = ({ classes, setCurrentPage, cu
                                 <p className="truncate text-center font-semibold">{cls.instructor?.name}</p>,
                                 <p className="text-center font-semibold">{`${cls.bookingsCount}/${cls.size}`}</p>,
                                 <div className="justify-self-centertext-center flex flex-row flex-wrap items-center justify-center gap-3">
-                                    <button
-                                        className="hover:text-dashboard-action text-blue-600"
+                                    <Button
                                         onClick={() => handleOpenModal(cls)}
-                                    >
-                                        <PencilIcon className={'h-4 w-4'} />
-                                    </button>
-
-                                    <button
-                                        className="hover:text-dashboard-action flex flex-row items-center justify-center text-blue-600"
+                                        icon={<PencilIcon className={'h-4 w-4'} />}
+                                        variant="text"
+                                    />
+                                    <Button
                                         onClick={() => handleOpenAddClientModal(cls)}
-                                    >
-                                        <PlusIcon className={'h-4 w-4'} />
-                                        <p>add client</p>
-                                    </button>
+                                        icon={<PlusIcon className={'h-5 w-5'} />}
+                                        variant="text"
+                                        text="Add client"
+                                    />
                                 </div>,
                             ]}
                         />

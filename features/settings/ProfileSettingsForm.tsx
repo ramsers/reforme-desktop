@@ -1,3 +1,4 @@
+import Button from '@components/button/button'
 import { RootState } from '@store/index'
 import { fetchUserInfo, updateUser } from '@store/slices/userSlice'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
@@ -104,13 +105,7 @@ const ProfileSettingsForm: React.FC = () => {
                         </div>
 
                         <div className="flex flex-row gap-2">
-                            <button
-                                type={'submit'}
-                                disabled={false}
-                                className="bg-brown-default w-full rounded-md px-4 py-2 font-semibold text-white"
-                            >
-                                Save
-                            </button>
+                            <Button type={'submit'} text="Save" className="w-full" />
                         </div>
                     </Form>
                 )}

@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/solid'
+import Button from '@components/button/button'
 
 type SlidingModalOwnProps = {
     isOpen: boolean
@@ -74,20 +75,34 @@ const SlidingModal: React.FC<SlidingModalProps> = ({
                                 </div>
 
                                 <div className="border-gray-10 absolute right-0 bottom-0 left-0 flex justify-end gap-2 border-t bg-white p-4 inset-shadow-2xs">
-                                    <button
+                                    <Button
+                                        text="Cancel"
+                                        onClick={() => (onClose && onClose()) || setIsOpen(false)}
+                                        className="w-[50%]"
+                                        variant="neutral"
+                                    />
+                                    {/* <button
                                         onClick={() => (onClose && onClose()) || setIsOpen(false)}
                                         className="w-full rounded-md border border-gray-300 px-4 py-2 text-gray-700"
                                     >
                                         Cancel
-                                    </button>
-                                    <button
+                                    </button> */}
+
+                                    <Button
+                                        type="submit"
+                                        text={content}
+                                        onClick={() => onClick()}
+                                        className="w-[50%]"
+                                    />
+
+                                    {/* <button
                                         onClick={() => onClick()}
                                         type={'submit'}
                                         disabled={false}
                                         className="bg-brown-default w-full rounded-md px-4 py-2 font-semibold text-white"
                                     >
                                         {content}
-                                    </button>
+                                    </button> */}
                                 </div>
                             </Dialog.Panel>
                         </Transition.Child>
