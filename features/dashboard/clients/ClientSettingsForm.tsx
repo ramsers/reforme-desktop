@@ -68,8 +68,8 @@ const ClientSettingsForm: React.FC<ClientSettingsFormProps> = ({ client }) => {
                     </div>
 
                     <div className="flex flex-row gap-2">
-                        <Button type={'submit'} text="Delete" variant="danger" className="w-[50%]" />
-                        <Button type={'submit'} text="Save" className="w-[50%]" onClick={() => handleSubmit()} />
+                        <Button text="Delete" variant="danger" className="w-[50%]" />
+                        <Button type={'submit'} text="Save" className="w-[50%]" />
                     </div>
                 </Form>
             )}
