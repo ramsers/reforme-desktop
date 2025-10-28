@@ -15,6 +15,7 @@ import StripeModal from '@features/payments/StripeModal'
 import { useRouter } from 'next/navigation'
 import AppRoutes from 'config/appRoutes'
 import { createBooking, deleteUserBooking } from '@store/slices/bookingSlice'
+import Button from '@components/button/button'
 
 type ClassPageProps = {
     params: { id: string }
@@ -106,16 +107,12 @@ const ClassPage: React.FC<ClassPageProps> = ({ params }) => {
             </div>
 
             {(userHasActivePass && (
-                <button
+                <Button
+                    variant={(isBooked && 'danger') || 'default'}
+                    text={(isBooked && 'Cancel Booking') || 'Book now'}
                     onClick={() => handlePassHolders()}
-                    className={`cursor-pointer rounded-lg px-4 py-2 font-semibold transition-colors ${
-                        isBooked
-                            ? 'bg-red-700 text-white hover:bg-red-500'
-                            : 'bg-brown-default text-main hover:bg-brown-700 hover:text-white'
-                    }`}
-                >
-                    {(isBooked && 'Cancel Booking') || 'Book now'}
-                </button>
+                    className="w-56"
+                />
             )) || (
                 <div className="flex flex-col gap-3 lg:flex-row">
                     {productsList.map((product) => {
@@ -132,12 +129,14 @@ const ClassPage: React.FC<ClassPageProps> = ({ params }) => {
                                             <p className="text-sm font-bold">{formatCurrency(product.priceAmount)}</p>
                                         </div>
                                     </div>
-                                    <button
+                                    <Button
+                                        text={
+                                            !!user.currentUser && !userHasActivePass
+                                                ? 'Purchase pass'
+                                                : 'Create account'
+                                        }
                                         onClick={() => handlePassClick(product)}
-                                        className="hover:bg-gray-10 hover:text-brown-default bg-brown-default text-main cursor-pointer rounded-lg px-3 py-1 font-semibold transition-colors"
-                                    >
-                                        {!!user.currentUser && !userHasActivePass ? 'Purchase pass' : 'Create account'}
-                                    </button>
+                                    />
                                 </div>
                             </div>
                         )

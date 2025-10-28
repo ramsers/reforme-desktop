@@ -64,6 +64,11 @@ const config: Config = {
         './common/**/*.{js,ts,jsx,tsx}',
         './src/**/*.{js,ts,jsx,tsx}',
     ],
+    safelist: [
+        {
+            pattern: /col-span-(1|2|3|4|5|6|12|24)/, // whichever you use
+        },
+    ],
     theme: {
         extend: {
             screens: {

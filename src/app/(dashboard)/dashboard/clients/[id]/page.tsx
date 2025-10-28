@@ -16,7 +16,6 @@ type ClientPageProps = {
 }
 
 const ClientPage: React.FC<ClientPageProps> = ({ params }) => {
-    console.log('CLIENT ID PARAMS =============', params.id)
     const disptach = useDispatch()
     const client = useSelector((state: RootState) => state.user.client)
 

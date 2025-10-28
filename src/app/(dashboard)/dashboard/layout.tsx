@@ -3,6 +3,7 @@ import { Providers } from '../../Providers'
 import { useState } from 'react'
 import { Bars3Icon } from '@heroicons/react/24/solid'
 import SideBar from '@features/dashboard/SideBar'
+import { useAuthGuard } from '@hooks/hooks'
 
 // export const metadata = {
 //     title: 'Next.js',
@@ -11,6 +12,7 @@ import SideBar from '@features/dashboard/SideBar'
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const [open, setOpen] = useState(false)
+    useAuthGuard('ADMIN')
 
     return (
         <div className="flex h-screen">

@@ -47,8 +47,8 @@ const ClassesTable: React.FC<ClassesTableProps> = ({ classes, setCurrentPage, cu
     const handleDeleteClass = () => {
         dispatch(
             deleteClass({
-                id: classToDelete!, // the class ID you stored in state
-                deleteSeries, // the flag object for API
+                id: classToDelete!,
+                deleteSeries,
             })
         )
         setIsDeleteClassModalOpen(false)

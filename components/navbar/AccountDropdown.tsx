@@ -12,6 +12,7 @@ import {
     Square2StackIcon,
     TrashIcon,
     UserCircleIcon,
+    UserIcon,
 } from '@heroicons/react/24/solid'
 import { logout } from '@store/slices/signUpSlice'
 import { useRouter } from 'next/navigation'
@@ -53,14 +54,8 @@ const AccountDropdown: React.FC<AccountDropdownProps> = () => {
                         onClick={() => router.push(AppRoutes.account)}
                         className="group data-focus:bg-main/10 flex w-full items-center gap-2 px-3 py-1.5"
                     >
-                        <Square2StackIcon className="text-main size-4" />
+                        <UserIcon className="text-main size-4" />
                         Account
-                    </button>
-                </MenuItem>
-                <MenuItem>
-                    <button className="group data-focus:bg-main/10 flex w-full items-center gap-2 px-3 py-1.5">
-                        <ArchiveBoxXMarkIcon className="text-main size-4" />
-                        Archive
                     </button>
                 </MenuItem>
                 <MenuItem>
