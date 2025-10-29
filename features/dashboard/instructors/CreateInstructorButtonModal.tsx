@@ -5,6 +5,7 @@ import { Dispatch } from 'redux'
 import { PlusIcon } from '@heroicons/react/24/solid'
 import CreateEditInstructorForm from '@features/dashboard/instructors/CreateEditInstructorForm'
 import { InstructorTableContext } from './instructors/InstructorTableContextProvider'
+import Button from '@components/button/button'
 
 type CreateInstructorButtonModalOwnProps = {}
 
@@ -21,15 +22,7 @@ const CreateInstructorButtonModal: React.FC<CreateInstructorButtonModalProps> = 
 
     return (
         <div>
-            <button
-                onClick={() => setIsOpen(true)}
-                className="group bg-dashboard-action text-main flex cursor-pointer flex-row items-center gap-1 rounded-lg px-3 py-2 font-semibold transition-colors hover:bg-white"
-            >
-                <PlusIcon className="group-hover:text-dashboard-action h-5 w-5" />
-
-                <span className="group-hover:text-dashboard-action">Create instructor</span>
-            </button>
-
+            <Button onClick={() => setIsOpen(true)} icon={<PlusIcon />} text="Create instructor" variant="dashboard" />
             <CreateEditInstructorForm title={'Create instructor'} isOpen={isOpen} setIsOpen={() => setIsOpen(false)} />
         </div>
     )

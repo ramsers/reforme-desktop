@@ -34,39 +34,53 @@ const InstructorsTable: React.FC<InstructorsTableProps> = ({ instructors, setCur
     return (
         <>
             <TableContainer>
-                <TableHeader
-                    columns={[
-                        { label: 'Name', span: 6 },
-                        { label: 'Email', span: 6 },
-                        { label: 'Phone number', span: 6 },
-                        { label: 'Created on', span: 4 },
-                        { label: '', span: 2, align: 'center' },
-                    ]}
-                />
+                <TableHeader className="grid grid-cols-12 gap-2 p-2 md:grid-cols-24">
+                    <div className="col-span-2 md:col-span-6">Name</div>
+                    <div className="col-span-3 md:col-span-6">Email</div>
+                    <div className="col-span-3 md:col-span-6">Phone number</div>
+                    <div className="col-span-2 hidden md:col-span-4 md:block">Created on</div>
+                    <div className="col-span-4 text-center md:col-span-2 md:text-left">Actions</div>
+                </TableHeader>
 
-                {(instructors.count > 0 &&
-                    instructors?.results.map((instructor) => (
+                {instructors.count > 0 ? (
+                    instructors.results.map((instructor) => (
                         <TableRow
                             key={instructor.id}
                             onClick={() => handleSetUser(instructor.id)}
-                            spans={[6, 6, 6, 4, 2]}
-                            children={[
-                                <div className="font-bold">
-                                    <p className="truncate font-semibold">{instructor?.name || null}</p>
-                                </div>,
-                                <p className="truncate font-semibold">{instructor?.email || null}</p>,
-                                <p className="truncate font-semibold">{instructor?.phoneNumber || null}</p>,
-                                <p className="truncate font-semibold">
-                                    {dayjs(instructor.createdAt).format('DD/MM/YYYY')}
-                                </p>,
+                            className="grid grid-cols-12 gap-2 md:grid-cols-24"
+                        >
+                            <div className="col-span-2 truncate font-bold md:col-span-6">
+                                <p className="truncate font-semibold">{instructor?.name || '—'}</p>
+                            </div>
+
+                            <div className="col-span-3 truncate font-semibold md:col-span-6 md:block">
+                                {instructor?.email || '—'}
+                            </div>
+
+                            <div className="col-span-3 truncate font-semibold md:col-span-6 md:block">
+                                {instructor?.phoneNumber || '—'}
+                            </div>
+
+                            <div className="col-span-2 hidden font-semibold md:col-span-4 md:block">
+                                {dayjs(instructor.createdAt).format('DD/MM/YYYY')}
+                            </div>
+
+                            <div className="col-span-4 text-center md:col-span-2 md:text-left">
                                 <Button
-                                    onClick={() => handleSetUser(instructor.id)}
-                                    icon={<PencilIcon className="h-4 w-4" />}
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        handleSetUser(instructor.id)
+                                    }}
                                     variant="text"
-                                />,
-                            ]}
-                        />
-                    ))) || <p className="pt-3 text-center">No instructors found</p>}
+                                    text="Edit"
+                                />
+                            </div>
+                        </TableRow>
+                    ))
+                ) : (
+                    <p className="pt-3 text-center">No instructors found</p>
+                )}
+
                 <PaginationButtons totalPages={totalPages} currentPage={currentPage} onPageChange={setCurrentPage} />
             </TableContainer>
 

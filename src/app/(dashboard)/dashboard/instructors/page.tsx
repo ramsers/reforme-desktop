@@ -38,7 +38,7 @@ const DashBoardInstructorsPage: React.FC = () => {
                         setCurrentPage(1)
                     }}
                     placeholder="Search by class or instructor"
-                    className="w-64 rounded rounded-lg border bg-white p-2 text-sm"
+                    className="w-full rounded rounded-lg border bg-white p-2 text-sm md:w-64"
                 />
             </div>
 

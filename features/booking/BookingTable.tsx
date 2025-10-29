@@ -66,17 +66,20 @@ const BookingTable: React.FC<BookingTableProps> = ({ classes, setCurrentPage, cu
                                 <p className="truncate font-semibold">{cls.title}</p>,
                                 <p className="truncate text-center font-semibold">{cls.instructor?.name}</p>,
                                 <p className="text-center font-semibold">{`${cls.bookingsCount}/${cls.size}`}</p>,
-                                <div className="justify-self-centertext-center flex flex-row flex-wrap items-center justify-center gap-3">
+                                <div className="justify-self-centertext-center flex flex-row flex-wrap items-center justify-center gap-1">
                                     <Button
                                         onClick={() => handleOpenModal(cls)}
-                                        icon={<PencilIcon className={'h-4 w-4'} />}
+                                        // icon={<PencilIcon />}
                                         variant="text"
+                                        className="p-0 text-xs"
+                                        text="Edit"
                                     />
                                     <Button
                                         onClick={() => handleOpenAddClientModal(cls)}
-                                        icon={<PlusIcon className={'h-5 w-5'} />}
+                                        icon={<PlusIcon className={'h-4 w-4'} />}
                                         variant="text"
                                         text="Add client"
+                                        className="p-0 text-xs"
                                     />
                                 </div>,
                             ]}
