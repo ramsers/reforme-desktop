@@ -57,48 +57,56 @@ const ClassesTable: React.FC<ClassesTableProps> = ({ classes, setCurrentPage, cu
     return (
         <>
             <TableContainer>
-                <TableHeader
-                    columns={[
-                        { label: 'Date', span: 6 },
-                        { label: 'Class Name', span: 6 },
-                        { label: 'Instructor', span: 6 },
-                        { label: '', span: 6, align: 'right' },
-                    ]}
-                />
-
+                <TableHeader className="grid grid-cols-12 p-2 md:grid-cols-24">
+                    <div className="col-span-4 md:col-span-6">Date</div>
+                    <div className="col-span-4 md:col-span-6">Class Name</div>
+                    <div className="hidden md:col-span-6 md:block">Instructor</div>
+                    <div className="col-span-4 text-right md:col-span-6">Actions</div>
+                </TableHeader>
                 {classes.count > 0 ? (
                     classes.results.map((cls) => (
                         <TableRow
                             key={cls.id}
                             onClick={() => handleFetchClass(cls.id)}
-                            spans={[6, 6, 6, 6]}
-                            children={[
-                                <div className="font-bold">
-                                    <p>{dayjs(cls.date).format('D MMM')}</p>
-                                </div>,
-                                <p className="font-semibold">{cls.title}</p>,
-                                <p className="font-semibold">{cls?.instructor?.name ?? ''}</p>,
-                                <div className="flex flex-row items-center justify-end gap-2">
-                                    <Button
-                                        onClick={() => handleFetchClass(cls.id)}
-                                        icon={<PencilIcon className="h-4 w-4" />}
-                                        variant="text"
-                                    />
+                            className="grid cursor-pointer grid-cols-12 p-2 hover:bg-gray-50 md:grid-cols-24"
+                        >
+                            {/* Date */}
+                            <div className="col-span-4 font-bold md:col-span-6">
+                                <p>{dayjs(cls.date).format('D MMM')}</p>
+                            </div>
 
-                                    <Button
-                                        onClick={(e) => {
-                                            e.stopPropagation()
-                                            setIsDeleteClassModalOpen(true)
-                                            setClassToDelete(cls.id)
-                                        }}
-                                        icon={
-                                            <TrashIcon className="h-4 w-4 text-red-600 transition-colors hover:text-black" />
-                                        }
-                                        variant="text"
-                                    />
-                                </div>,
-                            ]}
-                        />
+                            {/* Class name */}
+                            <div className="col-span-4 truncate font-semibold md:col-span-6">{cls.title}</div>
+
+                            {/* Instructor */}
+                            <div className="hidden truncate font-semibold md:col-span-6 md:block">
+                                {cls?.instructor?.name ?? '—'}
+                            </div>
+
+                            {/* Actions */}
+                            <div className="col-span-4 flex justify-end gap-2 md:col-span-6">
+                                <Button
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        handleFetchClass(cls.id)
+                                    }}
+                                    icon={<PencilIcon className="h-4 w-4" />}
+                                    variant="text"
+                                />
+
+                                <Button
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        setIsDeleteClassModalOpen(true)
+                                        setClassToDelete(cls.id)
+                                    }}
+                                    icon={
+                                        <TrashIcon className="h-4 w-4 text-red-600 transition-colors hover:text-black" />
+                                    }
+                                    variant="text"
+                                />
+                            </div>
+                        </TableRow>
                     ))
                 ) : (
                     <p className="pt-3 text-center">No classes found</p>
