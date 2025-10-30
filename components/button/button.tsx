@@ -40,8 +40,8 @@ const Button: React.FC<ButtonProps> = ({
                 <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
             ) : (
                 <>
-                    <div className={`${icon && 'flex flex-row gap-0.5'}`}>
-                        {icon && <span className="hidden h-4 w-4 md:block">{icon}</span>}
+                    <div className={`${icon && 'flex flex-row items-center gap-0.5'}`}>
+                        {icon && <span className="h-4 w-4">{icon}</span>}
                         {text && <span>{text}</span>}
                     </div>
 

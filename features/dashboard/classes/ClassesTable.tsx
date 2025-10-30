@@ -61,7 +61,7 @@ const ClassesTable: React.FC<ClassesTableProps> = ({ classes, setCurrentPage, cu
                     <div className="col-span-4 md:col-span-6">Date</div>
                     <div className="col-span-4 md:col-span-6">Class Name</div>
                     <div className="hidden md:col-span-6 md:block">Instructor</div>
-                    <div className="col-span-4 text-right md:col-span-6">Actions</div>
+                    <div className="col-span-4 text-center md:col-span-6 md:text-right">Actions</div>
                 </TableHeader>
                 {classes.count > 0 ? (
                     classes.results.map((cls) => (
@@ -70,28 +70,24 @@ const ClassesTable: React.FC<ClassesTableProps> = ({ classes, setCurrentPage, cu
                             onClick={() => handleFetchClass(cls.id)}
                             className="grid cursor-pointer grid-cols-12 p-2 hover:bg-gray-50 md:grid-cols-24"
                         >
-                            {/* Date */}
                             <div className="col-span-4 font-bold md:col-span-6">
                                 <p>{dayjs(cls.date).format('D MMM')}</p>
                             </div>
 
-                            {/* Class name */}
                             <div className="col-span-4 truncate font-semibold md:col-span-6">{cls.title}</div>
 
-                            {/* Instructor */}
                             <div className="hidden truncate font-semibold md:col-span-6 md:block">
                                 {cls?.instructor?.name ?? '—'}
                             </div>
 
-                            {/* Actions */}
-                            <div className="col-span-4 flex justify-end gap-2 md:col-span-6">
+                            <div className="col-span-4 flex justify-center gap-2 md:col-span-6 md:justify-end">
                                 <Button
                                     onClick={(e) => {
                                         e.stopPropagation()
                                         handleFetchClass(cls.id)
                                     }}
-                                    icon={<PencilIcon className="h-4 w-4" />}
                                     variant="text"
+                                    icon={<PencilIcon />}
                                 />
 
                                 <Button
@@ -100,9 +96,8 @@ const ClassesTable: React.FC<ClassesTableProps> = ({ classes, setCurrentPage, cu
                                         setIsDeleteClassModalOpen(true)
                                         setClassToDelete(cls.id)
                                     }}
-                                    icon={
-                                        <TrashIcon className="h-4 w-4 text-red-600 transition-colors hover:text-black" />
-                                    }
+                                    className="text-red-600 transition-colors hover:text-black"
+                                    icon={<TrashIcon />}
                                     variant="text"
                                 />
                             </div>

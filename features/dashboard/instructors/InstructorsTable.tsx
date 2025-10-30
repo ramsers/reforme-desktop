@@ -39,7 +39,7 @@ const InstructorsTable: React.FC<InstructorsTableProps> = ({ instructors, setCur
                     <div className="col-span-3 md:col-span-6">Email</div>
                     <div className="col-span-3 md:col-span-6">Phone number</div>
                     <div className="col-span-2 hidden md:col-span-4 md:block">Created on</div>
-                    <div className="col-span-4 text-center md:col-span-2 md:text-left">Actions</div>
+                    <div className="col-span-4 text-center md:col-span-2">Actions</div>
                 </TableHeader>
 
                 {instructors.count > 0 ? (
@@ -65,14 +65,14 @@ const InstructorsTable: React.FC<InstructorsTableProps> = ({ instructors, setCur
                                 {dayjs(instructor.createdAt).format('DD/MM/YYYY')}
                             </div>
 
-                            <div className="col-span-4 text-center md:col-span-2 md:text-left">
+                            <div className="col-span-4 text-center md:col-span-2">
                                 <Button
                                     onClick={(e) => {
                                         e.stopPropagation()
                                         handleSetUser(instructor.id)
                                     }}
                                     variant="text"
-                                    text="Edit"
+                                    icon={<PencilIcon />}
                                 />
                             </div>
                         </TableRow>

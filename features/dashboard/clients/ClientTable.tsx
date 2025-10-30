@@ -31,38 +31,50 @@ const ClientTable: React.FC<ClientTableProps> = ({ clients, setCurrentPage, curr
     return (
         <>
             <TableContainer>
-                <TableHeader
-                    columns={[
-                        { label: 'Created on', span: 6 },
-                        { label: 'Name', span: 6 },
-                        { label: 'Email', span: 6 },
-                        { label: 'Phone number', span: 4, align: 'center' },
-                        { label: '', span: 2 },
-                    ]}
-                />
+                <TableHeader className="grid grid-cols-12 p-2 md:grid-cols-24">
+                    <div className="hidden md:col-span-6 md:block">Created on</div>
+                    <div className="col-span-3 md:col-span-6">Name</div>
+                    <div className="col-span-3 md:col-span-6 md:block">Email</div>
+                    <div className="col-span-3 text-center md:col-span-4">Phone</div>
+                    <div className="col-span-3 text-center md:col-span-2 md:text-right">Actions</div>
+                </TableHeader>
 
-                {(clients?.count > 0 &&
+                {clients?.count > 0 ? (
                     clients.results.map((client) => (
                         <TableRow
                             key={client.id}
-                            spans={[6, 6, 6, 4, 2]}
                             onClick={() => handleOpenClientModal(client)}
-                            children={[
-                                <div className="font-bold">
-                                    <p>{dayjs(client.createdAt).format('D MMM YY')}</p>
-                                </div>,
-                                <p className="truncate font-semibold">{client.name}</p>,
-                                <p className="truncate font-semibold">{client.email}</p>,
-                                <p className="truncate text-center font-semibold">{client.phoneNumber}</p>,
+                            className="grid cursor-pointer grid-cols-12 border-b p-2 hover:bg-gray-50 md:grid-cols-24"
+                        >
+                            <div className="hidden font-bold md:col-span-6 md:block">
+                                <p>{dayjs(client.createdAt).format('D MMM YY')}</p>
+                            </div>
+
+                            <div className="col-span-3 truncate font-semibold md:col-span-6">{client.name}</div>
+
+                            <div className="col-span-3 truncate font-semibold md:col-span-6 md:block">
+                                {client.email}
+                            </div>
+
+                            <div className="col-span-3 text-center font-semibold md:col-span-4">
+                                {client.phoneNumber || '—'}
+                            </div>
+
+                            <div className="col-span-3 flex justify-center md:col-span-2 md:justify-end">
                                 <Button
-                                    onClick={() => handleOpenClientModal(client)}
-                                    icon={<PencilIcon className={'h-4 w-4'} />}
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        handleOpenClientModal(client)
+                                    }}
+                                    icon={<PencilIcon className="h-4 w-4" />}
                                     variant="text"
-                                />,
-                            ]}
-                        />
-                    ))) ||
-                    null}
+                                />
+                            </div>
+                        </TableRow>
+                    ))
+                ) : (
+                    <p className="pt-3 text-center">No clients found</p>
+                )}
                 <PaginationButtons totalPages={totalPages} currentPage={currentPage} onPageChange={setCurrentPage} />
             </TableContainer>
             <CreateEditClientForm isOpen={isOpen} setIsOpen={setIsOpen} title="Edit client" client={client} />

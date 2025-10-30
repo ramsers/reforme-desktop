@@ -11,7 +11,7 @@ const TableRow: React.FC<TableRowProps> = ({ children, onClick, className }) => 
         <div
             onClick={onClick}
             className={twMerge(
-                'border-b p-2 text-sm transition-colors hover:bg-gray-50',
+                'flex flex-row items-center border-b p-2.5 text-sm transition-colors hover:bg-gray-50',
                 onClick && 'cursor-pointer',
                 className
             )}
