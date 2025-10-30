@@ -66,7 +66,7 @@ const ClientTable: React.FC<ClientTableProps> = ({ clients, setCurrentPage, curr
                                         e.stopPropagation()
                                         handleOpenClientModal(client)
                                     }}
-                                    icon={<PencilIcon className="h-4 w-4" />}
+                                    icon={<PencilIcon />}
                                     variant="text"
                                 />
                             </div>

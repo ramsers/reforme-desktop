@@ -8,12 +8,7 @@ const CreateClientButtonModal: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false)
     return (
         <div>
-            <Button
-                onClick={() => setIsOpen(true)}
-                icon={<PlusIcon className="h-5 w-5" />}
-                text="Create client"
-                variant="dashboard"
-            />
+            <Button onClick={() => setIsOpen(true)} icon={<PlusIcon />} text="Create client" variant="dashboard" />
             <CreateEditClientForm isOpen={isOpen} setIsOpen={setIsOpen} title="Create client" />
         </div>
     )
