@@ -28,6 +28,7 @@ const paymentSlice = createSlice({
             return state
         },
         syncUserAfterPayment: (state) => state,
+        cancelSubscription: (state, action: PayloadAction<string>) => state,
     },
 })
 
@@ -37,5 +38,6 @@ export const {
     createPurchaseIntent,
     createPurchaseIntentSuccess,
     syncUserAfterPayment,
+    cancelSubscription,
 } = paymentSlice.actions
 export default paymentSlice.reducer

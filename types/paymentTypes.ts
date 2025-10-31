@@ -24,6 +24,7 @@ export type PurchaseIntentResponse = {
 }
 
 export type PassPurchase = {
+    id: string
     stripeProductId: string
     stripeCustomerId: string
     passName: string
@@ -31,4 +32,5 @@ export type PassPurchase = {
     isActive: boolean
     startDate: string
     endDate: string
+    isCancelRequested: boolean | null
 }

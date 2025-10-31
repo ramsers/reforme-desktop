@@ -50,8 +50,8 @@ const Modal: React.FC<ModalProps> = ({
                         >
                             <Dialog.Panel className="gap-4transform flex w-full max-w-lg flex-col gap-4 overflow-hidden rounded-xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                                 <Dialog.Title
-                                    as="h3"
-                                    className="flex items-center justify-between text-lg leading-6 font-medium text-gray-900"
+                                    as="p"
+                                    className="flex items-center justify-between text-2xl leading-6 font-medium text-gray-900"
                                 >
                                     {title}
                                     <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
@@ -63,7 +63,7 @@ const Modal: React.FC<ModalProps> = ({
 
                                 <div className="mt-6 flex justify-end gap-2">
                                     <Button variant="neutral" text="Close" onClick={onClose} />
-                                    {onConfirm && <Button variant="danger" text={confirmText} onClick={onConfirm} />}
+                                    {onConfirm && <Button variant="dashboard" text={confirmText} onClick={onConfirm} />}
                                 </div>
                             </Dialog.Panel>
                         </Transition.Child>

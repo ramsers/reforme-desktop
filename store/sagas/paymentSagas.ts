@@ -1,7 +1,8 @@
-import { getProductList, postcreatePurchaseIntent } from '@api/payment'
+import { getProductList, postCancelSubscription, postcreatePurchaseIntent } from '@api/payment'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { CreatePurchaseIntentPayload, Product } from '@reformetypes/paymentTypes'
 import {
+    cancelSubscription,
     createPurchaseIntent,
     createPurchaseIntentSuccess,
     fetchProducts,
@@ -14,19 +15,16 @@ import { call, delay, put, select, takeLatest } from 'redux-saga/effects'
 import { RootState } from '..'
 
 export function* waitForUserUpdateSaga() {
-    console.log('being called =================')
     for (let i = 0; i < 10; i++) {
-        console.log('BEING CALLEC IN LOOP WTF ====================')
         yield delay(1000)
         yield put(fetchUserInfo())
         const user = yield select((state: RootState) => state.user.currentUser)
 
         if (user?.purchases?.some((p) => p.isActive)) {
-            console.log('✅ User pass activated!')
             return
         }
     }
-    console.warn('⚠️ No active pass after polling window.')
+    console.warn('No active pass after polling window.')
 }
 
 export function* fetchProductsSaga() {
@@ -50,12 +48,19 @@ export function* createPurchaseIntentSaga(action: PayloadAction<CreatePurchaseIn
     }
 }
 
+export function* cancelSubscriptionSaga(action: PayloadAction<string>) {
+    try {
+        yield call(postCancelSubscription, action.payload)
+    } catch (e) {
+        console.log('Error cancelling subscription', e)
+    }
+}
+
 function* PaymentSagas() {
     yield takeLatest(fetchProducts.type, fetchProductsSaga)
     yield takeLatest(createPurchaseIntent.type, createPurchaseIntentSaga)
     yield takeLatest(syncUserAfterPayment.type, waitForUserUpdateSaga)
-
-    // waitForUserUpdateSaga
+    yield takeLatest(cancelSubscription.type, cancelSubscriptionSaga)
 }
 
 export default PaymentSagas

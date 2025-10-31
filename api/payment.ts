@@ -10,3 +10,7 @@ export const getProductList = (): Promise<AxiosResponse<Product[]>> => {
 export const postcreatePurchaseIntent = (data: CreatePurchaseIntentPayload): Promise<AxiosResponse<string>> => {
     return apiClient.post(APIRoutes.PAYMENT.PAYMENT_INTENT, data)
 }
+
+export const postCancelSubscription = (id: string): Promise<AxiosResponse<string>> => {
+    return apiClient.post(APIRoutes.PAYMENT.CANCEL_SUBSCRIPTION(id))
+}

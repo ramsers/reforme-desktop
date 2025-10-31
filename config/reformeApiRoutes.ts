@@ -23,6 +23,7 @@ const APIRoutes = {
     PAYMENT: {
         PAYMENT_INTENT: '/payment/create-purchase-intent',
         LIST_PRODUCTS: 'payment/products',
+        CANCEL_SUBSCRIPTION: (id: string) => `payment/subscription/${id}/cancel`,
     },
 }
 
