@@ -3,6 +3,7 @@ import { PayloadAction } from '@reduxjs/toolkit'
 import { CreatePurchaseIntentPayload, Product } from '@reformetypes/paymentTypes'
 import {
     cancelSubscription,
+    cancelSubscriptionSuccess,
     createPurchaseIntent,
     createPurchaseIntentSuccess,
     fetchProducts,
@@ -13,6 +14,7 @@ import { fetchUserInfo } from '@store/slices/userSlice'
 import { AxiosResponse } from 'axios'
 import { call, delay, put, select, takeLatest } from 'redux-saga/effects'
 import { RootState } from '..'
+import { toastError, toastSuccess } from 'lib/toast'
 
 export function* waitForUserUpdateSaga() {
     for (let i = 0; i < 10; i++) {
@@ -51,8 +53,10 @@ export function* createPurchaseIntentSaga(action: PayloadAction<CreatePurchaseIn
 export function* cancelSubscriptionSaga(action: PayloadAction<string>) {
     try {
         yield call(postCancelSubscription, action.payload)
+        yield put(cancelSubscriptionSuccess(action.payload))
+        toastSuccess('Class created!')
     } catch (e) {
-        console.log('Error cancelling subscription', e)
+        toastError('Error creating class. Please try again.')
     }
 }
 

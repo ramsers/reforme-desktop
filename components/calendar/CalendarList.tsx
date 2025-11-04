@@ -31,8 +31,6 @@ const CalendarList: React.FC<CalendarListProps> = ({ items, emptyMessage = '' })
         return <div className="py-10 text-center text-gray-500">{emptyMessage}</div>
     }
 
-    console.log('   ITEMS ==============', items)
-
     return (
         <div className="flex w-full max-w-2xl flex-col gap-3">
             {items &&

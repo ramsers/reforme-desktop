@@ -23,15 +23,18 @@ const PassCard: React.FC<PassCardProps> = ({
     const formattedDate = dayjs(purchase.endDate).format('D MMM YYYY')
     const statusColor = purchase.isActive ? 'text-green-600' : 'text-red-600'
     const statusLabel = purchase.isActive ? 'Active' : 'Expired'
-    const dateLabel = purchase.isSubscription ? 'Renewal date:' : 'Expiration date:'
+    const dateLabel =
+        purchase.isSubscription && purchase.isCancelRequested
+            ? 'Subscription ends:'
+            : purchase.isSubscription
+              ? 'Renewal date:'
+              : 'Expiration date:'
     const [isOpen, setIsOpen] = useState<boolean>(false)
 
     const handleCancel = () => {
         dispatch(cancelSubscription(purchase.id))
         setIsOpen(false)
     }
-
-    console.log('TESTO =============', purchase.isCancelRequested)
 
     return (
         <>
@@ -48,14 +51,14 @@ const PassCard: React.FC<PassCardProps> = ({
                     <div className="flex flex-col gap-2 text-right">
                         <span className={`p-1 text-sm font-semibold ${statusColor}`}>{statusLabel}</span>
 
-                        {purchase.isSubscription && (
+                        {purchase.isSubscription && !purchase.isCancelRequested ? (
                             <Button
                                 variant="text"
                                 text="Cancel"
                                 onClick={() => setIsOpen(true)}
                                 className="font-semibold text-red-600 hover:text-black"
                             />
-                        )}
+                        ) : null}
 
                         {/* {purchase.isSubscription && userRole === eRole.ADMIN ? (
                         <Button

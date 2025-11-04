@@ -2,6 +2,7 @@ import { CreateUserPayload, User } from '@reformetypes/userTypes'
 import { eRole } from '@reformetypes/authTypes'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
+import { cancelSubscriptionSuccess } from './paymentSlice'
 
 export type UserSliceType = {
     currentUser?: User | null
@@ -94,6 +95,26 @@ const userSlice = createSlice({
             }
             return state
         },
+    },
+    extraReducers: (builder) => {
+        builder.addCase(cancelSubscriptionSuccess, (state, action: PayloadAction<string>) => {
+            const purchaseId = action.payload
+
+            if (state.currentUser?.purchases) {
+                const purchase = state.currentUser.purchases.find((p) => p.id === purchaseId)
+                if (purchase) {
+                    purchase.isCancelRequested = true
+                }
+            }
+
+            // ✅ Update the "client" (for admin view: when an admin opens a specific client profile)
+            if (state.client?.purchases) {
+                const purchase = state.client.purchases.find((p) => p.id === purchaseId)
+                if (purchase) {
+                    purchase.isCancelRequested = true
+                }
+            }
+        })
     },
 })
 

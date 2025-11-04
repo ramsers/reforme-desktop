@@ -55,15 +55,17 @@ const ClassesCalendar: React.FC<ClassesCalendarProps> = () => {
 
             <CalendarList
                 items={classes.map((cls) => {
+                    const isPast = dayjs(cls.date).isBefore(dayjs(), 'day') // compare only the date (not time)
+
                     return {
                         id: cls.id,
                         title: cls.title,
                         description: cls.description,
                         instructorName: cls?.instructor?.name,
                         date: cls.date,
-                        actions: (
-                            <Button text={'View class'} onClick={() => router.push(AppRoutes.classes.detail(cls.id))} />
-                        ),
+                        actions: !isPast ? (
+                            <Button text="View class" onClick={() => router.push(AppRoutes.classes.detail(cls.id))} />
+                        ) : null,
                     }
                 })}
                 emptyMessage="No classes scheduled for this day"
