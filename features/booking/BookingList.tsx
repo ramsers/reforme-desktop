@@ -16,9 +16,12 @@ import { useRouter } from 'next/navigation'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
 import AppRoutes from '../../config/appRoutes'
 import { deleteUserBooking } from '@store/slices/bookingSlice'
+import { AsyncResource } from '@reformetypes/common/ApiTypes'
+import SkeletonBlock from '@components/SkeletonBlock/SkeletonBlock'
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 
 type BookingListOwnProps = {
-    bookings: Booking[]
+    // bookings: AsyncResource<Booking[]>
 }
 
 type BookingListSliceProps = {}
@@ -27,9 +30,11 @@ type BookingListDispatchProps = {}
 
 type BookingListProps = BookingListOwnProps & BookingListSliceProps & BookingListDispatchProps
 
-const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
+const BookingList: React.FC<BookingListProps> = ({}) => {
     const dispatch = useDispatch()
     const router = useRouter()
+    const bookings = useSelector((state: RootState) => state.booking.bookings)
+    dayjs.extend(isSameOrAfter)
     dayjs.extend(utc)
 
     const handleReschedule = (booking: Booking) => {
@@ -43,6 +48,12 @@ const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
     const handleCancel = (bookingId: string) => {
         dispatch(deleteUserBooking(bookingId))
     }
+
+    const upcomingBookings =
+        bookings.data?.results?.filter((bk) => dayjs(bk.bookedClass.date).isSameOrAfter(dayjs(), 'day')) || []
+
+    const pastBookings =
+        bookings.data?.results?.filter((bk) => dayjs(bk.bookedClass.date).isBefore(dayjs(), 'day')) || []
 
     return (
         <>
@@ -60,11 +71,15 @@ const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
                 <TabPanels>
                     <TabPanel>
                         <div className="flex w-full flex-row flex-wrap gap-3">
-                            {bookings &&
-                                bookings?.map((bk: Booking) => (
+                            {bookings.fetching ? (
+                                <>
+                                    <SkeletonBlock className="h-48 w-full lg:w-[48%]" />
+                                </>
+                            ) : upcomingBookings.length ? (
+                                upcomingBookings.map((bk: Booking) => (
                                     <div
                                         key={bk.id}
-                                        className="flex h-full min-h-48 flex-col flex-wrap justify-between gap-3 rounded-xl border border-gray-200 bg-white p-4 shadow"
+                                        className="flex h-full min-h-48 w-1/4 flex-col flex-wrap justify-between gap-3 rounded-xl border border-gray-200 bg-white p-4 shadow"
                                     >
                                         <div className="flex flex-col gap-3">
                                             <p className="font-semibold italic">
@@ -86,22 +101,68 @@ const BookingList: React.FC<BookingListProps> = ({ bookings }) => {
                                             >
                                                 Cancel
                                             </button>
-                                            <button className={'font-semibold text-green-700 hover:text-green-500'}>
+                                            <button className="font-semibold text-green-700 hover:text-green-500">
                                                 Complete
                                             </button>
                                             <button
                                                 onClick={() => handleReschedule(bk)}
-                                                className={'font-semibold text-blue-700 hover:text-blue-500'}
+                                                className="font-semibold text-blue-700 hover:text-blue-500"
                                             >
                                                 Reschedule
                                             </button>
                                         </div>
                                     </div>
-                                ))}
+                                ))
+                            ) : (
+                                <p className="text-left text-gray-500">No upcoming bookings</p>
+                            )}
                         </div>
                     </TabPanel>
-                    <TabPanel>Content 2</TabPanel>
-                    <TabPanel>Content 3</TabPanel>
+                    <TabPanel>
+                        <div className="flex w-full flex-row flex-wrap gap-3">
+                            {pastBookings.length ? (
+                                pastBookings.map((bk: Booking) => (
+                                    <div
+                                        key={bk.id}
+                                        className="flex h-full min-h-48 w-1/4 flex-col flex-wrap justify-between gap-3 rounded-xl border border-gray-200 bg-white p-4 shadow"
+                                    >
+                                        <div className="flex flex-col gap-3">
+                                            <p className="font-semibold italic">
+                                                {dayjs(bk.bookedClass.date).format('dddd MMMM D YYYY h:mm A')}
+                                            </p>
+                                            <div className="flex flex-col gap-1">
+                                                <div className="text-2xl font-bold">{bk.bookedClass.title}</div>
+                                                <div className="text-sm text-gray-600">
+                                                    {bk.bookedClass.description}
+                                                </div>
+                                                <div className="text-sm">{bk.bookedClass.instructor?.name}</div>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex flex-row justify-between">
+                                            <button
+                                                onClick={() => handleCancel(bk.id)}
+                                                className="cursor-pointer font-semibold text-red-700 hover:text-red-500"
+                                            >
+                                                Cancel
+                                            </button>
+                                            <button className="font-semibold text-green-700 hover:text-green-500">
+                                                Complete
+                                            </button>
+                                            <button
+                                                onClick={() => handleReschedule(bk)}
+                                                className="font-semibold text-blue-700 hover:text-blue-500"
+                                            >
+                                                Reschedule
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <p className="text-left text-gray-500">No classes booked yet</p>
+                            )}
+                        </div>
+                    </TabPanel>
                 </TabPanels>
             </TabGroup>
         </>

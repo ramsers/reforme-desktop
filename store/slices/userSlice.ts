@@ -36,7 +36,6 @@ const userSlice = createSlice({
     reducers: {
         fetchUserInfo: (state) => state,
         fetchUserInfoSuccess: (state, action: PayloadAction<User>) => {
-            console.log('ACTION =================', action.payload)
             state.currentUser = action.payload
             return state
         },
@@ -107,7 +106,6 @@ const userSlice = createSlice({
                 }
             }
 
-            // ✅ Update the "client" (for admin view: when an admin opens a specific client profile)
             if (state.client?.purchases) {
                 const purchase = state.client.purchases.find((p) => p.id === purchaseId)
                 if (purchase) {

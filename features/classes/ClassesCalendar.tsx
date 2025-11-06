@@ -1,20 +1,17 @@
 'use client'
 import { RootState } from '@store/index'
 import React, { useEffect, useState } from 'react'
-import { connect, useDispatch, useSelector } from 'react-redux'
-import { Dispatch } from 'redux'
-import { fetchClasses, removeClassBooking } from '@store/slices/classSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchClasses } from '@store/slices/classSlice'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
-
-import classSlice from '@store/slices/classSlice'
-import { Class } from '@reformetypes/classTypes'
 import { createBooking, deleteUserBooking } from '@store/slices/bookingSlice'
 import CalendarBar from '@components/calendar/CalendarBar'
 import CalendarList from '@components/calendar/CalendarList'
 import { useRouter, useSearchParams } from 'next/navigation'
 import AppRoutes from 'config/appRoutes'
 import Button from '@components/button/button'
+import SkeletonBlock from '@components/SkeletonBlock/SkeletonBlock'
 
 type ClassesCalendarOwnProps = {}
 
@@ -27,9 +24,8 @@ type ClassesCalendarProps = ClassesCalendarOwnProps & ClassesCalendarSliceProps 
 const ClassesCalendar: React.FC<ClassesCalendarProps> = () => {
     const dispatch = useDispatch()
     const router = useRouter()
-    const classes = useSelector((state: RootState) => state.class?.classes?.results)
+    const classes = useSelector((state: RootState) => state.class?.classes)
     const user = useSelector((state: RootState) => state.user)
-    // console.log('classes ==============', classes)
     dayjs.extend(utc)
 
     const [selectedDay, setSelectedDay] = useState(dayjs())
@@ -47,35 +43,40 @@ const ClassesCalendar: React.FC<ClassesCalendarProps> = () => {
         dispatch(createBooking({ clientId: user?.currentUser?.id!, classId: classId }))
     }
 
-    // console.log('YO P =====================', classes)
+    console.log('CLASSES ==========================', classes)
 
     return (
         <div className="flex w-full flex-col items-center gap-6">
-            <CalendarBar selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
+            {!classes || !classes.hasFetched ? (
+                <SkeletonBlock className="w-1/2" />
+            ) : (
+                <>
+                    <CalendarBar selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
 
-            <CalendarList
-                items={classes.map((cls) => {
-                    const isPast = dayjs(cls.date).isBefore(dayjs(), 'day') // compare only the date (not time)
+                    <CalendarList
+                        items={classes.data.results.map((cls) => {
+                            const isPast = dayjs(cls.date).isBefore(dayjs(), 'day')
 
-                    return {
-                        id: cls.id,
-                        title: cls.title,
-                        description: cls.description,
-                        instructorName: cls?.instructor?.name,
-                        date: cls.date,
-                        actions: !isPast ? (
-                            <Button text="View class" onClick={() => router.push(AppRoutes.classes.detail(cls.id))} />
-                        ) : null,
-                    }
-                })}
-                emptyMessage="No classes scheduled for this day"
-            />
+                            return {
+                                id: cls.id,
+                                title: cls.title,
+                                description: cls.description,
+                                instructorName: cls?.instructor?.name,
+                                date: cls.date,
+                                actions: !isPast ? (
+                                    <Button
+                                        text="View class"
+                                        onClick={() => router.push(AppRoutes.classes.detail(cls.id))}
+                                    />
+                                ) : null,
+                            }
+                        })}
+                        emptyMessage="No classes scheduled for this day"
+                    />
+                </>
+            )}
         </div>
     )
 }
 
-const mapStateToProps = (store: RootState): ClassesCalendarSliceProps => ({})
-
-const mapDispatchToProps = (dispatch: Dispatch): ClassesCalendarDispatchProps => ({})
-
-export default connect(mapStateToProps, mapDispatchToProps)(ClassesCalendar)
+export default ClassesCalendar

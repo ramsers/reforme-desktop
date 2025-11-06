@@ -1,24 +1,31 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { CreatePurchaseIntentPayload, Product, PurchaseIntentResponse } from '@reformetypes/paymentTypes'
-import { stat } from 'fs'
+import { AsyncResource } from '@reformetypes/common/ApiTypes'
+import { CreatePurchaseIntentPayload, Product } from '@reformetypes/paymentTypes'
 
 export type PaymentSliceType = {
     clientSecret: string | null
-    products: Product[]
+    products: AsyncResource<Product[]>
 }
 
 const initialState: PaymentSliceType = {
     clientSecret: null,
-    products: [],
+    products: { fetching: false, hasFetched: false, data: [] },
 }
 
 const paymentSlice = createSlice({
     name: 'paymentSlice',
     initialState: initialState,
     reducers: {
-        fetchProducts: (state) => state,
+        fetchProducts: (state) => {
+            state.products.fetching = true
+            return state
+        },
         fetchProductsSuccess: (state, action: PayloadAction<Product[]>) => {
-            state.products = action.payload
+            state.products.fetching = false
+            state.products.hasFetched = true
+
+            console.log('ACTION ====================', action.payload)
+            state.products.data = action.payload
             return state
         },
         createPurchaseIntent: (state, action: PayloadAction<CreatePurchaseIntentPayload>) => state,

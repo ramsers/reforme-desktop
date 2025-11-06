@@ -1,22 +1,30 @@
-import { Class, ClassList, CreateClassPayload, PartialUpdateClassPayload } from '@reformetypes/classTypes'
-import { createSlice, current, PayloadAction } from '@reduxjs/toolkit'
+import { Class, CreateClassPayload, PartialUpdateClassPayload } from '@reformetypes/classTypes'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
 import { createBookingSuccess } from './bookingSlice'
 import { Booking } from '@reformetypes/bookingTypes'
-import { act } from 'react'
+import { AsyncResource } from '@reformetypes/common/ApiTypes'
 
 export type ClassSliceType = {
-    class: Class | null
-    classes: ShortPaginatedResponse<Class>
+    class: AsyncResource<Class | null>
+    classes: AsyncResource<ShortPaginatedResponse<Class>>
 }
 
 const initialState: ClassSliceType = {
-    class: null,
+    class: {
+        hasFetched: false,
+        fetching: false,
+        data: null,
+    },
     classes: {
-        count: 0,
-        next: null,
-        previous: null,
-        results: [],
+        hasFetched: false,
+        fetching: false,
+        data: {
+            count: 0,
+            next: null,
+            previous: null,
+            results: [],
+        },
     },
 }
 
@@ -24,61 +32,67 @@ const classSlice = createSlice({
     name: 'classSlice',
     initialState: initialState,
     reducers: {
-        fetchClass: (state, action: PayloadAction<string>) => state,
-        fetchClassSuccess: (state, action: PayloadAction<Class>) => {
-            state.class = action.payload
+        fetchClass: (state, action: PayloadAction<string>) => {
+            state.class.fetching = true
             return state
         },
-        fetchClasses: (state, action: PayloadAction<Record<string, any>>) => state,
+        fetchClassSuccess: (state, action: PayloadAction<Class>) => {
+            state.class.fetching = false
+            state.class.hasFetched = true
+            state.class.data = action.payload
+            return state
+        },
+        fetchClasses: (state, action: PayloadAction<Record<string, any>>) => {
+            state.classes.fetching = true
+            return state
+        },
         fetchClassesSuccess: (state, action: PayloadAction<ShortPaginatedResponse<Class>>) => {
-            state.classes.count = action.payload.count
-            state.classes.next = action.payload.next
-            state.classes.previous = action.payload.previous
-            state.classes.results = action.payload.results
+            state.classes.fetching = false
+            state.classes.hasFetched = true
+            state.classes.data.count = action.payload.count
+            state.classes.data.next = action.payload.next
+            state.classes.data.previous = action.payload.previous
+            state.classes.data.results = action.payload.results
             return state
         },
         createClass: (state, action: PayloadAction<CreateClassPayload>) => state,
         createClassSuccess: (state, action: PayloadAction<Class>) => {
-            state.class = action.payload
-            state.classes.results.push(action.payload)
+            state.class.data = action.payload
+            state.classes.data.results.push(action.payload)
             return state
         },
         partialUpdateClass: (state, action: PayloadAction<PartialUpdateClassPayload>) => state,
         partialUpdateClassSuccess: (state, action: PayloadAction<Class>) => {
-            const indexToUpdate = state.classes.results.findIndex(
+            const indexToUpdate = state.classes.data.results.findIndex(
                 (classToUpdate) => classToUpdate.id === action.payload.id
             )
 
-            state.classes.results[indexToUpdate] = action.payload
+            state.classes.data.results[indexToUpdate] = action.payload
             return state
         },
         clearClass: (state) => {
-            state.class = null
+            state.class.data = null
             return state
         },
         removeClassBooking: (state, action: PayloadAction<{ classId: string; bookingId: string }>) => {
             const { classId, bookingId } = action.payload
-            const classToUpdate = state.classes.results.find((cls) => cls.id === classId)
-
-            console.log('Class to update =============', classToUpdate)
+            const classToUpdate = state.classes.data.results.find((cls) => cls.id === classId)
 
             if (classToUpdate) {
                 const bookingIndex = classToUpdate.bookings.findIndex((booking) => booking.id === bookingId)
                 if (bookingIndex !== -1) {
                     classToUpdate.bookings.splice(bookingIndex, 1)
                     classToUpdate.bookingsCount -= 1
-                    console.log('bookingIndex =============', classToUpdate.bookingsCount)
-
                     classToUpdate.isFull = classToUpdate.bookingsCount >= classToUpdate.size
                 }
             }
 
-            if (state.class && state.class.id === classId) {
-                const bookingIndex = state.class.bookings.findIndex((booking) => booking.id === bookingId)
+            if (state.class.data && state.class.data.id === classId) {
+                const bookingIndex = state.class.data.bookings.findIndex((booking) => booking.id === bookingId)
                 if (bookingIndex !== -1) {
-                    state.class.bookings.splice(bookingIndex, 1)
-                    state.class.bookingsCount -= 1
-                    state.class.isFull = state.class.bookingsCount >= state.class.size
+                    state.class.data.bookings.splice(bookingIndex, 1)
+                    state.class.data.bookingsCount -= 1
+                    state.class.data.isFull = state.class.data.bookingsCount >= state.class.data.size
                 }
             }
 
@@ -89,11 +103,11 @@ const classSlice = createSlice({
             const { id, deleteSeries } = action.payload
 
             if (deleteSeries) {
-                state.classes.results = state.classes.results.filter(
+                state.classes.data.results = state.classes.data.results.filter(
                     (cls) => cls.id !== id && cls?.parentClassId !== id
                 )
             } else {
-                state.classes.results = state.classes.results.filter((cls) => cls.id !== id)
+                state.classes.data.results = state.classes.data.results.filter((cls) => cls.id !== id)
             }
 
             return state
@@ -101,21 +115,21 @@ const classSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(createBookingSuccess, (state, action: PayloadAction<Booking>) => {
-            const classToUpdateIndex = state.classes.results.findIndex(
+            const classToUpdateIndex = state.classes.data.results.findIndex(
                 (cls) => cls.id === action.payload.bookedClass.id
             )
 
             if (classToUpdateIndex !== -1) {
-                const classToUpdate = state.classes.results[classToUpdateIndex]
+                const classToUpdate = state.classes.data.results[classToUpdateIndex]
                 classToUpdate.bookings.push({ id: action.payload.id, client: action.payload.client })
                 classToUpdate.bookingsCount += 1
                 classToUpdate.isFull = classToUpdate.bookingsCount >= classToUpdate.size
             }
 
-            if (state.class && state.class.id === action.payload.bookedClass.id) {
-                state.class.bookings.push(action.payload)
-                state.class.bookingsCount += 1
-                state.class.isFull = state.class.bookingsCount >= state.class.size
+            if (state.class.data && state.class.data.id === action.payload.bookedClass.id) {
+                state.class.data.bookings.push(action.payload)
+                state.class.data.bookingsCount += 1
+                state.class.data.isFull = state.class.data.bookingsCount >= state.class.data.size
             }
 
             return state

@@ -26,7 +26,7 @@ export function* createBookingSaga(action: PayloadAction<CreateBookingPayload>) 
 
 export function* fetchBookingsSaga(action: PayloadAction<Record<string, any>>) {
     try {
-        const response: AxiosResponse<Booking[]> = yield call(getFetchBookings, action.payload)
+        const response: AxiosResponse<ShortPaginatedResponse<Booking>> = yield call(getFetchBookings, action.payload)
         yield put(fetchBookingsSuccess(response.data))
     } catch (e) {}
 }
