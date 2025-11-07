@@ -3,9 +3,10 @@ import { eRole } from '@reformetypes/authTypes'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
 import { cancelSubscriptionSuccess } from './paymentSlice'
+import { AsyncResource } from '@reformetypes/common/ApiTypes'
 
 export type UserSliceType = {
-    currentUser?: User | null
+    currentUser: AsyncResource<User | null>
     instructors: ShortPaginatedResponse<User>
     instructor: User | null
     client: User | null
@@ -13,7 +14,11 @@ export type UserSliceType = {
 }
 
 const INITIAL_USER_STATE: UserSliceType = {
-    currentUser: null,
+    currentUser: {
+        fetching: false,
+        hasFetched: false,
+        data: null,
+    },
     instructors: {
         count: 0,
         next: null,
@@ -34,13 +39,20 @@ const userSlice = createSlice({
     name: 'userSlice',
     initialState: INITIAL_USER_STATE,
     reducers: {
-        fetchUserInfo: (state) => state,
+        fetchUserInfo: (state) => {
+            state.currentUser.fetching = true
+            return state
+        },
         fetchUserInfoSuccess: (state, action: PayloadAction<User>) => {
-            state.currentUser = action.payload
+            state.currentUser.fetching = false
+            state.currentUser.hasFetched = true
+            state.currentUser.data = action.payload
             return state
         },
         reset: (state) => {
-            state.currentUser = null
+            state.currentUser.fetching = false
+            state.currentUser.hasFetched = false
+            state.currentUser.data = null
             return state
         },
         fetchAllInstructors: (state, action: PayloadAction<Record<string, any>>) => state,
