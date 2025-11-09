@@ -16,7 +16,6 @@ const StripeModal: React.FC<StripeModalProps> = ({ isOpen, onClose, clientSecret
     return (
         <Modal
             isOpen={isOpen}
-            onClose={onClose}
             title="Complete your booking"
             content={
                 <Elements stripe={stripePromise} options={{ clientSecret }}>

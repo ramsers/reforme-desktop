@@ -5,7 +5,7 @@ import React, { Fragment } from 'react'
 
 type ModalProps = {
     isOpen: boolean
-    onClose: () => void
+    onClose?: () => void
     title: string
     content: React.ReactNode
     confirmText?: string
@@ -22,9 +22,10 @@ const Modal: React.FC<ModalProps> = ({
     onConfirm,
     btnColor = 'bg-blue-600',
 }) => {
+    const selfHandleClose = () => {}
     return (
         <Transition appear show={isOpen} as={Fragment}>
-            <Dialog as="div" className="relative z-50" onClose={onClose}>
+            <Dialog as="div" className="relative z-50" onClose={onClose || selfHandleClose}>
                 <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -62,7 +63,7 @@ const Modal: React.FC<ModalProps> = ({
                                 <div>{content}</div>
 
                                 <div className="mt-6 flex justify-end gap-2">
-                                    <Button variant="neutral" text="Close" onClick={onClose} />
+                                    {onClose && <Button variant="neutral" text="Close" onClick={onClose} />}
                                     {onConfirm && <Button variant="dashboard" text={confirmText} onClick={onConfirm} />}
                                 </div>
                             </Dialog.Panel>
