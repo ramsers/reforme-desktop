@@ -11,7 +11,7 @@ import CalendarList from '@components/calendar/CalendarList'
 import { useRouter, useSearchParams } from 'next/navigation'
 import AppRoutes from 'config/appRoutes'
 import Button from '@components/button/button'
-import SkeletonBlock from '@components/SkeletonBlock/SkeletonBlock'
+import SkeletonBlock from '@components/Loaders/SkeletonBlock'
 
 type ClassesCalendarOwnProps = {}
 

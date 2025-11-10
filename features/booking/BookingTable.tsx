@@ -59,25 +59,20 @@ const BookingTable: React.FC<BookingTableProps> = ({ classes, setCurrentPage, cu
                             className="grid cursor-pointer grid-cols-12 border-b hover:bg-gray-50 md:grid-cols-24"
                             onClick={() => handleOpenModal(cls)}
                         >
-                            {/* Date */}
                             <div className="col-span-3 font-bold md:col-span-6">
                                 <p>{dayjs(cls.date).format('D MMM')}</p>
                             </div>
 
-                            {/* Class name */}
                             <div className="col-span-3 truncate font-semibold md:col-span-6">{cls.title}</div>
 
-                            {/* Instructor */}
                             <div className="hidden truncate text-center font-semibold md:col-span-6 md:block">
                                 {cls?.instructor?.name ?? '—'}
                             </div>
 
-                            {/* Capacity */}
                             <div className="col-span-3 text-center font-semibold md:col-span-2">
                                 {`${cls.bookingsCount}/${cls.size}`}
                             </div>
 
-                            {/* Actions */}
                             <div className="col-span-3 flex flex-row flex-wrap items-center justify-center gap-2 md:col-span-4">
                                 <Button
                                     onClick={(e) => {

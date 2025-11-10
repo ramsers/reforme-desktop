@@ -35,8 +35,8 @@ const CreateEditInstructorForm: React.FC<CreateEditInstructorFormProps> = ({
 
     const instructor: User | null = useSelector(
         (state: RootState) =>
-            (state?.user?.instructors?.results.length &&
-                state?.user?.instructors.results.find((inst) => inst.id === selectedInstructorId)) ||
+            (state?.user?.instructors?.data.results.length &&
+                state?.user?.instructors.data.results.find((inst) => inst.id === selectedInstructorId)) ||
             null
     )
 

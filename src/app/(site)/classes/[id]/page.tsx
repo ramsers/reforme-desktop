@@ -18,7 +18,7 @@ import { createBooking, deleteUserBooking } from '@store/slices/bookingSlice'
 import Button from '@components/button/button'
 import { AsyncResource } from '@reformetypes/common/ApiTypes'
 import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
-import SkeletonBlock from '@components/SkeletonBlock/SkeletonBlock'
+import SkeletonBlock from '@components/Loaders/SkeletonBlock'
 import ProductList from '@features/classes/ProductList'
 
 type ClassPageProps = {

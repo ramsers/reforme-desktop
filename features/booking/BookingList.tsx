@@ -1,37 +1,20 @@
 import { RootState } from '@store/index'
-import React, { useEffect, useState } from 'react'
-import { connect, useDispatch, useSelector } from 'react-redux'
-import { Dispatch } from 'redux'
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import { fetchClasses } from '@store/slices/classSlice'
-import { fetchBookings } from '@store/slices/bookingSlice'
-import { Class } from '@reformetypes/classTypes'
 import { Booking } from '@reformetypes/bookingTypes'
-import CalendarBar from '@components/calendar/CalendarBar'
-import set = Reflect.set
-import CalendarList from '@components/calendar/CalendarList'
 import { getWeekRange } from '../../utils/dateUtils'
 import { useRouter } from 'next/navigation'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
 import AppRoutes from '../../config/appRoutes'
 import { deleteUserBooking } from '@store/slices/bookingSlice'
-import { AsyncResource } from '@reformetypes/common/ApiTypes'
-import SkeletonBlock from '@components/SkeletonBlock/SkeletonBlock'
+import SkeletonBlock from '@components/Loaders/SkeletonBlock'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import ClientBookingCard from './ClientBookingCard'
 
-type BookingListOwnProps = {
-    // bookings: AsyncResource<Booking[]>
-}
-
-type BookingListSliceProps = {}
-
-type BookingListDispatchProps = {}
-
-type BookingListProps = BookingListOwnProps & BookingListSliceProps & BookingListDispatchProps
-
-const BookingList: React.FC<BookingListProps> = ({}) => {
+const BookingList: React.FC = () => {
     const dispatch = useDispatch()
     const router = useRouter()
     const bookings = useSelector((state: RootState) => state.booking.bookings)
@@ -105,8 +88,4 @@ const BookingList: React.FC<BookingListProps> = ({}) => {
     )
 }
 
-const mapStateToProps = (store: RootState): BookingListSliceProps => ({})
-
-const mapDispatchToProps = (dispatch: Dispatch): BookingListDispatchProps => ({})
-
-export default connect(mapStateToProps, mapDispatchToProps)(BookingList)
+export default BookingList

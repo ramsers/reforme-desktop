@@ -9,10 +9,16 @@ import { RootState } from '@store/index'
 import { PlusIcon } from '@heroicons/react/24/solid'
 import CreateInstructorButtonModal from '@features/dashboard/instructors/CreateInstructorButtonModal'
 import InstructorsTable from '@features/dashboard/instructors/InstructorsTable'
+import { AsyncResource } from '@reformetypes/common/ApiTypes'
+import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
+import { User } from '@reformetypes/userTypes'
+import TableLoader from '@components/Loaders/TableLoader'
 
 const DashBoardInstructorsPage: React.FC = () => {
     const dispatch = useDispatch()
-    const instructors = useSelector((state: RootState) => state.user?.instructors)
+    const instructors: AsyncResource<ShortPaginatedResponse<User>> = useSelector(
+        (state: RootState) => state.user?.instructors
+    )
     const [currentPage, setCurrentPage] = useState(1)
     const [searchQuery, setSearchQuery] = useState('')
 
@@ -42,7 +48,15 @@ const DashBoardInstructorsPage: React.FC = () => {
                 />
             </div>
 
-            <InstructorsTable instructors={instructors} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+            {!instructors.hasFetched && instructors.data.results.length === 0 ? (
+                <TableLoader />
+            ) : (
+                <InstructorsTable
+                    instructors={instructors.data}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                />
+            )}
         </div>
     )
 }

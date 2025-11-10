@@ -1,5 +1,5 @@
 import Button from '@components/button/button'
-import SkeletonBlock from '@components/SkeletonBlock/SkeletonBlock'
+import SkeletonBlock from '@components/Loaders/SkeletonBlock'
 import { AsyncResource } from '@reformetypes/common/ApiTypes'
 import { User } from '@reformetypes/userTypes'
 import { RootState } from '@store/index'

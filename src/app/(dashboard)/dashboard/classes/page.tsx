@@ -1,25 +1,25 @@
 'use client'
-import ClassesCalendar from '@features/classes/ClassesCalendar'
 import React, { useEffect, useRef, useState } from 'react'
-import { PlusIcon } from '@heroicons/react/24/solid'
 import ClassesTable from '@features/dashboard/classes/ClassesTable'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@store/index'
 import { fetchClasses } from '@store/slices/classSlice'
-import SlidingModal from '@components/slidingModal/SlidingModal'
-import CreateClassForm from '@features/dashboard/classes/CreateEditClassForm'
 import CreateClassButtonModal from '@features/dashboard/classes/CreateClassButtonModal'
 import dayjs from 'dayjs'
-import page from 'src/app/(authentication)/authenticate/login/page'
-import { DateRange, Range, RangeKeyDict } from 'react-date-range'
-import { addDays } from 'date-fns'
+import { DateRange, Range } from 'react-date-range'
 import 'react-date-range/dist/styles.css'
 import 'react-date-range/dist/theme/default.css'
 import { Popover } from '@headlessui/react'
+import { AsyncResource } from '@reformetypes/common/ApiTypes'
+import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
+import { Class } from '@reformetypes/classTypes'
+import TableLoader from '@components/Loaders/TableLoader'
 
 const DashboardClassesPage: React.FC = () => {
     const dispatch = useDispatch()
-    const classes = useSelector((state: RootState) => state.class?.classes)
+    const classes: AsyncResource<ShortPaginatedResponse<Class>> = useSelector(
+        (state: RootState) => state.class?.classes
+    )
     const [isOpen, setIsOpen] = useState(false)
     const [currentPage, setCurrentPage] = useState(1)
     const [searchQuery, setSearchQuery] = useState('')
@@ -78,7 +78,11 @@ const DashboardClassesPage: React.FC = () => {
                     className="w-full rounded rounded-lg border bg-white p-2 text-sm lg:w-64"
                 />
             </div>
-            <ClassesTable classes={classes} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+            {!classes.hasFetched && classes.data.results.length === 0 ? (
+                <TableLoader />
+            ) : (
+                <ClassesTable classes={classes.data} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+            )}
         </div>
     )
 }

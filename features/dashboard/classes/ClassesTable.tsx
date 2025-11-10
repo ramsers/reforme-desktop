@@ -15,6 +15,7 @@ import PaginationButtons from '@components/table/PaginationButtons'
 import { TrashIcon } from '@heroicons/react/24/outline'
 import Modal from '@components/modal/Modal'
 import Button from '@components/button/button'
+import { AsyncResource } from '@reformetypes/common/ApiTypes'
 
 type ClassesTableOwnProps = {
     classes: ShortPaginatedResponse<Class>

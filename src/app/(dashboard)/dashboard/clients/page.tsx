@@ -1,6 +1,10 @@
 'use client'
+import TableLoader from '@components/Loaders/TableLoader'
 import ClientTable from '@features/dashboard/clients/ClientTable'
 import CreateClientButtonModal from '@features/dashboard/clients/CreateClientButtonModal'
+import { AsyncResource } from '@reformetypes/common/ApiTypes'
+import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
+import { User } from '@reformetypes/userTypes'
 import { RootState } from '@store/index'
 import { fetchAllClients } from '@store/slices/userSlice'
 import { useEffect, useState } from 'react'
@@ -8,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 const DashboardClientsPage = () => {
     const dispatch = useDispatch()
-    const clients = useSelector((state: RootState) => state.user.clients)
+    const clients: AsyncResource<ShortPaginatedResponse<User>> = useSelector((state: RootState) => state.user.clients)
     const [currentPage, setCurrentPage] = useState(1)
     const [searchQuery, setSearchQuery] = useState('')
 
@@ -39,7 +43,11 @@ const DashboardClientsPage = () => {
                     className="w-64 rounded rounded-lg border bg-white p-2 text-sm"
                 />
             </div>
-            <ClientTable clients={clients} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+            {!clients.hasFetched && clients.data.results.length === 0 ? (
+                <TableLoader />
+            ) : (
+                <ClientTable clients={clients.data} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+            )}
         </div>
     )
 }

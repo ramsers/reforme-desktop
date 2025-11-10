@@ -9,7 +9,7 @@ import { Product } from '@reformetypes/paymentTypes'
 import { createPurchaseIntent, fetchProducts } from '@store/slices/paymentSlice'
 import { useRouter } from 'next/navigation'
 import AppRoutes from 'config/appRoutes'
-import SkeletonBlock from '@components/SkeletonBlock/SkeletonBlock'
+import SkeletonBlock from '@components/Loaders/SkeletonBlock'
 
 const ProductList: React.FC = () => {
     const dispatch = useDispatch()
