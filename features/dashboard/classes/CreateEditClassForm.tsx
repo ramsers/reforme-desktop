@@ -14,6 +14,7 @@ import { Class, eRecurrenceType } from '@reformetypes/classTypes'
 import { User } from '@reformetypes/userTypes'
 import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
 import utc from 'dayjs/plugin/utc'
+import { AsyncResource } from '@reformetypes/common/ApiTypes'
 dayjs.extend(utc)
 
 type CreateEditClassFormOwnProps = {
@@ -32,8 +33,10 @@ type CreateEditClassFormProps = CreateEditClassFormOwnProps &
 
 const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIsOpen, title }) => {
     const dispatch = useDispatch()
-    const instructors: ShortPaginatedResponse<User> = useSelector((state: RootState) => state.user?.instructors)
-    const currentClass: Class | null = useSelector((state: RootState) => state.class?.class)
+    const instructors: AsyncResource<ShortPaginatedResponse<User>> = useSelector(
+        (state: RootState) => state.user?.instructors
+    )
+    const currentClass: AsyncResource<Class | null> = useSelector((state: RootState) => state.class?.class)
 
     const ClassSchema = Yup.object().shape({
         title: Yup.string().required('Title is required'),
@@ -42,7 +45,17 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
         date: Yup.date().required('Class date is required'),
         instructorId: Yup.string().optional().nullable(),
         recurrenceType: Yup.mixed<eRecurrenceType>().oneOf(Object.values(eRecurrenceType)).nullable(),
-        recurrenceDays: Yup.array().of(Yup.number().min(0).max(6)).nullable(),
+        recurrenceDays: Yup.array()
+            .of(Yup.number().min(0).max(6))
+            .nullable()
+            .when('recurrenceType', {
+                is: (val: eRecurrenceType | null) => val === eRecurrenceType.WEEKLY,
+                then: (schema) =>
+                    schema
+                        .required('Recurrence days are required for weekly classes')
+                        .min(1, 'At least one recurrence day must be selected'),
+                otherwise: (schema) => schema.nullable(),
+            }),
         updateSeries: Yup.boolean().optional().nullable(),
     })
 
@@ -54,16 +67,16 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
         <div className="flex flex-col gap-5">
             <Formik
                 initialValues={{
-                    id: currentClass?.id || '',
-                    title: currentClass?.title || '',
-                    description: currentClass?.description || '',
-                    size: currentClass?.size || 15,
+                    id: currentClass?.data?.id || '',
+                    title: currentClass?.data?.title || '',
+                    description: currentClass?.data?.description || '',
+                    size: currentClass?.data?.size || 15,
                     date:
-                        (currentClass?.date && dayjs(currentClass.date).format('YYYY-MM-DD HH:mm')) ||
+                        (currentClass?.data?.date && dayjs(currentClass.data?.date).format('YYYY-MM-DD HH:mm')) ||
                         dayjs().format('YYYY-MM-DD HH:mm'),
-                    instructorId: currentClass?.instructor?.id || null,
-                    recurrenceType: currentClass?.recurrenceType || null,
-                    recurrenceDays: currentClass?.recurrenceDays?.map((d) => d.toString()) || null,
+                    instructorId: currentClass?.data?.instructor?.id || null,
+                    recurrenceType: currentClass?.data?.recurrenceType || null,
+                    recurrenceDays: currentClass?.data?.recurrenceDays?.map((d) => d.toString()) || null,
                     updateSeries: false,
                 }}
                 validationSchema={ClassSchema}
@@ -88,7 +101,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                 }}
                 enableReinitialize
             >
-                {({ isSubmitting, handleSubmit, values }) => (
+                {({ isSubmitting, handleSubmit, values, isValid }) => (
                     <SlidingModal
                         title={title}
                         isOpen={isOpen}
@@ -99,6 +112,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                             setIsOpen(false)
                             dispatch(clearClass())
                         }}
+                        isValid={isValid}
                     >
                         <Form className="flex flex-col gap-4">
                             <div>
@@ -185,7 +199,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                                     className="focus:ring-brown-default mt-1 w-full rounded-lg border px-3 py-2 focus:ring"
                                 >
                                     <option value="">Select instructor</option>
-                                    {instructors?.results.map((instructor) => (
+                                    {instructors?.data?.results?.map((instructor) => (
                                         <option value={instructor.id}>{instructor.name}</option>
                                     ))}
                                 </Field>

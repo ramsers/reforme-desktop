@@ -86,7 +86,7 @@ const InstructorsTable: React.FC<InstructorsTableProps> = ({ instructors, setCur
 
             <CreateEditInstructorForm
                 isOpen={isOpen}
-                setIsOpen={() => setIsOpen(false)}
+                setIsOpen={setIsOpen}
                 title="Edit instructor"
                 selectedInstructorId={selectedInstructorId}
             />

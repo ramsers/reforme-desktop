@@ -39,7 +39,7 @@ const DashboardClientsPage = () => {
                         setSearchQuery(e.target.value)
                         setCurrentPage(1)
                     }}
-                    placeholder="Search by clas name or instructor"
+                    placeholder="Search by name or email"
                     className="w-64 rounded rounded-lg border bg-white p-2 text-sm"
                 />
             </div>

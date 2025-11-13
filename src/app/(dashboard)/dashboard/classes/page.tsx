@@ -74,7 +74,7 @@ const DashboardClassesPage: React.FC = () => {
                         setSearchQuery(e.target.value)
                         setCurrentPage(1)
                     }}
-                    placeholder="Search by clas name or instructor"
+                    placeholder="Search by class name or instructor"
                     className="w-full rounded rounded-lg border bg-white p-2 text-sm lg:w-64"
                 />
             </div>

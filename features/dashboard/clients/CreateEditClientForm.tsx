@@ -38,7 +38,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ title, isOpen
                 role: client?.role || eRole.CLIENT,
             }}
             validationSchema={CreateUserSchema}
-            onSubmit={(values, { setSubmitting }) => {
+            onSubmit={(values, { setSubmitting, resetForm }) => {
                 console.log('VALUES =============', values)
                 const { id, ...payload } = values
 
@@ -49,12 +49,12 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ title, isOpen
                 }
 
                 setIsOpen(false)
-
+                resetForm()
                 setSubmitting(false)
             }}
             enableReinitialize
         >
-            {({ isSubmitting, handleSubmit, values }) => (
+            {({ isSubmitting, handleSubmit, values, isValid, resetForm }) => (
                 <SlidingModal
                     title={title}
                     isOpen={isOpen}
@@ -63,7 +63,9 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ title, isOpen
                     onClick={handleSubmit}
                     onClose={() => {
                         setIsOpen(false)
+                        resetForm()
                     }}
+                    isValid={isValid}
                 >
                     <Form className="flex flex-col gap-4">
                         <div>

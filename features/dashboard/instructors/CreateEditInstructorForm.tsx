@@ -9,10 +9,11 @@ import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { createUser, updateUser } from '@store/slices/userSlice'
 import SlidingModal from '@components/slidingModal/SlidingModal'
 import { eRole } from '@reformetypes/authTypes'
+import { clearClass } from '@store/slices/classSlice'
 
 type CreateEditInstructorFormOwnProps = {
     isOpen: boolean
-    setIsOpen: () => void
+    setIsOpen: (opened: boolean) => void
     title: string
     selectedInstructorId?: string | null
 }
@@ -66,22 +67,24 @@ const CreateEditInstructorForm: React.FC<CreateEditInstructorFormProps> = ({
                         dispatch(updateUser(values))
                     }
 
-                    setIsOpen()
+                    setIsOpen(false)
                     resetForm()
                 }}
                 enableReinitialize
             >
-                {({ isSubmitting, handleSubmit }) => (
+                {({ isSubmitting, handleSubmit, isValid, resetForm }) => (
                     <SlidingModal
                         title={title}
                         isOpen={isOpen}
                         setIsOpen={setIsOpen}
                         content={'Save'}
                         onClick={handleSubmit}
-                        // onClose={() => {
-                        //     setIsOpen(false)
-                        //     dispatch(clearClass())
-                        // }}
+                        isValid={isValid}
+                        onClose={() => {
+                            setIsOpen(false)
+                            dispatch(clearClass())
+                            resetForm()
+                        }}
                     >
                         <Form className="flex flex-col gap-4">
                             <div>

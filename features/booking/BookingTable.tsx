@@ -26,7 +26,7 @@ const BookingTable: React.FC<BookingTableProps> = ({ classes, setCurrentPage, cu
     const [isAddClientOpen, setIsAddClientOpen] = useState(false)
     const [selectedClassId, setSelectedClassId] = useState<string | null>(null)
     const bookedClass = useSelector((state: RootState) =>
-        selectedClassId ? state.class.classes?.results.find((cls) => cls.id === selectedClassId) || null : null
+        selectedClassId ? state.class.classes?.data?.results.find((cls) => cls.id === selectedClassId) || null : null
     )
 
     const handleOpenModal = (cls: Class) => {
@@ -50,14 +50,16 @@ const BookingTable: React.FC<BookingTableProps> = ({ classes, setCurrentPage, cu
                     <div className="col-span-3 md:col-span-6">Class</div>
                     <div className="hidden text-center md:col-span-6 md:block">Instructor</div>
                     <div className="col-span-3 text-center md:col-span-2">Capacity</div>
-                    <div className="col-span-3 text-center md:col-span-4">Actions</div>
+                    <div className="col-span-3 text-right md:col-span-4">Actions</div>
                 </TableHeader>
                 {classes.count > 0 ? (
                     classes.results.map((cls) => (
                         <TableRow
                             key={cls.id}
                             className="grid cursor-pointer grid-cols-12 border-b hover:bg-gray-50 md:grid-cols-24"
-                            onClick={() => handleOpenModal(cls)}
+                            onClick={() =>
+                                (cls.bookingsCount > 0 && handleOpenModal(cls)) || handleOpenAddClientModal(cls)
+                            }
                         >
                             <div className="col-span-3 font-bold md:col-span-6">
                                 <p>{dayjs(cls.date).format('D MMM')}</p>
@@ -73,16 +75,19 @@ const BookingTable: React.FC<BookingTableProps> = ({ classes, setCurrentPage, cu
                                 {`${cls.bookingsCount}/${cls.size}`}
                             </div>
 
-                            <div className="col-span-3 flex flex-row flex-wrap items-center justify-center gap-2 md:col-span-4">
-                                <Button
-                                    onClick={(e) => {
-                                        e.stopPropagation()
-                                        handleOpenModal(cls)
-                                    }}
-                                    variant="text"
-                                    icon={<PencilIcon />}
-                                    className="p-0 text-xs"
-                                />
+                            <div className="col-span-3 flex flex-row flex-wrap items-center justify-end gap-2 md:col-span-4">
+                                {cls.bookingsCount > 0 && (
+                                    <Button
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                            handleOpenModal(cls)
+                                        }}
+                                        variant="text"
+                                        icon={<PencilIcon />}
+                                        className="p-0 text-xs"
+                                    />
+                                )}
+
                                 <Button
                                     onClick={(e) => {
                                         e.stopPropagation()
@@ -101,13 +106,7 @@ const BookingTable: React.FC<BookingTableProps> = ({ classes, setCurrentPage, cu
                 )}
                 <PaginationButtons totalPages={totalPages} currentPage={currentPage} onPageChange={setCurrentPage} />
             </TableContainer>
-            <ManageClassBookingModal
-                isOpen={isOpen}
-                onClose={() => setIsOpen(false)}
-                bookedClass={bookedClass}
-                handleSubmit={() => console.log('hello')}
-                setIsOpen={setIsOpen}
-            />
+            <ManageClassBookingModal isOpen={isOpen} bookedClass={bookedClass} setIsOpen={setIsOpen} />
             <AddClientModal
                 isOpen={isAddClientOpen}
                 onClose={() => setIsAddClientOpen(false)}

@@ -20,7 +20,6 @@ const AddClientModal: React.FC<AddClientModalProps> = ({ isOpen, onClose, setIsO
 
     useEffect(() => {
         if (!clients.data.results.length) {
-            console.log('IS infinite loop===================')
             dispatch(fetchAllClients({ page: 1 }))
         }
     }, [])
@@ -30,7 +29,6 @@ const AddClientModal: React.FC<AddClientModalProps> = ({ isOpen, onClose, setIsO
     }
 
     const handleCreateBooking = () => {
-        console.log('handleCreateBooking===================', selectedClientId, classId)
         if (!selectedClientId || !classId) return null
         dispatch(createBooking({ clientId: selectedClientId, classId: classId }))
         setIsOpen(false)
@@ -45,7 +43,9 @@ const AddClientModal: React.FC<AddClientModalProps> = ({ isOpen, onClose, setIsO
             onClick={handleCreateBooking}
             onClose={() => {
                 setIsOpen(false)
+                setSelectedClientId(null)
             }}
+            isValid={!!selectedClientId}
         >
             <>
                 <p>Yolo</p>

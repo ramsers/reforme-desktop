@@ -43,7 +43,7 @@ const DashBoardInstructorsPage: React.FC = () => {
                         setSearchQuery(e.target.value)
                         setCurrentPage(1)
                     }}
-                    placeholder="Search by class or instructor"
+                    placeholder="Search by name or email"
                     className="w-full rounded rounded-lg border bg-white p-2 text-sm md:w-64"
                 />
             </div>

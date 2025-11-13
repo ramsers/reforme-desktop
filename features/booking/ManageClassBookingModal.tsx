@@ -7,25 +7,16 @@ import BookerModalRow from './BookerModalRow'
 type ManageClassBookingModalProps = {
     isOpen: boolean
     setIsOpen: (opened: boolean) => void
-    onClose: () => void
     bookedClass: Class | null
-    handleSubmit: () => void
 }
 
-const ManageClassBookingModal: React.FC<ManageClassBookingModalProps> = ({
-    isOpen,
-    onClose,
-    bookedClass,
-    setIsOpen,
-    handleSubmit,
-}) => {
+const ManageClassBookingModal: React.FC<ManageClassBookingModalProps> = ({ isOpen, bookedClass, setIsOpen }) => {
     return (
         <SlidingModal
             title={'Manage Bookings'}
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             content={'Save'}
-            onClick={handleSubmit}
             onClose={() => {
                 setIsOpen(false)
             }}

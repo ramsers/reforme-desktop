@@ -11,9 +11,10 @@ type SlidingModalOwnProps = {
     setIsOpen: (opened: boolean) => void
     title: string
     children: React.ReactNode
-    onClick: () => void
+    onClick?: () => void
     content: string
     onClose?: () => void
+    isValid?: boolean
 }
 
 type SlidingModalSliceProps = {}
@@ -30,11 +31,11 @@ const SlidingModal: React.FC<SlidingModalProps> = ({
     onClick,
     content,
     onClose,
+    isValid,
 }) => {
     return (
         <Transition show={isOpen} as={Fragment}>
             <Dialog as="div" className="relative z-50" onClose={() => (onClose && onClose()) || setIsOpen(false)}>
-                {/* Overlay */}
                 <Transition.Child
                     as={Fragment}
                     enter="ease-in-out duration-300"
@@ -47,7 +48,6 @@ const SlidingModal: React.FC<SlidingModalProps> = ({
                     <div className="fixed inset-0 bg-black/30" />
                 </Transition.Child>
 
-                {/* Panel container */}
                 <div className="fixed inset-0 overflow-hidden">
                     <div className="absolute inset-0 flex justify-end">
                         <Transition.Child
@@ -74,36 +74,23 @@ const SlidingModal: React.FC<SlidingModalProps> = ({
                                     {children}
                                 </div>
 
-                                <div className="border-gray-10 absolute right-0 bottom-0 left-0 flex justify-end gap-2 border-t bg-white p-4 inset-shadow-2xs">
-                                    <Button
-                                        text="Cancel"
-                                        onClick={() => (onClose && onClose()) || setIsOpen(false)}
-                                        className="w-[50%]"
-                                        variant="neutral"
-                                    />
-                                    {/* <button
-                                        onClick={() => (onClose && onClose()) || setIsOpen(false)}
-                                        className="w-full rounded-md border border-gray-300 px-4 py-2 text-gray-700"
-                                    >
-                                        Cancel
-                                    </button> */}
-
-                                    <Button
-                                        type="submit"
-                                        text={content}
-                                        onClick={() => onClick()}
-                                        className="w-[50%]"
-                                    />
-
-                                    {/* <button
-                                        onClick={() => onClick()}
-                                        type={'submit'}
-                                        disabled={false}
-                                        className="bg-brown-default w-full rounded-md px-4 py-2 font-semibold text-white"
-                                    >
-                                        {content}
-                                    </button> */}
-                                </div>
+                                {onClick && (
+                                    <div className="border-gray-10 absolute right-0 bottom-0 left-0 flex justify-end gap-2 border-t bg-white p-4 inset-shadow-2xs">
+                                        <Button
+                                            text="Cancel"
+                                            onClick={() => (onClose && onClose()) || setIsOpen(false)}
+                                            className="w-[50%]"
+                                            variant="neutral"
+                                        />
+                                        <Button
+                                            type="submit"
+                                            text={content}
+                                            onClick={() => onClick()}
+                                            className="w-[50%]"
+                                            disabled={!isValid}
+                                        />
+                                    </div>
+                                )}
                             </Dialog.Panel>
                         </Transition.Child>
                     </div>
