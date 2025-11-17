@@ -1,5 +1,8 @@
 import SlidingModal from '@components/slidingModal/SlidingModal'
 import UserSelect from '@features/user/UserSelect'
+import { AsyncResource } from '@reformetypes/common/ApiTypes'
+import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
+import { User } from '@reformetypes/userTypes'
 import { RootState } from '@store/index'
 import { createBooking } from '@store/slices/bookingSlice'
 import { fetchAllClients } from '@store/slices/userSlice'
@@ -15,13 +18,11 @@ type AddClientModalProps = {
 
 const AddClientModal: React.FC<AddClientModalProps> = ({ isOpen, onClose, setIsOpen, classId }) => {
     const dispatch = useDispatch()
-    const clients = useSelector((state: RootState) => state.user.clients)
+    const clients: AsyncResource<ShortPaginatedResponse<User>> = useSelector((state: RootState) => state.user.clients)
     const [selectedClientId, setSelectedClientId] = useState<string | null>(null)
 
     useEffect(() => {
-        if (!clients.data.results.length) {
-            dispatch(fetchAllClients({ page: 1 }))
-        }
+        dispatch(fetchAllClients({ all: true }))
     }, [])
 
     const handleSetSelectedClient = (id: string) => {
@@ -36,7 +37,7 @@ const AddClientModal: React.FC<AddClientModalProps> = ({ isOpen, onClose, setIsO
 
     return (
         <SlidingModal
-            title={'Manage Bookings'}
+            title={'Add clients'}
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             content={'Save'}
@@ -48,7 +49,7 @@ const AddClientModal: React.FC<AddClientModalProps> = ({ isOpen, onClose, setIsO
             isValid={!!selectedClientId}
         >
             <>
-                <p>Yolo</p>
+                <p>Search or select a client from the list below</p>
                 <UserSelect
                     users={clients.data.results}
                     selectedUserId={selectedClientId}

@@ -9,8 +9,9 @@ type ModalProps = {
     title: string
     content: React.ReactNode
     confirmText?: string
-    onConfirm?: () => void
+    onConfirm?: (args?: any) => void
     btnColor?: string
+    confirmDisabled?: boolean
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -21,6 +22,7 @@ const Modal: React.FC<ModalProps> = ({
     confirmText = 'Confirm',
     onConfirm,
     btnColor = 'bg-blue-600',
+    confirmDisabled = false,
 }) => {
     const selfHandleClose = () => {}
     return (
@@ -64,7 +66,14 @@ const Modal: React.FC<ModalProps> = ({
 
                                 <div className="mt-6 flex justify-end gap-2">
                                     {onClose && <Button variant="neutral" text="Close" onClick={onClose} />}
-                                    {onConfirm && <Button variant="dashboard" text={confirmText} onClick={onConfirm} />}
+                                    {onConfirm && (
+                                        <Button
+                                            variant="dashboard"
+                                            text={confirmText}
+                                            onClick={onConfirm}
+                                            disabled={confirmDisabled}
+                                        />
+                                    )}
                                 </div>
                             </Dialog.Panel>
                         </Transition.Child>

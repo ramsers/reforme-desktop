@@ -23,11 +23,11 @@ const Button: React.FC<ButtonProps> = ({
         'group inline-flex items-center justify-center font-semibold transition-colors focus:outline-none cursor-pointer text-sm disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-600'
 
     const variants: Record<ButtonVariant, string> = {
-        default: 'bg-brown-default text-main hover:bg-gray-10 hover:text-brown-default rounded-lg px-3 py-2',
-        dashboard: 'bg-dashboard-action text-main hover:bg-white hover:text-dashboard-action rounded-lg px-3 py-2',
-        neutral: 'bg-gray-10 text-brown-default hover:bg-dashboard-action hover:text-white rounded-lg px-3 py-2',
-        danger: 'bg-red-700 text-white hover:bg-red-500 rounded-lg px-3 py-2',
-        text: 'bg-transparent text-blue-600 hover:text-black! px-1 py-1',
+        default: 'bg-brown-default text-main hover:bg-gray-10 hover:text-brown-default rounded-lg px-3 py-2.5',
+        dashboard: 'bg-dashboard-action text-main hover:bg-white hover:text-dashboard-action rounded-lg px-3 py-2.5',
+        neutral: 'bg-gray-10 text-brown-default hover:bg-dashboard-action hover:text-white rounded-lg px-3 py-2.5',
+        danger: 'bg-red-700 text-white hover:bg-red-500 rounded-lg px-3 py-2.5',
+        text: 'bg-transparent text-blue-600 hover:text-black!',
     }
 
     return (

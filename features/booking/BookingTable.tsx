@@ -58,7 +58,7 @@ const BookingTable: React.FC<BookingTableProps> = ({ classes, setCurrentPage, cu
                             key={cls.id}
                             className="grid cursor-pointer grid-cols-12 border-b hover:bg-gray-50 md:grid-cols-24"
                             onClick={() =>
-                                (cls.bookingsCount > 0 && handleOpenModal(cls)) || handleOpenAddClientModal(cls)
+                                cls.bookingsCount > 0 ? handleOpenModal(cls) : handleOpenAddClientModal(cls)
                             }
                         >
                             <div className="col-span-3 font-bold md:col-span-6">

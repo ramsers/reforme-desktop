@@ -60,7 +60,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
     })
 
     useEffect(() => {
-        dispatch(fetchAllInstructors({}))
+        dispatch(fetchAllInstructors({ all: true }))
     }, [dispatch])
 
     return (
