@@ -2,6 +2,7 @@ const APIRoutes = {
     AUTH: {
         SIGN_UP: '/authentication/sign-up',
         LOGIN: '/authentication/login',
+        FORGOT_PASSWORD: '/authentication/forgot-password',
     },
     CLASSES: {
         MAIN: '/classes',

@@ -7,7 +7,7 @@ import { connect, useDispatch } from 'react-redux'
 import { Dispatch } from 'redux'
 import * as Yup from 'yup'
 import { eRole, SignUpPayload } from '@reformetypes/authTypes'
-import { signUp } from '@store/slices/signUpSlice'
+import { signUp } from '@store/slices/authSlice'
 import { useRouter, useSearchParams } from 'next/navigation'
 import AppRoutes from '../../config/appRoutes'
 

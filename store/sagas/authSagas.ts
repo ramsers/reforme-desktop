@@ -1,11 +1,12 @@
 import { PayloadAction } from '@reduxjs/toolkit'
 import { AxiosResponse } from 'axios'
-import { AccessTokenResponse, eRole, LoginPayload, SignUpPayload } from '@reformetypes/authTypes'
+import { AccessTokenResponse, eRole, ForgotPasswordPayload, LoginPayload, SignUpPayload } from '@reformetypes/authTypes'
 import { call, put, takeLatest } from 'redux-saga/effects'
-import { postLogin, postSignUp } from '@api/auth'
-import { login, logout, signUp } from '@store/slices/signUpSlice'
+import { postForgotPassword, postLogin, postSignUp } from '@api/auth'
+import { forgotPassword, login, logout, signUp } from '@store/slices/authSlice'
 import { connectApi } from '../../config/axios.config'
 import { fetchUserInfoSuccess, reset } from '@store/slices/userSlice'
+import { toastSuccess } from 'lib/toast'
 
 export function* setAccessToken(accessToken: string) {
     localStorage.setItem('accessToken', accessToken)
@@ -13,7 +14,6 @@ export function* setAccessToken(accessToken: string) {
 
 export function* signUpSaga(action: PayloadAction<SignUpPayload>) {
     try {
-        // console.log('HITTTING SAGA =============')
         const response: AxiosResponse<AccessTokenResponse> = yield call(postSignUp, {
             name: action.payload.name,
             email: action.payload.email,
@@ -48,10 +48,18 @@ export function* logoutSaga() {
     } catch (e) {}
 }
 
-function* signUpFormSaga() {
+export function* forgotPasswordSaga(action: PayloadAction<ForgotPasswordPayload>) {
+    try {
+        yield call(postForgotPassword, action.payload)
+        toastSuccess('If this email exists an email link will be sent')
+    } catch (e) {}
+}
+
+function* authSagas() {
     yield takeLatest(signUp.type, signUpSaga)
     yield takeLatest(login.type, loginSaga)
     yield takeLatest(logout.type, logoutSaga)
+    yield takeLatest(forgotPassword.type, forgotPasswordSaga)
 }
 
-export default signUpFormSaga
+export default authSagas

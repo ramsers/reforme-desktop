@@ -1,12 +1,12 @@
-import { all, takeEvery, put, delay, call, spawn } from 'redux-saga/effects'
-import signUpFormSaga from '@store/sagas/signUpSagas'
+import { all, call, spawn } from 'redux-saga/effects'
+import authSagas from '@store/sagas/authSagas'
 import classesSagas from '@store/sagas/classSagas'
 import userSagas from '@store/sagas/userSagas'
 import bookingSagas from '@store/sagas/bookingSagas'
 import PaymentSagas from './sagas/paymentSagas'
 
 export default function* rootSaga() {
-    const sagas = [signUpFormSaga, classesSagas, userSagas, bookingSagas, PaymentSagas]
+    const sagas = [authSagas, classesSagas, userSagas, bookingSagas, PaymentSagas]
     yield all(
         sagas.map((saga) =>
             spawn(function* () {

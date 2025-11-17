@@ -4,7 +4,7 @@ import React, { use } from 'react'
 import AppRoutes from '../../config/appRoutes'
 import { useRouter } from 'next/navigation'
 import { useDispatch } from 'react-redux'
-import { logout } from '@store/slices/signUpSlice'
+import { logout } from '@store/slices/authSlice'
 
 type SideBarProps = {
     open: boolean
