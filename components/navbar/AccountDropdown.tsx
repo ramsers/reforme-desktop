@@ -14,7 +14,7 @@ import {
     UserCircleIcon,
     UserIcon,
 } from '@heroicons/react/24/solid'
-import { logout } from '@store/slices/signUpSlice'
+import { logout } from '@store/slices/authSlice'
 import { useRouter } from 'next/navigation'
 import AppRoutes from '../../config/appRoutes'
 

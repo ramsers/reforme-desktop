@@ -1,5 +1,5 @@
-import {string} from "@redux-saga/is";
-import {User} from "@reformetypes/userTypes";
+import { string } from '@redux-saga/is'
+import { User } from '@reformetypes/userTypes'
 
 export type SignUpPayload = SignUp & {
     onSuccess?: () => void
@@ -28,4 +28,8 @@ export enum eRole {
 export type LoginPayload = {
     email: string
     password: string
+}
+
+export type ForgotPasswordPayload = {
+    email: string
 }
