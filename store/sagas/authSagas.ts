@@ -1,12 +1,19 @@
 import { PayloadAction } from '@reduxjs/toolkit'
 import { AxiosResponse } from 'axios'
-import { AccessTokenResponse, eRole, ForgotPasswordPayload, LoginPayload, SignUpPayload } from '@reformetypes/authTypes'
+import {
+    AccessTokenResponse,
+    eRole,
+    ForgotPasswordPayload,
+    LoginPayload,
+    ResetPasswordPayload,
+    SignUpPayload,
+} from '@reformetypes/authTypes'
 import { call, put, takeLatest } from 'redux-saga/effects'
-import { postForgotPassword, postLogin, postSignUp } from '@api/auth'
-import { forgotPassword, login, logout, signUp } from '@store/slices/authSlice'
+import { postForgotPassword, postLogin, postResetPassword, postSignUp } from '@api/auth'
+import { forgotPassword, login, logout, resetPassword, signUp } from '@store/slices/authSlice'
 import { connectApi } from '../../config/axios.config'
 import { fetchUserInfoSuccess, reset } from '@store/slices/userSlice'
-import { toastSuccess } from 'lib/toast'
+import { toastError, toastSuccess } from 'lib/toast'
 
 export function* setAccessToken(accessToken: string) {
     localStorage.setItem('accessToken', accessToken)
@@ -51,8 +58,23 @@ export function* logoutSaga() {
 export function* forgotPasswordSaga(action: PayloadAction<ForgotPasswordPayload>) {
     try {
         yield call(postForgotPassword, action.payload)
-        toastSuccess('If this email exists an email link will be sent')
-    } catch (e) {}
+        toastSuccess('If this email exists, an email link will be sent')
+    } catch (e) {
+        toastError('There was an error, please try again.')
+    }
+}
+
+export function* resetPasswordSaga(action: PayloadAction<ResetPasswordPayload>) {
+    try {
+        yield call(postResetPassword, action.payload)
+        toastSuccess('Password succesfully updated')
+
+        if (action.payload.onSuccess) {
+            yield call(action.payload.onSuccess)
+        }
+    } catch (e) {
+        toastError('There was an error, please try again.')
+    }
 }
 
 function* authSagas() {
@@ -60,6 +82,7 @@ function* authSagas() {
     yield takeLatest(login.type, loginSaga)
     yield takeLatest(logout.type, logoutSaga)
     yield takeLatest(forgotPassword.type, forgotPasswordSaga)
+    yield takeLatest(resetPassword.type, resetPasswordSaga)
 }
 
 export default authSagas

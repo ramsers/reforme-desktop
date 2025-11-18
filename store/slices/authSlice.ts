@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { LoginPayload, SignUpPayload, ForgotPasswordPayload } from '@reformetypes/authTypes'
+import { LoginPayload, SignUpPayload, ForgotPasswordPayload, ResetPasswordPayload } from '@reformetypes/authTypes'
 
 export type AuthSliceType = {}
 
@@ -13,8 +13,9 @@ const authSlice = createSlice({
         login: (state, action: PayloadAction<LoginPayload>) => state,
         logout: (state) => state,
         forgotPassword: (state, action: PayloadAction<ForgotPasswordPayload>) => state,
+        resetPassword: (state, action: PayloadAction<ResetPasswordPayload>) => state,
     },
 })
 
-export const { signUp, login, logout, forgotPassword } = authSlice.actions
+export const { signUp, login, logout, forgotPassword, resetPassword } = authSlice.actions
 export default authSlice.reducer

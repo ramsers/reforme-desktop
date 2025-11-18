@@ -33,3 +33,9 @@ export type LoginPayload = {
 export type ForgotPasswordPayload = {
     email: string
 }
+
+export type ResetPasswordPayload = {
+    password: string
+    token: string
+    onSuccess?: () => void
+}

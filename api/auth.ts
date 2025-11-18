@@ -1,4 +1,10 @@
-import { AccessTokenResponse, ForgotPasswordPayload, LoginPayload, SignUp } from '@reformetypes/authTypes'
+import {
+    AccessTokenResponse,
+    ForgotPasswordPayload,
+    LoginPayload,
+    SignUp,
+    ResetPasswordPayload,
+} from '@reformetypes/authTypes'
 import { AxiosResponse } from 'axios'
 import apiClient from '../config/axios.config'
 import APIRoutes from '../config/reformeApiRoutes'
@@ -12,6 +18,10 @@ export const postLogin = (loginData: LoginPayload): Promise<AxiosResponse<Access
 }
 
 export const postForgotPassword = (data: ForgotPasswordPayload): Promise<AxiosResponse<void>> => {
-    console.log('Datae ==============', data)
     return apiClient.post(APIRoutes.AUTH.FORGOT_PASSWORD, data)
+}
+
+export const postResetPassword = (data: ResetPasswordPayload): Promise<AxiosResponse<void>> => {
+    console.log('Datae ==============', data)
+    return apiClient.post(APIRoutes.AUTH.RESET_PASSWORD, data)
 }
