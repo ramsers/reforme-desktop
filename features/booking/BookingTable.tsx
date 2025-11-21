@@ -7,7 +7,7 @@ import React, { useState } from 'react'
 import ManageClassBookingModal from './ManageClassBookingModal'
 import { useSelector } from 'react-redux'
 import { RootState } from '@store/index'
-import AddClientModal from './AddClientModel'
+import AddClientModal from './AddClientModal'
 import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
 import TableContainer from '@components/table/TableContainer'
 import TableHeader from '@components/table/TableHeader'
@@ -75,7 +75,7 @@ const BookingTable: React.FC<BookingTableProps> = ({ classes, setCurrentPage, cu
                                 {`${cls.bookingsCount}/${cls.size}`}
                             </div>
 
-                            <div className="col-span-3 flex flex-row flex-wrap items-center justify-end gap-2 md:col-span-4">
+                            <div className="col-span-3 flex flex-row flex-wrap items-center justify-center gap-2 md:col-span-4 md:justify-end">
                                 {cls.bookingsCount > 0 && (
                                     <Button
                                         onClick={(e) => {

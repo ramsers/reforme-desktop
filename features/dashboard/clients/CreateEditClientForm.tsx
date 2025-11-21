@@ -27,7 +27,6 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ title, isOpen
             .notRequired(),
     })
 
-    console.log('CLIENT IN MODAL =============', client)
     return (
         <Formik
             initialValues={{
@@ -39,7 +38,6 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ title, isOpen
             }}
             validationSchema={CreateUserSchema}
             onSubmit={(values, { setSubmitting, resetForm }) => {
-                console.log('VALUES =============', values)
                 const { id, ...payload } = values
 
                 if (!id) {
@@ -66,6 +64,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ title, isOpen
                         resetForm()
                     }}
                     isValid={isValid}
+                    isSubmitting={isSubmitting}
                 >
                     <Form className="flex flex-col gap-4">
                         <div>

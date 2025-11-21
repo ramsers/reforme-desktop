@@ -23,7 +23,14 @@ const ManageClassBookingModal: React.FC<ManageClassBookingModalProps> = ({ isOpe
         >
             <>
                 {bookedClass?.bookings.map((booking) => {
-                    return <BookerModalRow key={booking.id} booking={booking} bookedClassId={bookedClass.id} />
+                    return (
+                        <BookerModalRow
+                            key={booking.id}
+                            booking={booking}
+                            bookedClassId={bookedClass.id}
+                            setIsOpen={setIsOpen}
+                        />
+                    )
                 })}
             </>
         </SlidingModal>
