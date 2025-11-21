@@ -113,6 +113,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                             dispatch(clearClass())
                         }}
                         isValid={isValid}
+                        isSubmitting={isSubmitting}
                     >
                         <Form className="flex flex-col gap-4">
                             <div>
@@ -162,9 +163,9 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                                     name="recurrenceType"
                                     className="focus:ring-brown-default mt-1 w-full rounded-lg border px-3 py-2 focus:ring"
                                 >
-                                    <option value="">No recurrence</option>
+                                    <option value={''}>No recurrence</option>
                                     {Object.entries(eRecurrenceType).map(([key, value]) => (
-                                        <option key={key} value={value}>
+                                        <option key={key} value={value || ''}>
                                             {key.charAt(0) + key.slice(1).toLowerCase()}
                                         </option>
                                     ))}
@@ -200,7 +201,9 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                                 >
                                     <option value="">Select instructor</option>
                                     {instructors?.data?.results?.map((instructor) => (
-                                        <option value={instructor.id}>{instructor.name}</option>
+                                        <option key={instructor.id} value={instructor.id}>
+                                            {instructor.name}
+                                        </option>
                                     ))}
                                 </Field>
                                 <ErrorMessage name="instructorId" component="div" className="text-sm text-red-500" />

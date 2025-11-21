@@ -85,6 +85,7 @@ const CreateEditInstructorForm: React.FC<CreateEditInstructorFormProps> = ({
                             dispatch(clearClass())
                             resetForm()
                         }}
+                        isSubmitting={isSubmitting}
                     >
                         <Form className="flex flex-col gap-4">
                             <div>

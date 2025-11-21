@@ -73,12 +73,6 @@ const ResetPasswordForm: React.FC = () => {
                             </div>
 
                             <Button text="Reset Password" type="submit" disabled={!canSubmit} />
-                            {/* //     type="submit"
-                            //     disabled={!canSubmit}
-                            //     className={`mt-4 w-full rounded-lg px-4 py-3 text-white ${canSubmit ? 'bg-brown-default' : 'cursor-not-allowed bg-gray-400'} `}
-                            // >
-                            //     Reset Password
-                            // </button> */}
                         </Form>
                     )
                 }}

@@ -1,12 +1,9 @@
-import { RootState } from '@store/index'
 import React, { Fragment } from 'react'
-import { connect } from 'react-redux'
-import { Dispatch } from 'redux'
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import Button from '@components/button/button'
 
-type SlidingModalOwnProps = {
+type SlidingModalProps = {
     isOpen: boolean
     setIsOpen: (opened: boolean) => void
     title: string
@@ -15,13 +12,8 @@ type SlidingModalOwnProps = {
     content: string
     onClose?: () => void
     isValid?: boolean
+    isSubmitting?: boolean
 }
-
-type SlidingModalSliceProps = {}
-
-type SlidingModalDispatchProps = {}
-
-type SlidingModalProps = SlidingModalOwnProps & SlidingModalSliceProps & SlidingModalDispatchProps
 
 const SlidingModal: React.FC<SlidingModalProps> = ({
     isOpen,
@@ -32,6 +24,7 @@ const SlidingModal: React.FC<SlidingModalProps> = ({
     content,
     onClose,
     isValid,
+    isSubmitting,
 }) => {
     return (
         <Transition show={isOpen} as={Fragment}>
@@ -88,6 +81,7 @@ const SlidingModal: React.FC<SlidingModalProps> = ({
                                             onClick={() => onClick()}
                                             className="w-[50%]"
                                             disabled={!isValid}
+                                            isLoading={isSubmitting}
                                         />
                                     </div>
                                 )}
@@ -100,8 +94,4 @@ const SlidingModal: React.FC<SlidingModalProps> = ({
     )
 }
 
-const mapStateToProps = (store: RootState): SlidingModalSliceProps => ({})
-
-const mapDispatchToProps = (dispatch: Dispatch): SlidingModalDispatchProps => ({})
-
-export default connect(mapStateToProps, mapDispatchToProps)(SlidingModal)
+export default SlidingModal
