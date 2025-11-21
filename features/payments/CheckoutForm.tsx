@@ -17,8 +17,8 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ onClose }) => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
     const handlePaymentSuccess = async () => {
-        onClose() // closes modal
-        dispatch(syncUserAfterPayment()) // force refetch user
+        onClose()
+        dispatch(syncUserAfterPayment())
     }
 
     const handleSubmit = async (e: React.FormEvent) => {

@@ -16,7 +16,9 @@ const ProductList: React.FC = () => {
     const router = useRouter()
     const productsList = useSelector((state: RootState) => state.payment.products)
     const user = useSelector((state: RootState) => state.user.currentUser)
-    const userHasActivePass = !!user?.purchases?.some((purchase) => purchase.isActive)
+    const userHasActivePass = !!user.data?.purchases?.some((purchase) => purchase.isActive)
+
+    console.log('user =========')
 
     useEffect(() => {
         if (!productsList.hasFetched && !productsList.fetching) {
@@ -25,7 +27,7 @@ const ProductList: React.FC = () => {
     }, [dispatch, productsList.hasFetched, productsList.fetching])
 
     const handlePurchaseClick = (product: Product) => {
-        const currentPath = window.location.pathname
+        const currentPath = window.location.href
 
         if (user && !userHasActivePass) {
             dispatch(
@@ -36,14 +38,13 @@ const ProductList: React.FC = () => {
                     currency: product.currency,
                     priceAmount: product.priceAmount,
                     durationDays: product.durationDays,
+                    redirectUrl: product.isSubscription ? currentPath : null,
                 })
             )
         } else {
             router.push(`${AppRoutes.authenticate.signUp}?redirect=${encodeURIComponent(currentPath)}`)
         }
     }
-
-    console.log('PROJECT LIST ===============', productsList)
 
     return (
         <div className="flex w-3/4 flex-col justify-center gap-3 lg:flex-row">

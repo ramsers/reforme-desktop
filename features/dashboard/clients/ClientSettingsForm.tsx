@@ -30,12 +30,12 @@ const ClientSettingsForm: React.FC<ClientSettingsFormProps> = ({ client }) => {
                 phoneNumber: client?.phoneNumber || '',
             }}
             validationSchema={ClientSettingsSchema}
-            onSubmit={(values, { setSubmitting }) => {
+            onSubmit={(values) => {
                 dispatch(updateUser(values))
             }}
             enableReinitialize
         >
-            {({ isValid }) => (
+            {({ isSubmitting, isValid }) => (
                 <Form className="flex max-w-lg flex-col gap-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-700">Name</label>
@@ -69,7 +69,13 @@ const ClientSettingsForm: React.FC<ClientSettingsFormProps> = ({ client }) => {
 
                     <div className="flex flex-row gap-2">
                         <Button text="Delete" variant="danger" className="w-[50%]" />
-                        <Button type={'submit'} text="Save" className="w-[50%]" disabled={!isValid} />
+                        <Button
+                            type={'submit'}
+                            text="Save"
+                            className="w-[50%]"
+                            disabled={!isValid}
+                            isLoading={isSubmitting}
+                        />
                     </div>
                 </Form>
             )}

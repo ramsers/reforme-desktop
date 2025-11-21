@@ -12,9 +12,10 @@ import {
     deleteUserBookingSuccess,
 } from '@store/slices/bookingSlice'
 import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
-import { toastError, toastSuccess } from 'lib/toast'
+import { toastError, toastLoading, toastSuccess } from 'lib/toast'
 
 export function* createBookingSaga(action: PayloadAction<CreateBookingPayload>) {
+    toastLoading('Creating booking...')
     try {
         const response: AxiosResponse<Booking> = yield call(postCreateBooking, action.payload)
         yield put(createBookingSuccess(response.data))
@@ -32,12 +33,14 @@ export function* fetchBookingsSaga(action: PayloadAction<Record<string, any>>) {
 }
 
 export function* deleteUserBookingSaga(action: PayloadAction<string>) {
+    toastLoading('Canceling booking...')
+
     try {
         yield call(deleteBooking, action.payload)
         yield put(deleteUserBookingSuccess(action.payload))
-        toastSuccess('Booking cancelled!')
+        toastSuccess('Booking canceled!')
     } catch (e) {
-        toastError('There was error cancelling your booking. Please try again.')
+        toastError('There was error canceling your booking. Please try again.')
     }
 }
 

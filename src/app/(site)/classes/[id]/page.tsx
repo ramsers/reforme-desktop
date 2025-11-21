@@ -5,19 +5,15 @@ import { Class } from '@reformetypes/classTypes'
 import { Product } from '@reformetypes/paymentTypes'
 import { RootState } from '@store/index'
 import { fetchClass, removeClassBooking } from '@store/slices/classSlice'
-import { createPurchaseIntent, fetchProducts } from '@store/slices/paymentSlice'
+import { fetchProducts } from '@store/slices/paymentSlice'
 import dayjs from 'dayjs'
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { formatCurrency } from 'utils/currencyUtils'
-import { loadStripe, Stripe } from '@stripe/stripe-js'
 import StripeModal from '@features/payments/StripeModal'
 import { useRouter } from 'next/navigation'
-import AppRoutes from 'config/appRoutes'
 import { createBooking, deleteUserBooking } from '@store/slices/bookingSlice'
 import Button from '@components/button/button'
 import { AsyncResource } from '@reformetypes/common/ApiTypes'
-import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
 import SkeletonBlock from '@components/Loaders/SkeletonBlock'
 import ProductList from '@features/classes/ProductList'
 
@@ -28,12 +24,12 @@ type ClassPageProps = {
 const ClassPage: React.FC<ClassPageProps> = ({ params }) => {
     const dispatch = useDispatch()
     const currentClass: AsyncResource<Class | null> = useSelector((state: RootState) => state.class.class)
-    const productsList: Product[] = useSelector((state: RootState) => state.payment.products)
+    const productsList: Product[] = useSelector((state: RootState) => state.payment.products.data)
     const clientSecret = useSelector((state: RootState) => state.payment.clientSecret)
-    const user = useSelector((state: RootState) => state.user)
+    const user = useSelector((state: RootState) => state.user.currentUser)
     const router = useRouter()
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const userHasActivePass = !!user?.currentUser?.purchases?.some((purchase) => purchase.isActive)
+    const userHasActivePass = !!user?.data?.purchases?.some((purchase) => purchase.isActive)
 
     useEffect(() => {
         if (!currentClass.data && !currentClass.hasFetched) {
@@ -50,30 +46,17 @@ const ClassPage: React.FC<ClassPageProps> = ({ params }) => {
         setIsModalOpen(true)
     }, [clientSecret])
 
-    const handleClick = (product: Product) => {
-        dispatch(
-            createPurchaseIntent({
-                priceId: product.priceId,
-                productName: product.name,
-                isSubscription: product.isSubscription,
-                currency: product.currency,
-                priceAmount: product.priceAmount,
-                durationDays: product.durationDays,
-            })
-        )
-    }
-
     const handleCreateBooking = (classId: string) => {
-        dispatch(createBooking({ clientId: user?.currentUser?.id!, classId: classId }))
+        dispatch(createBooking({ clientId: user?.data?.id!, classId: classId }))
     }
 
-    const userBooking = currentClass?.data?.bookings?.find((bk: any) => bk.client?.id === user.currentUser?.id)
+    const userBooking = currentClass?.data?.bookings?.find((bk: any) => bk.client?.id === user.data?.id)
 
     let isBooked = !!userBooking
 
     const handlePassHolders = () => {
         if (isBooked) {
-            user.currentUser && dispatch(deleteUserBooking(userBooking?.id || ''))
+            user.data && dispatch(deleteUserBooking(userBooking?.id || ''))
             currentClass &&
                 dispatch(
                     removeClassBooking({ classId: currentClass?.data?.id || '', bookingId: userBooking?.id || '' })
@@ -81,14 +64,6 @@ const ClassPage: React.FC<ClassPageProps> = ({ params }) => {
         } else {
             currentClass && handleCreateBooking(currentClass?.data?.id || '')
         }
-    }
-
-    const handlePassClick = (product: Product) => {
-        const currentPath = window.location.pathname
-
-        !!user.currentUser && !userHasActivePass
-            ? handleClick(product)
-            : router.push(`${AppRoutes.authenticate.signUp}?redirect=${encodeURIComponent(currentPath)}`)
     }
 
     return (

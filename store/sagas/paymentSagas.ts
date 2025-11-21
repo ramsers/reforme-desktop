@@ -14,7 +14,7 @@ import { fetchUserInfo } from '@store/slices/userSlice'
 import { AxiosResponse } from 'axios'
 import { call, delay, put, select, takeLatest } from 'redux-saga/effects'
 import { RootState } from '..'
-import { toastError, toastSuccess } from 'lib/toast'
+import { toastError, toastLoading, toastSuccess } from 'lib/toast'
 
 export function* waitForUserUpdateSaga() {
     for (let i = 0; i < 10; i++) {
@@ -51,6 +51,8 @@ export function* createPurchaseIntentSaga(action: PayloadAction<CreatePurchaseIn
 }
 
 export function* cancelSubscriptionSaga(action: PayloadAction<string>) {
+    toastLoading('Canceling subscription...')
+
     try {
         yield call(postCancelSubscription, action.payload)
         yield put(cancelSubscriptionSuccess(action.payload))

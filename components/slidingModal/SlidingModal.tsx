@@ -26,8 +26,6 @@ const SlidingModal: React.FC<SlidingModalProps> = ({
     isValid,
     isSubmitting,
 }) => {
-    console.log('SLIDING MODAL SUBMITTED =====================')
-
     return (
         <Transition show={isOpen} as={Fragment}>
             <Dialog as="div" className="relative z-50" onClose={() => (onClose && onClose()) || setIsOpen(false)}>
