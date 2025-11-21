@@ -10,15 +10,15 @@ import { createPurchaseIntent, fetchProducts } from '@store/slices/paymentSlice'
 import { useRouter } from 'next/navigation'
 import AppRoutes from 'config/appRoutes'
 import SkeletonBlock from '@components/Loaders/SkeletonBlock'
+import { AsyncResource } from '@reformetypes/common/ApiTypes'
+import { User } from '@reformetypes/userTypes'
 
 const ProductList: React.FC = () => {
     const dispatch = useDispatch()
     const router = useRouter()
     const productsList = useSelector((state: RootState) => state.payment.products)
-    const user = useSelector((state: RootState) => state.user.currentUser)
+    const user: AsyncResource<User | null> = useSelector((state: RootState) => state.user.currentUser)
     const userHasActivePass = !!user.data?.purchases?.some((purchase) => purchase.isActive)
-
-    console.log('user =========')
 
     useEffect(() => {
         if (!productsList.hasFetched && !productsList.fetching) {

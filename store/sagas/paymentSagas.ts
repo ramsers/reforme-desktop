@@ -15,6 +15,7 @@ import { AxiosResponse } from 'axios'
 import { call, delay, put, select, takeLatest } from 'redux-saga/effects'
 import { RootState } from '..'
 import { toastError, toastLoading, toastSuccess } from 'lib/toast'
+import { extractApiError } from 'utils/apiUtils'
 
 export function* waitForUserUpdateSaga() {
     for (let i = 0; i < 10; i++) {
@@ -46,7 +47,8 @@ export function* createPurchaseIntentSaga(action: PayloadAction<CreatePurchaseIn
             yield put(createPurchaseIntentSuccess(response.data))
         }
     } catch (e) {
-        console.log('Error creating purchase intent:', e)
+        const message = extractApiError(e)
+        toastError(message)
     }
 }
 
@@ -58,7 +60,8 @@ export function* cancelSubscriptionSaga(action: PayloadAction<string>) {
         yield put(cancelSubscriptionSuccess(action.payload))
         toastSuccess('Class created!')
     } catch (e) {
-        toastError('Error creating class. Please try again.')
+        const message = extractApiError(e)
+        toastError(message)
     }
 }
 

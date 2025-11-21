@@ -14,6 +14,7 @@ import { forgotPassword, login, logout, resetPassword, signUp } from '@store/sli
 import { connectApi } from '../../config/axios.config'
 import { fetchUserInfoSuccess, reset } from '@store/slices/userSlice'
 import { toastError, toastLoading, toastSuccess } from 'lib/toast'
+import { extractApiError } from 'utils/apiUtils'
 
 export function* setAccessToken(accessToken: string) {
     localStorage.setItem('accessToken', accessToken)
@@ -35,7 +36,10 @@ export function* signUpSaga(action: PayloadAction<SignUpPayload>) {
         if (action.payload.onSuccess) {
             yield call(action.payload.onSuccess)
         }
-    } catch (e) {}
+    } catch (e) {
+        const message = extractApiError(e)
+        toastError(message)
+    }
 }
 
 export function* loginSaga(action: PayloadAction<LoginPayload>) {
@@ -45,7 +49,10 @@ export function* loginSaga(action: PayloadAction<LoginPayload>) {
         yield call(setAccessToken, response.data.access)
         yield call(connectApi)
         yield put(fetchUserInfoSuccess(response.data.user))
-    } catch (e) {}
+    } catch (e) {
+        const message = extractApiError(e)
+        toastError(message)
+    }
 }
 
 export function* logoutSaga() {
@@ -61,7 +68,8 @@ export function* forgotPasswordSaga(action: PayloadAction<ForgotPasswordPayload>
         yield call(postForgotPassword, action.payload)
         toastSuccess('If this email exists, an email link will be sent')
     } catch (e) {
-        toastError('There was an error, please try again.')
+        const message = extractApiError(e)
+        toastError(message)
     }
 }
 
@@ -74,7 +82,8 @@ export function* resetPasswordSaga(action: PayloadAction<ResetPasswordPayload>) 
             yield call(action.payload.onSuccess)
         }
     } catch (e) {
-        toastError('There was an error, please try again.')
+        const message = extractApiError(e)
+        toastError(message)
     }
 }
 

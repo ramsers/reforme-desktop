@@ -13,6 +13,7 @@ import {
 } from '@store/slices/bookingSlice'
 import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
 import { toastError, toastLoading, toastSuccess } from 'lib/toast'
+import { extractApiError } from 'utils/apiUtils'
 
 export function* createBookingSaga(action: PayloadAction<CreateBookingPayload>) {
     toastLoading('Creating booking...')
@@ -21,7 +22,8 @@ export function* createBookingSaga(action: PayloadAction<CreateBookingPayload>) 
         yield put(createBookingSuccess(response.data))
         toastSuccess('Class booked!')
     } catch (e) {
-        toastError('Error booking class. Please try again')
+        const message = extractApiError(e)
+        toastError(message)
     }
 }
 
@@ -40,7 +42,8 @@ export function* deleteUserBookingSaga(action: PayloadAction<string>) {
         yield put(deleteUserBookingSuccess(action.payload))
         toastSuccess('Booking canceled!')
     } catch (e) {
-        toastError('There was error canceling your booking. Please try again.')
+        const message = extractApiError(e)
+        toastError(message)
     }
 }
 

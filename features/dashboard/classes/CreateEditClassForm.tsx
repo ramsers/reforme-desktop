@@ -101,130 +101,152 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                 }}
                 enableReinitialize
             >
-                {({ isSubmitting, handleSubmit, values, isValid }) => (
-                    <SlidingModal
-                        title={title}
-                        isOpen={isOpen}
-                        setIsOpen={setIsOpen}
-                        content={'Save'}
-                        onClick={handleSubmit}
-                        onClose={() => {
-                            setIsOpen(false)
-                            dispatch(clearClass())
-                        }}
-                        isValid={isValid}
-                        isSubmitting={isSubmitting}
-                    >
-                        <Form className="flex flex-col gap-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Title</label>
-                                <Field
-                                    name="title"
-                                    type="text"
-                                    className="focus:ring-brown-default mt-1 w-full rounded-lg border px-3 py-2 focus:ring"
-                                />
-                                <ErrorMessage name="title" component="div" className="text-sm text-red-500" />
-                            </div>
+                {({ isSubmitting, handleSubmit, values, isValid, setFieldValue }) => {
+                    useEffect(() => {
+                        if (values.recurrenceType !== eRecurrenceType.WEEKLY) {
+                            setFieldValue('recurrenceDays', null)
+                        }
+                    }, [values.recurrenceType, setFieldValue])
 
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Description</label>
-                                <Field
-                                    as="textarea"
-                                    name="description"
-                                    rows={3}
-                                    className="focus:ring-brown-default mt-1 w-full rounded-lg border px-3 py-2 focus:ring"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Size</label>
-                                <Field
-                                    name="size"
-                                    type="number"
-                                    className="focus:ring-brown-default mt-1 w-full rounded-lg border px-3 py-2 focus:ring"
-                                />
-                                <ErrorMessage name="size" component="div" className="text-sm text-red-500" />
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Date</label>
-                                <Field
-                                    name="date"
-                                    type="datetime-local"
-                                    className="focus:ring-brown-default mt-1 w-full rounded-lg border px-3 py-2 focus:ring"
-                                />
-                                <ErrorMessage name="date" component="div" className="text-sm text-red-500" />
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Recurrence Type</label>
-                                <Field
-                                    as="select"
-                                    name="recurrenceType"
-                                    className="focus:ring-brown-default mt-1 w-full rounded-lg border px-3 py-2 focus:ring"
-                                >
-                                    <option value={''}>No recurrence</option>
-                                    {Object.entries(eRecurrenceType).map(([key, value]) => (
-                                        <option key={key} value={value || ''}>
-                                            {key.charAt(0) + key.slice(1).toLowerCase()}
-                                        </option>
-                                    ))}
-                                </Field>
-                                <ErrorMessage name="recurrenceType" component="div" className="text-sm text-red-500" />
-                            </div>
-
-                            {values.recurrenceType === eRecurrenceType.WEEKLY && (
+                    return (
+                        <SlidingModal
+                            title={title}
+                            isOpen={isOpen}
+                            setIsOpen={setIsOpen}
+                            content={'Save'}
+                            onClick={handleSubmit}
+                            onClose={() => {
+                                setIsOpen(false)
+                                dispatch(clearClass())
+                            }}
+                            isValid={isValid}
+                            isSubmitting={isSubmitting}
+                        >
+                            <Form className="flex flex-col gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700">Days of the Week</label>
-                                    <div className="mt-1 flex gap-2">
-                                        {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, idx) => (
-                                            <label key={day} className="inline-flex items-center gap-1">
-                                                <Field type="checkbox" name="recurrenceDays" value={idx.toString()} />
-                                                <span>{day}</span>
-                                            </label>
+                                    <label className="block text-sm font-medium text-gray-700">Title</label>
+                                    <Field
+                                        name="title"
+                                        type="text"
+                                        className="focus:ring-brown-default mt-1 w-full rounded-lg border px-3 py-2 focus:ring"
+                                    />
+                                    <ErrorMessage name="title" component="div" className="text-sm text-red-500" />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700">Description</label>
+                                    <Field
+                                        as="textarea"
+                                        name="description"
+                                        rows={3}
+                                        className="focus:ring-brown-default mt-1 w-full rounded-lg border px-3 py-2 focus:ring"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700">Size</label>
+                                    <Field
+                                        name="size"
+                                        type="number"
+                                        className="focus:ring-brown-default mt-1 w-full rounded-lg border px-3 py-2 focus:ring"
+                                    />
+                                    <ErrorMessage name="size" component="div" className="text-sm text-red-500" />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700">Date</label>
+                                    <Field
+                                        name="date"
+                                        type="datetime-local"
+                                        className="focus:ring-brown-default mt-1 w-full rounded-lg border px-3 py-2 focus:ring"
+                                    />
+                                    <ErrorMessage name="date" component="div" className="text-sm text-red-500" />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700">Recurrence Type</label>
+                                    <Field
+                                        as="select"
+                                        name="recurrenceType"
+                                        className="focus:ring-brown-default mt-1 w-full rounded-lg border px-3 py-2 focus:ring"
+                                    >
+                                        <option value={''}>No recurrence</option>
+                                        {Object.entries(eRecurrenceType).map(([key, value]) => (
+                                            <option key={key} value={value || ''}>
+                                                {key.charAt(0) + key.slice(1).toLowerCase()}
+                                            </option>
                                         ))}
-                                    </div>
+                                    </Field>
                                     <ErrorMessage
-                                        name="recurrenceDays"
+                                        name="recurrenceType"
                                         component="div"
                                         className="text-sm text-red-500"
                                     />
                                 </div>
-                            )}
 
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Instructor</label>
-                                <Field
-                                    as="select"
-                                    name="instructorId"
-                                    className="focus:ring-brown-default mt-1 w-full rounded-lg border px-3 py-2 focus:ring"
-                                >
-                                    <option value="">Select instructor</option>
-                                    {instructors?.data?.results?.map((instructor) => (
-                                        <option key={instructor.id} value={instructor.id}>
-                                            {instructor.name}
-                                        </option>
-                                    ))}
-                                </Field>
-                                <ErrorMessage name="instructorId" component="div" className="text-sm text-red-500" />
-                            </div>
+                                {values.recurrenceType === eRecurrenceType.WEEKLY && (
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700">
+                                            Days of the Week
+                                        </label>
+                                        <div className="mt-1 flex gap-2">
+                                            {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, idx) => (
+                                                <label key={day} className="inline-flex items-center gap-1">
+                                                    <Field
+                                                        type="checkbox"
+                                                        name="recurrenceDays"
+                                                        value={idx.toString()}
+                                                    />
+                                                    <span>{day}</span>
+                                                </label>
+                                            ))}
+                                        </div>
+                                        <ErrorMessage
+                                            name="recurrenceDays"
+                                            component="div"
+                                            className="text-sm text-red-500"
+                                        />
+                                    </div>
+                                )}
 
-                            {values.id && (
-                                <div className="flex items-center gap-2">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700">Instructor</label>
                                     <Field
-                                        type="checkbox"
-                                        name="updateSeries"
-                                        id="updateSeries"
-                                        className={'h-4 w-4'}
+                                        as="select"
+                                        name="instructorId"
+                                        className="focus:ring-brown-default mt-1 w-full rounded-lg border px-3 py-2 focus:ring"
+                                    >
+                                        <option value="">Select instructor</option>
+                                        {instructors?.data?.results?.map((instructor) => (
+                                            <option key={instructor.id} value={instructor.id.toString()}>
+                                                {instructor.name}
+                                            </option>
+                                        ))}
+                                    </Field>
+                                    <ErrorMessage
+                                        name="instructorId"
+                                        component="div"
+                                        className="text-sm text-red-500"
                                     />
-                                    <label htmlFor="updateSeries" className="text-sm font-medium text-gray-700">
-                                        Apply changes to this and following classes
-                                    </label>
                                 </div>
-                            )}
-                        </Form>
-                    </SlidingModal>
-                )}
+
+                                {values.id && (
+                                    <div className="flex items-center gap-2">
+                                        <Field
+                                            type="checkbox"
+                                            name="updateSeries"
+                                            id="updateSeries"
+                                            className={'h-4 w-4'}
+                                        />
+                                        <label htmlFor="updateSeries" className="text-sm font-medium text-gray-700">
+                                            Apply changes to this and following classes
+                                        </label>
+                                    </div>
+                                )}
+                            </Form>
+                        </SlidingModal>
+                    )
+                }}
             </Formik>
         </div>
     )

@@ -19,6 +19,7 @@ import { CreateUserPayload, User } from '@reformetypes/userTypes'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
 import { toastError, toastSuccess } from 'lib/toast'
+import { extractApiError } from 'utils/apiUtils'
 
 export function* fetchUserInfoSaga() {
     try {
@@ -43,7 +44,8 @@ export function* createUserSaga(action: PayloadAction<CreateUserPayload>) {
         yield put(createUserSuccess(response.data))
         toastSuccess('User created!')
     } catch (e) {
-        toastError('Error creating user. Please try again.')
+        const message = extractApiError(e)
+        toastError(message)
     }
 }
 
@@ -54,7 +56,8 @@ export function* updateUserSaga(action: PayloadAction<Partial<User>>) {
         yield put(updateUserSuccess(response.data))
         toastSuccess('User updated!')
     } catch (e) {
-        toastError('Error updating user. Please try again.')
+        const message = extractApiError(e)
+        toastError(message)
     }
 }
 
