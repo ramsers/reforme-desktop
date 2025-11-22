@@ -1,5 +1,13 @@
 import { AxiosResponse } from 'axios'
-import { getAllClients, getAllInstructors, getUser, getUserInfo, patchUpdateUser, postCreateUser } from '@api/user'
+import {
+    deleteUserDashboard,
+    getAllClients,
+    getAllInstructors,
+    getUser,
+    getUserInfo,
+    patchUpdateUser,
+    postCreateUser,
+} from '@api/user'
 import { call, put, takeEvery } from 'redux-saga/effects'
 import {
     fetchUserInfoSuccess,
@@ -14,11 +22,13 @@ import {
     fetchAllClients,
     retrieveUser,
     retrieveUserSuccess,
+    deleteUserSuccess,
+    deleteUser,
 } from '@store/slices/userSlice'
 import { CreateUserPayload, User } from '@reformetypes/userTypes'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
-import { toastError, toastSuccess } from 'lib/toast'
+import { toastError, toastLoading, toastSuccess } from 'lib/toast'
 import { extractApiError } from 'utils/apiUtils'
 
 export function* fetchUserInfoSaga() {
@@ -76,6 +86,18 @@ export function* retrieveUserSaga(action: PayloadAction<string>) {
     } catch (e) {}
 }
 
+export function* deleteUserSaga(action: PayloadAction<string>) {
+    toastLoading('Deleting user...')
+    try {
+        yield call(deleteUserDashboard, action.payload)
+        yield put(deleteUserSuccess(action.payload))
+        toastSuccess('User deleted!')
+    } catch (e) {
+        const message = extractApiError(e)
+        toastError(message)
+    }
+}
+
 function* userSagas() {
     yield takeEvery(fetchUserInfo.type, fetchUserInfoSaga)
     yield takeEvery(fetchAllInstructors.type, fetchAllInstructorsSaga)
@@ -83,6 +105,7 @@ function* userSagas() {
     yield takeEvery(updateUser.type, updateUserSaga)
     yield takeEvery(fetchAllClients.type, fetchAllClientsSaga)
     yield takeEvery(retrieveUser.type, retrieveUserSaga)
+    yield takeEvery(deleteUser.type, deleteUserSaga)
 }
 
 export default userSagas

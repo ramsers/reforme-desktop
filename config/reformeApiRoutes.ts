@@ -17,6 +17,7 @@ const APIRoutes = {
         ALL_INSTRUCTORS: '/users/all-instructors',
         ALL_CLIENTS: '/users/all-clients',
         BY_ID: (id: string) => `/users/${id}`,
+        DELETE: (id: string) => `/users/${id}/delete`,
     },
     BOOKING: {
         MAIN: '/bookings',

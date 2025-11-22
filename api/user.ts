@@ -27,3 +27,7 @@ export const patchUpdateUser = (data: Partial<User>): Promise<AxiosResponse<User
     const { id, ...rest } = data
     return apiClient.patch(APIRoutes.USER.BY_ID(id as string), { ...rest })
 }
+
+export const deleteUserDashboard = (id: string): Promise<AxiosResponse<void>> => {
+    return apiClient.delete(APIRoutes.USER.DELETE(id))
+}
