@@ -37,6 +37,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
         (state: RootState) => state.user?.instructors
     )
     const currentClass: AsyncResource<Class | null> = useSelector((state: RootState) => state.class?.class)
+    const [recurrenceInteraction, setRecurrenceInteraction] = useState(false)
 
     const ClassSchema = Yup.object().shape({
         title: Yup.string().required('Title is required'),
@@ -101,12 +102,35 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                 }}
                 enableReinitialize
             >
-                {({ isSubmitting, handleSubmit, values, isValid, setFieldValue }) => {
-                    useEffect(() => {
-                        if (values.recurrenceType !== eRecurrenceType.WEEKLY) {
-                            setFieldValue('recurrenceDays', null)
+                {({ isSubmitting, handleSubmit, values, isValid, setFieldValue, setFieldError }) => {
+                    const isRecurringClass = Boolean(
+                        currentClass?.data?.recurrenceType || currentClass?.data?.parentClassId
+                    )
+
+                    const originalRecurrenceType = currentClass?.data?.recurrenceType || null
+                    const originalRecurrenceDays = currentClass?.data?.recurrenceDays?.map(String) || null
+
+                    const newRecurrenceType = values.recurrenceType || null
+                    const newRecurrenceDays = values.recurrenceDays || null
+
+                    const recurrenceDaysEqual =
+                        JSON.stringify(originalRecurrenceDays ?? []) === JSON.stringify(newRecurrenceDays ?? [])
+
+                    const recurrenceUnchanged = originalRecurrenceType === newRecurrenceType && recurrenceDaysEqual
+
+                    const handleRecurrenceInteraction = () => {
+                        if (values.id && isRecurringClass) {
+                            setRecurrenceInteraction(true)
                         }
-                    }, [values.recurrenceType, setFieldValue])
+                    }
+
+                    const requiresSeriesUpdate = Boolean(
+                        values.id &&
+                            isRecurringClass &&
+                            recurrenceInteraction &&
+                            !recurrenceUnchanged &&
+                            !values.updateSeries
+                    )
 
                     return (
                         <SlidingModal
@@ -119,7 +143,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                                 setIsOpen(false)
                                 dispatch(clearClass())
                             }}
-                            isValid={isValid}
+                            isValid={isValid && !requiresSeriesUpdate}
                             isSubmitting={isSubmitting}
                         >
                             <Form className="flex flex-col gap-4">
@@ -168,7 +192,13 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                                     <Field
                                         as="select"
                                         name="recurrenceType"
+                                        value={values.recurrenceType || ''}
                                         className="focus:ring-brown-default mt-1 w-full rounded-lg border px-3 py-2 focus:ring"
+                                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                                            handleRecurrenceInteraction()
+                                            const value = e.target.value || null
+                                            setFieldValue('recurrenceType', value)
+                                        }}
                                     >
                                         <option value={''}>No recurrence</option>
                                         {Object.entries(eRecurrenceType).map(([key, value]) => (
@@ -196,6 +226,21 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                                                         type="checkbox"
                                                         name="recurrenceDays"
                                                         value={idx.toString()}
+                                                        checked={(values.recurrenceDays || [])?.includes(
+                                                            idx.toString()
+                                                        )}
+                                                        onChange={(e) => {
+                                                            handleRecurrenceInteraction()
+                                                            const updatedDays = new Set(values.recurrenceDays || [])
+
+                                                            if (e.target.checked) {
+                                                                updatedDays.add(idx.toString())
+                                                            } else {
+                                                                updatedDays.delete(idx.toString())
+                                                            }
+
+                                                            setFieldValue('recurrenceDays', Array.from(updatedDays))
+                                                        }}
                                                     />
                                                     <span>{day}</span>
                                                 </label>
@@ -230,7 +275,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                                     />
                                 </div>
 
-                                {values.id && (
+                                {values.id && values.recurrenceType ? (
                                     <div className="flex items-center gap-2">
                                         <Field
                                             type="checkbox"
@@ -242,8 +287,13 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                                             Apply changes to this and following classes
                                         </label>
                                     </div>
-                                )}
+                                ) : null}
                             </Form>
+                            {requiresSeriesUpdate && values.recurrenceType ? (
+                                <div className="text-sm text-red-500">
+                                    Update series is required after changing recurrence
+                                </div>
+                            ) : null}
                         </SlidingModal>
                     )
                 }}
