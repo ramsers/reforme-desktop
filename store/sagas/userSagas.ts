@@ -86,12 +86,21 @@ export function* retrieveUserSaga(action: PayloadAction<string>) {
     } catch (e) {}
 }
 
-export function* deleteUserSaga(action: PayloadAction<string>) {
+export function* deleteUserSaga(
+    action: PayloadAction<{
+        data: string
+        onSuccess?: () => void
+    }>
+) {
     toastLoading('Deleting user...')
     try {
-        yield call(deleteUserDashboard, action.payload)
-        yield put(deleteUserSuccess(action.payload))
+        yield call(deleteUserDashboard, action.payload.data)
+        yield put(deleteUserSuccess(action.payload.data))
         toastSuccess('User deleted!')
+
+        if (action.payload.onSuccess) {
+            yield call(action.payload.onSuccess)
+        }
     } catch (e) {
         const message = extractApiError(e)
         toastError(message)

@@ -126,7 +126,13 @@ const userSlice = createSlice({
             }
             return state
         },
-        deleteUser: (state, action: PayloadAction<string>) => state,
+        deleteUser: (
+            state,
+            action: PayloadAction<{
+                data: string
+                onSuccess?: () => void
+            }>
+        ) => state,
         deleteUserSuccess: (state, action: PayloadAction<string>) => {
             const userId = action.payload
 

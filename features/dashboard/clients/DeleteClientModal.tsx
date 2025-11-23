@@ -2,6 +2,8 @@
 
 import Modal from '@components/modal/Modal'
 import { deleteUser } from '@store/slices/userSlice'
+import AppRoutes from 'config/appRoutes'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 import { useDispatch } from 'react-redux'
 
@@ -13,9 +15,14 @@ type DeleteClientModalProps = {
 
 const DeleteClientModal: React.FC<DeleteClientModalProps> = ({ isOpen, onClose, clientId }) => {
     const dispatch = useDispatch()
+    const router = useRouter()
+
+    const handleDeleteUserRedirection = () => {
+        router.push(AppRoutes.dashboard.clients.list)
+    }
 
     const handleDelete = () => {
-        dispatch(deleteUser(clientId))
+        dispatch(deleteUser({ data: clientId, onSuccess: handleDeleteUserRedirection }))
         onClose()
     }
 

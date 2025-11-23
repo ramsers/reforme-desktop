@@ -74,6 +74,8 @@ export function* forgotPasswordSaga(action: PayloadAction<ForgotPasswordPayload>
 }
 
 export function* resetPasswordSaga(action: PayloadAction<ResetPasswordPayload>) {
+    toastLoading('Updating our system...')
+
     try {
         yield call(postResetPassword, action.payload)
         toastSuccess('Password succesfully updated')

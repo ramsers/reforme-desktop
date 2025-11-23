@@ -3,11 +3,10 @@ import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { User } from '@reformetypes/userTypes'
 import * as Yup from 'yup'
 import { useDispatch } from 'react-redux'
-import { deleteUser, updateUser } from '@store/slices/userSlice'
+import { updateUser } from '@store/slices/userSlice'
 import Button from '@components/button/button'
 import { useRouter } from 'next/navigation'
 import DeleteClientModal from './DeleteClientModal'
-import AppRoutes from 'config/appRoutes'
 
 type ClientSettingsFormProps = {
     client: User
@@ -96,11 +95,6 @@ const ClientSettingsForm: React.FC<ClientSettingsFormProps> = ({ client }) => {
                         isOpen={isDeleteModalOpen}
                         onClose={() => setIsDeleteModalOpen(false)}
                         clientId={client.id}
-                        // onConfirm={() => {
-                        //     dispatch(deleteUser(client.id))
-                        //     setIsDeleteModalOpen(false)
-                        //     // router.push(AppRoutes.dashboard.clients.list)
-                        // }}
                     />
                 </Form>
             )}
