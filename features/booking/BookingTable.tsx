@@ -39,7 +39,7 @@ const BookingTable: React.FC<BookingTableProps> = ({ classes, setCurrentPage, cu
         setIsAddClientOpen(true)
     }
 
-    const pageSize = 10
+    const pageSize = 5
     const totalPages = Math.ceil(classes.count / pageSize)
 
     return (

@@ -54,6 +54,11 @@ const ClassPage: React.FC<ClassPageProps> = ({ params }) => {
 
     let isBooked = !!userBooking
 
+    const bookingsCount = currentClass?.data?.bookingsCount ?? currentClass?.data?.bookings?.length ?? 0
+    const classSize = currentClass?.data?.size ?? 0
+    const isClassFull = currentClass?.data?.isFull ?? (!!classSize && bookingsCount >= classSize)
+    const disableBooking = isClassFull && !isBooked
+
     const handlePassHolders = () => {
         if (isBooked) {
             user.data && dispatch(deleteUserBooking(userBooking?.id || ''))
@@ -83,6 +88,9 @@ const ClassPage: React.FC<ClassPageProps> = ({ params }) => {
                                     ''}
                             </p>
                             <p>{currentClass.data?.description}</p>
+                            <p>
+                                <span className="font-bold">Bookings:</span> {bookingsCount}/{classSize || '—'}
+                            </p>
                         </div>
                         <div className="flex flex-col gap-2 lg:w-[50%]">
                             <UserCircleIcon className="text-brown-default h-24 w-24" />
@@ -101,9 +109,10 @@ const ClassPage: React.FC<ClassPageProps> = ({ params }) => {
                     {(userHasActivePass && (
                         <Button
                             variant={(isBooked && 'danger') || 'default'}
-                            text={(isBooked && 'Cancel Booking') || 'Book now'}
+                            text={(disableBooking && 'Class full') || (isBooked && 'Cancel Booking') || 'Book now'}
                             onClick={() => handlePassHolders()}
                             className="w-56"
+                            disabled={disableBooking}
                         />
                     )) || <ProductList />}
                 </>

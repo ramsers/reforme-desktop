@@ -14,6 +14,7 @@ import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTy
 import { Class } from '@reformetypes/classTypes'
 import TableLoader from '@components/Loaders/TableLoader'
 import Button from '@components/button/button'
+import { set } from 'date-fns'
 
 const DashboardBookingsPage: React.FC = () => {
     const dispatch = useDispatch()
@@ -32,6 +33,7 @@ const DashboardBookingsPage: React.FC = () => {
 
     const handleSelect = (ranges: any) => {
         setDateRange([ranges.selection])
+        setCurrentPage(1)
     }
 
     useEffect(() => {
@@ -65,7 +67,10 @@ const DashboardBookingsPage: React.FC = () => {
                                 ranges={dateRange}
                             />
                             <Button
-                                onClick={() => setDateRange([getCurrentWeekRange()])}
+                                onClick={() => {
+                                    setDateRange([getCurrentWeekRange()])
+                                    setCurrentPage(1)
+                                }}
                                 text="Clear"
                                 variant="dashboard"
                             />

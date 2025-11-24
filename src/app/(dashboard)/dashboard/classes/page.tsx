@@ -33,6 +33,7 @@ const DashboardClassesPage: React.FC = () => {
 
     const handleSelect = (ranges: any) => {
         setDateRange([ranges.selection])
+        setCurrentPage(1)
     }
 
     useEffect(() => {
@@ -67,7 +68,10 @@ const DashboardClassesPage: React.FC = () => {
                                 ranges={dateRange}
                             />
                             <Button
-                                onClick={() => setDateRange([getCurrentWeekRange()])}
+                                onClick={() => {
+                                    setDateRange([getCurrentWeekRange()])
+                                    setCurrentPage(1)
+                                }}
                                 text="Clear"
                                 variant="dashboard"
                             />
