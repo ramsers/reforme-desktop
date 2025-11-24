@@ -46,13 +46,18 @@ const classSlice = createSlice({
             state.classes.fetching = true
             return state
         },
-        fetchClassesSuccess: (state, action: PayloadAction<ShortPaginatedResponse<Class>>) => {
+        fetchClassesSuccess: (
+            state,
+            action: PayloadAction<{ data: ShortPaginatedResponse<Class>; append?: boolean }>
+        ) => {
+            const { data, append } = action.payload
+
             state.classes.fetching = false
             state.classes.hasFetched = true
-            state.classes.data.count = action.payload.count
-            state.classes.data.next = action.payload.next
-            state.classes.data.previous = action.payload.previous
-            state.classes.data.results = action.payload.results
+            state.classes.data.count = data.count
+            state.classes.data.next = data.next
+            state.classes.data.previous = data.previous
+            state.classes.data.results = append ? [...state.classes.data.results, ...data.results] : data.results
             return state
         },
         createClass: (state, action: PayloadAction<CreateClassPayload>) => state,

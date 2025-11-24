@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ClassesTable from '@features/dashboard/classes/ClassesTable'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@store/index'
@@ -14,22 +14,22 @@ import { AsyncResource } from '@reformetypes/common/ApiTypes'
 import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
 import { Class } from '@reformetypes/classTypes'
 import TableLoader from '@components/Loaders/TableLoader'
+import Button from '@components/button/button'
 
 const DashboardClassesPage: React.FC = () => {
     const dispatch = useDispatch()
     const classes: AsyncResource<ShortPaginatedResponse<Class>> = useSelector(
         (state: RootState) => state.class?.classes
     )
-    const [isOpen, setIsOpen] = useState(false)
     const [currentPage, setCurrentPage] = useState(1)
     const [searchQuery, setSearchQuery] = useState('')
-    const [dateRange, setDateRange] = useState<Range[]>([
-        {
-            startDate: dayjs().startOf('week').toDate(),
-            endDate: dayjs().endOf('week').toDate(),
-            key: 'selection',
-        },
-    ])
+    const getCurrentWeekRange = (): Range => ({
+        startDate: dayjs().startOf('week').toDate(),
+        endDate: dayjs().endOf('week').toDate(),
+        key: 'selection',
+    })
+
+    const [dateRange, setDateRange] = useState<Range[]>([getCurrentWeekRange()])
 
     const handleSelect = (ranges: any) => {
         setDateRange([ranges.selection])
@@ -59,12 +59,19 @@ const DashboardClassesPage: React.FC = () => {
                     </Popover.Button>
 
                     <Popover.Panel transition anchor="bottom">
-                        <DateRange
-                            editableDateInputs={true}
-                            onChange={handleSelect}
-                            moveRangeOnFirstSelection={false}
-                            ranges={dateRange}
-                        />
+                        <div className="flex flex-col gap-2 rounded-lg bg-white p-2 shadow-md">
+                            <DateRange
+                                editableDateInputs={true}
+                                onChange={handleSelect}
+                                moveRangeOnFirstSelection={false}
+                                ranges={dateRange}
+                            />
+                            <Button
+                                onClick={() => setDateRange([getCurrentWeekRange()])}
+                                text="Clear"
+                                variant="dashboard"
+                            />
+                        </div>
                     </Popover.Panel>
                 </Popover>
                 <input

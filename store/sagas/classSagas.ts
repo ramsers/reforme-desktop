@@ -22,7 +22,7 @@ import { extractApiError } from 'utils/apiUtils'
 export function* fetchClassesSaga(action: PayloadAction<Record<string, any>>) {
     try {
         const response: AxiosResponse<ShortPaginatedResponse<Class>> = yield call(getClasses, action.payload)
-        yield put(fetchClassesSuccess(response.data))
+        yield put(fetchClassesSuccess({ data: response.data, append: action.payload.append }))
     } catch (e) {}
 }
 

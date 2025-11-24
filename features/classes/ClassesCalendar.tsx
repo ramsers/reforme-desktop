@@ -1,49 +1,48 @@
 'use client'
 import { RootState } from '@store/index'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchClasses } from '@store/slices/classSlice'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
-import { createBooking, deleteUserBooking } from '@store/slices/bookingSlice'
 import CalendarBar from '@components/calendar/CalendarBar'
 import CalendarList from '@components/calendar/CalendarList'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import AppRoutes from 'config/appRoutes'
 import Button from '@components/button/button'
 import SkeletonBlock from '@components/Loaders/SkeletonBlock'
+import { AsyncResource } from '@reformetypes/common/ApiTypes'
+import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
+import { Class } from '@reformetypes/classTypes'
 
-type ClassesCalendarOwnProps = {}
-
-type ClassesCalendarSliceProps = {}
-
-type ClassesCalendarDispatchProps = {}
-
-type ClassesCalendarProps = ClassesCalendarOwnProps & ClassesCalendarSliceProps & ClassesCalendarDispatchProps
-
-const ClassesCalendar: React.FC<ClassesCalendarProps> = () => {
+const ClassesCalendar: React.FC = () => {
     const dispatch = useDispatch()
     const router = useRouter()
-    const classes = useSelector((state: RootState) => state.class?.classes)
-    const user = useSelector((state: RootState) => state.user)
+    const classes: AsyncResource<ShortPaginatedResponse<Class>> = useSelector(
+        (state: RootState) => state.class?.classes
+    )
     dayjs.extend(utc)
 
     const [selectedDay, setSelectedDay] = useState(dayjs())
-    const searchParams = useSearchParams()
-    const originalBookingId = searchParams.get('original_booking')
+    const [page, setPage] = useState(1)
 
     useEffect(() => {
-        dispatch(fetchClasses({ date: selectedDay.format('YYYY-MM-DD') }))
+        setPage(1)
+        dispatch(fetchClasses({ date: selectedDay.format('YYYY-MM-DD'), page: 1 }))
     }, [dispatch, selectedDay])
 
-    const handleCreateBooking = (classId: string) => {
-        if (originalBookingId) {
-            dispatch(deleteUserBooking(originalBookingId))
-        }
-        dispatch(createBooking({ clientId: user?.currentUser?.id!, classId: classId }))
-    }
+    useEffect(() => {
+        if (page === 1) return
+        if (!classes?.data?.next || classes.fetching) return
 
-    console.log('CLASSES ==========================', classes)
+        dispatch(fetchClasses({ date: selectedDay.format('YYYY-MM-DD'), page, append: true }))
+    }, [classes?.data?.next, classes.fetching, dispatch, page, selectedDay])
+
+    const handleLoadMore = useCallback(() => {
+        if (!classes?.data?.next || classes.fetching) return
+
+        setPage((prev) => prev + 1)
+    }, [classes?.data?.next, classes.fetching])
 
     return (
         <div className="flex w-full flex-col items-center gap-6">
@@ -72,6 +71,9 @@ const ClassesCalendar: React.FC<ClassesCalendarProps> = () => {
                             }
                         })}
                         emptyMessage="No classes scheduled for this day"
+                        hasMore={Boolean(classes.data.next)}
+                        isLoading={classes.fetching}
+                        onLoadMore={handleLoadMore}
                     />
                 </>
             )}
