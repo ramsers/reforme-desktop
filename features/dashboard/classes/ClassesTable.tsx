@@ -42,7 +42,9 @@ const ClassesTable: React.FC<ClassesTableProps> = ({ classes, setCurrentPage, cu
         setIsOpen(true)
     }
 
-    const pageSize = 10
+    // TODO - REVERT TO 10 then change to global env/var to use in all other tables
+
+    const pageSize = 5
     const totalPages = Math.ceil(classes.count / pageSize)
 
     const handleDeleteClass = () => {
