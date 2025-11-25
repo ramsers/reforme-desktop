@@ -3,7 +3,7 @@
 import { RootState } from '@store/index'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Formik, Form, Field, ErrorMessage } from 'formik'
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import dayjs from 'dayjs'
 import SlidingModal from '@components/slidingModal/SlidingModal'
@@ -14,6 +14,9 @@ import { User } from '@reformetypes/userTypes'
 import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
 import utc from 'dayjs/plugin/utc'
 import { AsyncResource } from '@reformetypes/common/ApiTypes'
+import RecurrenceSection from './RecurrenceSection'
+import InstructorSelect from './InstructorSelect'
+import UpdateSeriesSection from './UpdateSeriesSection'
 dayjs.extend(utc)
 
 type CreateEditClassFormOwnProps = {
@@ -24,6 +27,18 @@ type CreateEditClassFormOwnProps = {
 
 type CreateEditClassFormProps = CreateEditClassFormOwnProps
 
+export type ClassFormValues = {
+    id: string
+    title: string
+    description: string
+    size: number
+    date: string
+    instructorId: string | null
+    recurrenceType: eRecurrenceType | null
+    recurrenceDays: string[] | null
+    updateSeries: boolean | null
+}
+
 const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIsOpen, title }) => {
     const dispatch = useDispatch()
     const instructors: AsyncResource<ShortPaginatedResponse<User>> = useSelector(
@@ -31,6 +46,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
     )
     const currentClass: AsyncResource<Class | null> = useSelector((state: RootState) => state.class?.class)
     const [recurrenceInteraction, setRecurrenceInteraction] = useState(false)
+    const [requiresSeriesUpdate, setRequiresSeriesUpdate] = useState(false)
 
     const ClassSchema = Yup.object().shape({
         title: Yup.string().required('Title is required'),
@@ -59,7 +75,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
 
     return (
         <div className="flex flex-col gap-5">
-            <Formik
+            <Formik<ClassFormValues>
                 initialValues={{
                     id: currentClass?.data?.id || '',
                     title: currentClass?.data?.title || '',
@@ -102,28 +118,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
 
                     const originalRecurrenceType = currentClass?.data?.recurrenceType || null
                     const originalRecurrenceDays = currentClass?.data?.recurrenceDays?.map(String) || null
-
-                    const newRecurrenceType = values.recurrenceType || null
-                    const newRecurrenceDays = values.recurrenceDays || null
-
-                    const recurrenceDaysEqual =
-                        JSON.stringify(originalRecurrenceDays ?? []) === JSON.stringify(newRecurrenceDays ?? [])
-
-                    const recurrenceUnchanged = originalRecurrenceType === newRecurrenceType && recurrenceDaysEqual
-
-                    const handleRecurrenceInteraction = () => {
-                        if (values.id && isRecurringClass) {
-                            setRecurrenceInteraction(true)
-                        }
-                    }
-
-                    const requiresSeriesUpdate = Boolean(
-                        values.id &&
-                            isRecurringClass &&
-                            recurrenceInteraction &&
-                            !recurrenceUnchanged &&
-                            !values.updateSeries
-                    )
+                    const canEditRecurrence = !values.id || isRecurringClass
 
                     return (
                         <SlidingModal
@@ -180,113 +175,26 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                                     <ErrorMessage name="date" component="div" className="text-sm text-red-500" />
                                 </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700">Recurrence Type</label>
-                                    <Field
-                                        as="select"
-                                        name="recurrenceType"
-                                        value={values.recurrenceType || ''}
-                                        className="focus:ring-brown-default mt-1 w-full rounded-lg border px-3 py-2 focus:ring"
-                                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                                            handleRecurrenceInteraction()
-                                            const value = e.target.value || null
-                                            setFieldValue('recurrenceType', value)
-                                        }}
-                                    >
-                                        <option value={''}>No recurrence</option>
-                                        {Object.entries(eRecurrenceType).map(([key, value]) => (
-                                            <option key={key} value={value || ''}>
-                                                {key.charAt(0) + key.slice(1).toLowerCase()}
-                                            </option>
-                                        ))}
-                                    </Field>
-                                    <ErrorMessage
-                                        name="recurrenceType"
-                                        component="div"
-                                        className="text-sm text-red-500"
-                                    />
-                                </div>
+                                <RecurrenceSection
+                                    canEditRecurrence={canEditRecurrence}
+                                    isRecurringClass={isRecurringClass}
+                                    originalRecurrenceDays={originalRecurrenceDays}
+                                    originalRecurrenceType={originalRecurrenceType}
+                                    recurrenceInteraction={recurrenceInteraction}
+                                    setFieldValue={setFieldValue as FormikHelpers<ClassFormValues>['setFieldValue']}
+                                    setRecurrenceInteraction={setRecurrenceInteraction}
+                                    values={values}
+                                    onRequiresSeriesUpdateChange={setRequiresSeriesUpdate}
+                                />
 
-                                {values.recurrenceType === eRecurrenceType.WEEKLY && (
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">
-                                            Days of the Week
-                                        </label>
-                                        <div className="mt-1 flex gap-2">
-                                            {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, idx) => (
-                                                <label key={day} className="inline-flex items-center gap-1">
-                                                    <Field
-                                                        type="checkbox"
-                                                        name="recurrenceDays"
-                                                        value={idx.toString()}
-                                                        checked={(values.recurrenceDays || [])?.includes(
-                                                            idx.toString()
-                                                        )}
-                                                        onChange={(e) => {
-                                                            handleRecurrenceInteraction()
-                                                            const updatedDays = new Set(values.recurrenceDays || [])
+                                <InstructorSelect instructors={instructors} />
 
-                                                            if (e.target.checked) {
-                                                                updatedDays.add(idx.toString())
-                                                            } else {
-                                                                updatedDays.delete(idx.toString())
-                                                            }
-
-                                                            setFieldValue('recurrenceDays', Array.from(updatedDays))
-                                                        }}
-                                                    />
-                                                    <span>{day}</span>
-                                                </label>
-                                            ))}
-                                        </div>
-                                        <ErrorMessage
-                                            name="recurrenceDays"
-                                            component="div"
-                                            className="text-sm text-red-500"
-                                        />
-                                    </div>
-                                )}
-
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700">Instructor</label>
-                                    <Field
-                                        as="select"
-                                        name="instructorId"
-                                        className="focus:ring-brown-default mt-1 w-full rounded-lg border px-3 py-2 focus:ring"
-                                    >
-                                        <option value="">Select instructor</option>
-                                        {instructors?.data?.results?.map((instructor) => (
-                                            <option key={instructor.id} value={instructor.id.toString()}>
-                                                {instructor.name}
-                                            </option>
-                                        ))}
-                                    </Field>
-                                    <ErrorMessage
-                                        name="instructorId"
-                                        component="div"
-                                        className="text-sm text-red-500"
-                                    />
-                                </div>
-
-                                {values.id && values.recurrenceType ? (
-                                    <div className="flex items-center gap-2">
-                                        <Field
-                                            type="checkbox"
-                                            name="updateSeries"
-                                            id="updateSeries"
-                                            className={'h-4 w-4'}
-                                        />
-                                        <label htmlFor="updateSeries" className="text-sm font-medium text-gray-700">
-                                            Apply changes to this and following classes
-                                        </label>
-                                    </div>
-                                ) : null}
+                                <UpdateSeriesSection
+                                    showUpdateSeries={Boolean(values.id && values.recurrenceType)}
+                                    requiresSeriesUpdate={requiresSeriesUpdate}
+                                    recurrenceType={values.recurrenceType}
+                                />
                             </Form>
-                            {requiresSeriesUpdate && values.recurrenceType ? (
-                                <div className="text-sm text-red-500">
-                                    Update series is required after changing recurrence
-                                </div>
-                            ) : null}
                         </SlidingModal>
                     )
                 }}

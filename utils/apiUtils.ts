@@ -30,7 +30,6 @@ export function extractApiError(error: unknown): string {
     return 'Something went wrong. Please try again.'
 }
 
-// Helper type guard
 function isAxiosError(error: any): error is AxiosError {
     return error && error.isAxiosError
 }
