@@ -4,20 +4,15 @@ import React, { useState } from 'react'
 import dayjs from 'dayjs'
 import { PassPurchase } from '@reformetypes/paymentTypes'
 import Button from '@components/button/button'
-import { eRole } from '@reformetypes/authTypes'
 import { useDispatch } from 'react-redux'
 import { cancelSubscription } from '@store/slices/paymentSlice'
 import Modal from '@components/modal/Modal'
 
 type PassCardProps = {
     purchase: PassPurchase
-    // userRole: eRole
 }
 
-const PassCard: React.FC<PassCardProps> = ({
-    purchase,
-    // userRole
-}) => {
+const PassCard: React.FC<PassCardProps> = ({ purchase }) => {
     const dispatch = useDispatch()
 
     const formattedDate = dayjs(purchase.endDate).format('D MMM YYYY')
@@ -59,15 +54,6 @@ const PassCard: React.FC<PassCardProps> = ({
                                 className="font-semibold text-red-600 hover:text-black"
                             />
                         ) : null}
-
-                        {/* {purchase.isSubscription && userRole === eRole.ADMIN ? (
-                        <Button
-                            variant="text"
-                            text="Cancel"
-                            onClick={handleCancel}
-                            className="font-semibold text-red-600 hover:text-black"
-                        />
-                    ) : null} */}
                     </div>
                 </div>
             </div>

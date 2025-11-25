@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
 import dayjs from 'dayjs'
 import { PencilIcon } from '@heroicons/react/24/solid'
 import { User } from '@reformetypes/userTypes'
@@ -10,6 +9,7 @@ import TableHeader from '@components/table/TableHeader'
 import TableRow from '@components/table/TableRow'
 import PaginationButtons from '@components/table/PaginationButtons'
 import Button from '@components/button/button'
+import { API_PAGESIZE } from 'consts/consts'
 
 type InstructorsTableOwnProps = {
     instructors: ShortPaginatedResponse<User>
@@ -27,9 +27,7 @@ const InstructorsTable: React.FC<InstructorsTableProps> = ({ instructors, setCur
         setSelectedInstructorId(id)
         setIsOpen(true)
     }
-
-    const pageSize = 10
-    const totalPages = Math.ceil(instructors.count / pageSize)
+    const totalPages = Math.ceil(instructors.count / API_PAGESIZE)
 
     return (
         <>

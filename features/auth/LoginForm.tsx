@@ -85,17 +85,10 @@ const LoginForm: React.FC = () => {
             </Formik>
             <div className="flex flex-row gap-1">
                 <p> Dont have an account?</p>
-                <Button
-                    onClick={() => router.push(AppRoutes.authenticate.signUp)}
-                    variant="text"
-                    text="Sign Up"
-                    className="font-normal"
-                />
+                <Button onClick={() => router.push(AppRoutes.authenticate.signUp)} variant="text" text="Sign Up" />
             </div>
             <div className="flex flex-row gap-1">
-                <button onClick={() => setIsOpen(true)} className="cursor-pointer text-blue-600">
-                    Forgot password?
-                </button>
+                <Button onClick={() => setIsOpen(true)} text="Forgot password?" variant="text" />
             </div>
             <ForgotPasswordModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
         </div>

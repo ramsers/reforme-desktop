@@ -19,7 +19,6 @@ const Button: React.FC<ButtonProps> = ({
     children,
     ...props
 }) => {
-    console.log('BUTTON IS LOADING ===============', isLoading)
     const baseStyles =
         'group inline-flex items-center justify-center font-semibold transition-colors focus:outline-none cursor-pointer text-sm disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-600'
 

@@ -48,6 +48,7 @@ export function* fetchAllInstructorsSaga(action: PayloadAction<Record<string, an
 }
 
 export function* createUserSaga(action: PayloadAction<CreateUserPayload>) {
+    toastLoading('Creating user...')
     try {
         const response: AxiosResponse<User> = yield call(postCreateUser, action.payload)
 
@@ -60,6 +61,7 @@ export function* createUserSaga(action: PayloadAction<CreateUserPayload>) {
 }
 
 export function* updateUserSaga(action: PayloadAction<Partial<User>>) {
+    toastLoading('Updating user...')
     try {
         const response: AxiosResponse<User> = yield call(patchUpdateUser, action.payload)
 

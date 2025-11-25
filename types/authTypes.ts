@@ -1,4 +1,3 @@
-import { string } from '@redux-saga/is'
 import { User } from '@reformetypes/userTypes'
 
 export type SignUpPayload = SignUp & {

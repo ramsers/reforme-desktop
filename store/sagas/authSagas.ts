@@ -2,7 +2,6 @@ import { PayloadAction } from '@reduxjs/toolkit'
 import { AxiosResponse } from 'axios'
 import {
     AccessTokenResponse,
-    eRole,
     ForgotPasswordPayload,
     LoginPayload,
     ResetPasswordPayload,

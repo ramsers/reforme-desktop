@@ -16,7 +16,7 @@ import { User } from '@reformetypes/userTypes'
 const ProductList: React.FC = () => {
     const dispatch = useDispatch()
     const router = useRouter()
-    const productsList = useSelector((state: RootState) => state.payment.products)
+    const productsList: AsyncResource<Product[]> = useSelector((state: RootState) => state.payment.products)
     const user: AsyncResource<User | null> = useSelector((state: RootState) => state.user.currentUser)
     const userHasActivePass = !!user.data?.purchases?.some((purchase) => purchase.isActive)
 
@@ -29,7 +29,7 @@ const ProductList: React.FC = () => {
     const handlePurchaseClick = (product: Product) => {
         const currentPath = window.location.href
 
-        if (user && !userHasActivePass) {
+        if (user.data && !userHasActivePass) {
             dispatch(
                 createPurchaseIntent({
                     priceId: product.priceId,
@@ -64,7 +64,7 @@ const ProductList: React.FC = () => {
                                 </div>
 
                                 <Button
-                                    text={user && !userHasActivePass ? 'Purchase pass' : 'Create account'}
+                                    text={user.data && !userHasActivePass ? 'Purchase pass' : 'Create account'}
                                     onClick={() => handlePurchaseClick(product)}
                                 />
                             </div>

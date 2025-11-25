@@ -2,8 +2,7 @@
 
 import { RootState } from '@store/index'
 import React, { useEffect, useState } from 'react'
-import { connect, useDispatch, useSelector } from 'react-redux'
-import { Dispatch } from 'redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import dayjs from 'dayjs'
@@ -23,13 +22,7 @@ type CreateEditClassFormOwnProps = {
     title: string
 }
 
-type CreateEditClassFormSliceProps = {}
-
-type CreateEditClassFormDispatchProps = {}
-
-type CreateEditClassFormProps = CreateEditClassFormOwnProps &
-    CreateEditClassFormSliceProps &
-    CreateEditClassFormDispatchProps
+type CreateEditClassFormProps = CreateEditClassFormOwnProps
 
 const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIsOpen, title }) => {
     const dispatch = useDispatch()
@@ -102,7 +95,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                 }}
                 enableReinitialize
             >
-                {({ isSubmitting, handleSubmit, values, isValid, setFieldValue, setFieldError }) => {
+                {({ isSubmitting, handleSubmit, values, isValid, setFieldValue }) => {
                     const isRecurringClass = Boolean(
                         currentClass?.data?.recurrenceType || currentClass?.data?.parentClassId
                     )
@@ -302,8 +295,4 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
     )
 }
 
-const mapStateToProps = (store: RootState): CreateEditClassFormSliceProps => ({})
-
-const mapDispatchToProps = (dispatch: Dispatch): CreateEditClassFormDispatchProps => ({})
-
-export default connect(mapStateToProps, mapDispatchToProps)(CreateEditClassForm)
+export default CreateEditClassForm

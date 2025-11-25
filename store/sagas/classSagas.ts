@@ -72,7 +72,7 @@ export function* deleteClassSaga(action: PayloadAction<{ id: string; deleteSerie
     try {
         yield call(deleteClasses, action.payload.id, action.payload.deleteSeries)
         const now = dayjs()
-        const start_date = now.startOf('week').toISOString() // Monday 00:00
+        const start_date = now.startOf('week').toISOString()
         const end_date = now.endOf('week').toISOString()
 
         yield put(fetchClasses({ start_date, end_date }))

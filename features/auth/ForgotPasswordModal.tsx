@@ -3,7 +3,7 @@ import React from 'react'
 import ForgotPasswordForm from './ForgotPasswordForm'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
-import { connect, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { forgotPassword } from '@store/slices/authSlice'
 
 type ForgetPasswordModalProps = {

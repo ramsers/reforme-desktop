@@ -1,4 +1,3 @@
-import Modal from '@components/modal/Modal'
 import SlidingModal from '@components/slidingModal/SlidingModal'
 import { Class } from '@reformetypes/classTypes'
 import React from 'react'

@@ -22,6 +22,5 @@ export const postForgotPassword = (data: ForgotPasswordPayload): Promise<AxiosRe
 }
 
 export const postResetPassword = (data: ResetPasswordPayload): Promise<AxiosResponse<void>> => {
-    console.log('Datae ==============', data)
     return apiClient.post(APIRoutes.AUTH.RESET_PASSWORD, data)
 }

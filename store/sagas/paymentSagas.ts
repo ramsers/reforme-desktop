@@ -16,12 +16,13 @@ import { call, delay, put, select, takeLatest } from 'redux-saga/effects'
 import { RootState } from '..'
 import { toastError, toastLoading, toastSuccess } from 'lib/toast'
 import { extractApiError } from 'utils/apiUtils'
+import { User } from '@reformetypes/userTypes'
 
 export function* waitForUserUpdateSaga() {
     for (let i = 0; i < 10; i++) {
         yield delay(1000)
         yield put(fetchUserInfo())
-        const user = yield select((state: RootState) => state.user.currentUser)
+        const user: User | null = yield select((state: RootState) => state.user.currentUser.data)
 
         if (user?.purchases?.some((p) => p.isActive)) {
             return

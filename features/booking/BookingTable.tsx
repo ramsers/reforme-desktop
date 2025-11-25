@@ -1,6 +1,4 @@
-import Modal from '@components/modal/Modal'
 import { PencilIcon, PlusIcon } from '@heroicons/react/24/solid'
-import { Booking } from '@reformetypes/bookingTypes'
 import { Class } from '@reformetypes/classTypes'
 import dayjs from 'dayjs'
 import React, { useState } from 'react'
@@ -14,6 +12,7 @@ import TableHeader from '@components/table/TableHeader'
 import TableRow from '@components/table/TableRow'
 import PaginationButtons from '@components/table/PaginationButtons'
 import Button from '@components/button/button'
+import { API_PAGESIZE } from 'consts/consts'
 
 type BookingTableProps = {
     classes: ShortPaginatedResponse<Class>
@@ -39,8 +38,7 @@ const BookingTable: React.FC<BookingTableProps> = ({ classes, setCurrentPage, cu
         setIsAddClientOpen(true)
     }
 
-    const pageSize = 5
-    const totalPages = Math.ceil(classes.count / pageSize)
+    const totalPages = Math.ceil(classes.count / API_PAGESIZE)
 
     return (
         <>

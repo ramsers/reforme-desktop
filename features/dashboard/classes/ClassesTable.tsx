@@ -1,7 +1,5 @@
-import { RootState } from '@store/index'
 import React, { useState } from 'react'
-import { connect, useDispatch } from 'react-redux'
-import { Dispatch } from 'redux'
+import { useDispatch } from 'react-redux'
 import { Class } from '@reformetypes/classTypes'
 import dayjs from 'dayjs'
 import { PencilIcon } from '@heroicons/react/24/solid'
@@ -15,7 +13,7 @@ import PaginationButtons from '@components/table/PaginationButtons'
 import { TrashIcon } from '@heroicons/react/24/outline'
 import Modal from '@components/modal/Modal'
 import Button from '@components/button/button'
-import { AsyncResource } from '@reformetypes/common/ApiTypes'
+import { API_PAGESIZE } from 'consts/consts'
 
 type ClassesTableOwnProps = {
     classes: ShortPaginatedResponse<Class>
@@ -23,11 +21,7 @@ type ClassesTableOwnProps = {
     currentPage: number
 }
 
-type ClassesTableSliceProps = {}
-
-type ClassesTableDispatchProps = {}
-
-type ClassesTableProps = ClassesTableOwnProps & ClassesTableSliceProps & ClassesTableDispatchProps
+type ClassesTableProps = ClassesTableOwnProps
 
 const ClassesTable: React.FC<ClassesTableProps> = ({ classes, setCurrentPage, currentPage }) => {
     const [isOpen, setIsOpen] = useState(false)
@@ -42,10 +36,7 @@ const ClassesTable: React.FC<ClassesTableProps> = ({ classes, setCurrentPage, cu
         setIsOpen(true)
     }
 
-    // TODO - REVERT TO 10 then change to global env/var to use in all other tables
-
-    const pageSize = 5
-    const totalPages = Math.ceil(classes.count / pageSize)
+    const totalPages = Math.ceil(classes.count / API_PAGESIZE)
 
     const handleDeleteClass = () => {
         dispatch(
@@ -138,9 +129,5 @@ const ClassesTable: React.FC<ClassesTableProps> = ({ classes, setCurrentPage, cu
         </>
     )
 }
-
-const mapStateToProps = (store: RootState): ClassesTableSliceProps => ({})
-
-const mapDispatchToProps = (dispatch: Dispatch): ClassesTableDispatchProps => ({})
 
 export default ClassesTable

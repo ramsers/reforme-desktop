@@ -1,6 +1,5 @@
 'use client'
 
-import { RootState } from '@store/store'
 import React, { useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
@@ -23,11 +22,7 @@ type CalendarListOwnProps = {
     isLoading?: boolean
 }
 
-type CalendarListSliceProps = {}
-
-type CalendarListDispatchProps = {}
-
-type CalendarListProps = CalendarListOwnProps & CalendarListSliceProps & CalendarListDispatchProps
+type CalendarListProps = CalendarListOwnProps
 
 const CalendarList: React.FC<CalendarListProps> = ({ items, onLoadMore, hasMore, isLoading, emptyMessage = '' }) => {
     const sentinelRef = useRef<HTMLDivElement | null>(null)
@@ -88,8 +83,4 @@ const CalendarList: React.FC<CalendarListProps> = ({ items, onLoadMore, hasMore,
     )
 }
 
-const mapStateToProps = (store: RootState): CalendarListSliceProps => ({})
-
-const mapDispatchToProps = (dispatch: Dispatch): CalendarListDispatchProps => ({})
-
-export default connect(mapStateToProps, mapDispatchToProps)(CalendarList)
+export default CalendarList
