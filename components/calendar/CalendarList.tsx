@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import dayjs from 'dayjs'
+import { formatLocalDateTime } from '../../utils/dateUtils'
 
 interface CardItem {
     id: string | number
@@ -65,7 +66,7 @@ const CalendarList: React.FC<CalendarListProps> = ({ items, onLoadMore, hasMore,
                                 <div className="text-sm text-gray-600">{item.description}</div>
                                 <span className="text-sm">
                                     {item.instructorName || 'Instructor not assigned'} •{' '}
-                                    {dayjs(item.date).format('h:mm A')}
+                                    {formatLocalDateTime(item.date, 'h:mm A')}
                                 </span>
                             </div>
                             {item.actions && <div className="flex flex-row gap-2">{item.actions}</div>}

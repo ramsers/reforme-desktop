@@ -14,6 +14,7 @@ import { TrashIcon } from '@heroicons/react/24/outline'
 import Modal from '@components/modal/Modal'
 import Button from '@components/button/button'
 import { API_PAGESIZE } from 'consts/consts'
+import { formatLocalDateTime } from '../../../utils/dateUtils'
 
 type ClassesTableOwnProps = {
     classes: ShortPaginatedResponse<Class>
@@ -65,7 +66,7 @@ const ClassesTable: React.FC<ClassesTableProps> = ({ classes, setCurrentPage, cu
                             className="grid cursor-pointer grid-cols-12 p-2 hover:bg-gray-50 md:grid-cols-24"
                         >
                             <div className="col-span-4 font-bold md:col-span-6">
-                                <p>{dayjs(cls.date).format('D MMM')}</p>
+                                <p>{formatLocalDateTime(cls.date, 'D MMM')}</p>{' '}
                             </div>
 
                             <div className="col-span-4 truncate font-semibold md:col-span-6">{cls.title}</div>

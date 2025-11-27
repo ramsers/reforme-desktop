@@ -21,14 +21,6 @@ const BookingList: React.FC = () => {
     dayjs.extend(isSameOrAfter)
     dayjs.extend(utc)
 
-    const handleReschedule = (booking: Booking) => {
-        const { start, end } = getWeekRange(booking.bookedClass.date)
-
-        dispatch(fetchClasses({ start_date: start, end_date: end }))
-
-        router.push(`${AppRoutes.classes.list}?original_booking=${booking.id}`)
-    }
-
     const handleCancel = (bookingId: string) => {
         dispatch(deleteUserBooking(bookingId))
     }
@@ -61,12 +53,7 @@ const BookingList: React.FC = () => {
                                 </>
                             ) : upcomingBookings.length ? (
                                 upcomingBookings.map((bk: Booking) => (
-                                    <ClientBookingCard
-                                        key={bk.id}
-                                        booking={bk}
-                                        onCancel={handleCancel}
-                                        onReschedule={handleReschedule}
-                                    />
+                                    <ClientBookingCard key={bk.id} booking={bk} onCancel={handleCancel} />
                                 ))
                             ) : (
                                 <p className="text-left text-gray-500">No upcoming bookings</p>

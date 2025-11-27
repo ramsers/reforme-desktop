@@ -17,6 +17,8 @@ import { AsyncResource } from '@reformetypes/common/ApiTypes'
 import RecurrenceSection from './RecurrenceSection'
 import InstructorSelect from './InstructorSelect'
 import UpdateSeriesSection from './UpdateSeriesSection'
+import { formatLocalInputValue, toUTCISOString } from '../../../utils/dateUtils'
+
 dayjs.extend(utc)
 
 type CreateEditClassFormOwnProps = {
@@ -82,8 +84,8 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                     description: currentClass?.data?.description || '',
                     size: currentClass?.data?.size || 15,
                     date:
-                        (currentClass?.data?.date && dayjs(currentClass.data?.date).format('YYYY-MM-DD HH:mm')) ||
-                        dayjs().format('YYYY-MM-DD HH:mm'),
+                        (currentClass?.data?.date && formatLocalInputValue(currentClass.data?.date)) ||
+                        formatLocalInputValue(new Date()),
                     instructorId: currentClass?.data?.instructor?.id || null,
                     recurrenceType: currentClass?.data?.recurrenceType || null,
                     recurrenceDays: currentClass?.data?.recurrenceDays?.map((d) => d.toString()) || null,
@@ -92,17 +94,20 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                 validationSchema={ClassSchema}
                 onSubmit={(values, { setSubmitting, resetForm }) => {
                     const { id, ...payload } = values
-                    const utcDate = dayjs(values.date).utc().format()
+                    const utcDate = toUTCISOString(values.date)
                     const updatedPayload = {
                         id,
                         ...payload,
                         date: utcDate,
-                        recurrenceDays: values?.recurrenceDays?.map((d: string) => parseInt(d, 10)),
+                        recurrenceDays:
+                            values?.recurrenceDays && values.recurrenceDays.length > 0
+                                ? values.recurrenceDays.map((d: string) => parseInt(d, 10))
+                                : null,
                     }
                     if (values.id) {
                         dispatch(partialUpdateClass(updatedPayload))
                     } else {
-                        dispatch(createClass(payload))
+                        dispatch(createClass(updatedPayload))
                     }
 
                     setSubmitting(false)

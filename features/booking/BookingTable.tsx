@@ -13,6 +13,7 @@ import TableRow from '@components/table/TableRow'
 import PaginationButtons from '@components/table/PaginationButtons'
 import Button from '@components/button/button'
 import { API_PAGESIZE } from 'consts/consts'
+import { formatLocalDateTime } from '../../utils/dateUtils'
 
 type BookingTableProps = {
     classes: ShortPaginatedResponse<Class>
@@ -60,7 +61,7 @@ const BookingTable: React.FC<BookingTableProps> = ({ classes, setCurrentPage, cu
                             }
                         >
                             <div className="col-span-3 font-bold md:col-span-6">
-                                <p>{dayjs(cls.date).format('D MMM')}</p>
+                                <p>{formatLocalDateTime(cls.date, 'D MMM')}</p>
                             </div>
 
                             <div className="col-span-3 truncate font-semibold md:col-span-6">{cls.title}</div>

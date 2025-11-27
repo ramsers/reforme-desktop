@@ -54,7 +54,8 @@ const ClassesCalendar: React.FC = () => {
 
                     <CalendarList
                         items={classes.data.results.map((cls) => {
-                            const isPast = dayjs(cls.date).isBefore(dayjs(), 'day')
+                            const classDate = dayjs(cls.date).local()
+                            const isPast = classDate.isBefore(dayjs(), 'day')
 
                             return {
                                 id: cls.id,
