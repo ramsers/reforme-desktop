@@ -17,10 +17,8 @@ const DashboardClientsPage = () => {
     const [searchQuery, setSearchQuery] = useState('')
 
     useEffect(() => {
-        dispatch(fetchAllClients({ currentPage: currentPage, search: searchQuery }))
+        dispatch(fetchAllClients({ page: currentPage, search: searchQuery }))
     }, [currentPage, searchQuery])
-
-    console.log('Clients:', clients)
 
     return (
         <div className="flex flex-col gap-5">

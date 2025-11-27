@@ -107,7 +107,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                     if (values.id) {
                         dispatch(partialUpdateClass(updatedPayload))
                     } else {
-                        dispatch(createClass(updatedPayload))
+                        dispatch(createClass(payload))
                     }
 
                     setSubmitting(false)
