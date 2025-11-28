@@ -2,6 +2,8 @@ const APIRoutes = {
     AUTH: {
         SIGN_UP: '/authentication/sign-up',
         LOGIN: '/authentication/login',
+        FORGOT_PASSWORD: '/authentication/forgot-password',
+        RESET_PASSWORD: '/authentication/reset-password',
     },
     CLASSES: {
         MAIN: '/classes',
@@ -15,6 +17,7 @@ const APIRoutes = {
         ALL_INSTRUCTORS: '/users/all-instructors',
         ALL_CLIENTS: '/users/all-clients',
         BY_ID: (id: string) => `/users/${id}`,
+        DELETE: (id: string) => `/users/${id}/delete`,
     },
     BOOKING: {
         MAIN: '/bookings',

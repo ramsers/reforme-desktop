@@ -1,21 +1,17 @@
 'use client'
 
 import { Formik, Form, Field, ErrorMessage } from 'formik'
-import { AppDispatch, RootState } from '@store/index'
+import { AppDispatch } from '@store/index'
 import React from 'react'
-import { connect, useDispatch } from 'react-redux'
-import { Dispatch } from 'redux'
+import { useDispatch } from 'react-redux'
 import * as Yup from 'yup'
-import { eRole, SignUpPayload } from '@reformetypes/authTypes'
-import { signUp } from '@store/slices/signUpSlice'
+import { eRole } from '@reformetypes/authTypes'
+import { signUp } from '@store/slices/authSlice'
 import { useRouter, useSearchParams } from 'next/navigation'
 import AppRoutes from '../../config/appRoutes'
+import Button from '@components/button/button'
 
-type SignUpFormOwnProps = {}
-
-type SignUpFormProps = SignUpFormOwnProps
-
-const SignUpForm: React.FC<SignUpFormProps> = () => {
+const SignUpForm: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>()
     const router = useRouter()
     const searchParams = useSearchParams()
@@ -89,28 +85,13 @@ const SignUpForm: React.FC<SignUpFormProps> = () => {
                             <ErrorMessage name="phoneNumber" component="div" className="text-sm text-red-500" />
                         </div>
 
-                        <button
-                            type="submit"
-                            className="bg-brown-default text-main hover:bg-brown-50 rounded-lg p-4 font-semibold transition-colors"
-                            // onClick={() => handleSubmit()}
-                        >
-                            {/*    type="submit"*/}
-                            {/*    // disabled={isSubmitting}*/}
-                            {/*    className="bg-blue-600 text-white px-4 py-2 rounded"*/}
-                            {/*>*/}
-                            Submit
-                        </button>
+                        <Button type="submit" text="Submit" />
                     </Form>
                 )}
             </Formik>
             <div className="flex flex-row gap-1">
                 <p>Already have an account?</p>
-                <button
-                    onClick={() => router.push(AppRoutes.authenticate.login)}
-                    className="cursor-pointer text-blue-600 underline"
-                >
-                    Login
-                </button>
+                <Button onClick={() => router.push(AppRoutes.authenticate.login)} text="Login" variant="text" />
             </div>
         </div>
     )

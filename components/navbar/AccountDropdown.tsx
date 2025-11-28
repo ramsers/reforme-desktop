@@ -1,32 +1,12 @@
-import { RootState } from '@store/index'
 import React from 'react'
-import { connect, useDispatch } from 'react-redux'
-import { Dispatch } from 'redux'
+import { useDispatch } from 'react-redux'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import {
-    ArchiveBoxXMarkIcon,
-    ArrowRightEndOnRectangleIcon,
-    ArrowRightIcon,
-    ChevronDownIcon,
-    PencilIcon,
-    Square2StackIcon,
-    TrashIcon,
-    UserCircleIcon,
-    UserIcon,
-} from '@heroicons/react/24/solid'
-import { logout } from '@store/slices/signUpSlice'
+import { ArrowRightEndOnRectangleIcon, PencilIcon, UserCircleIcon, UserIcon } from '@heroicons/react/24/solid'
+import { logout } from '@store/slices/authSlice'
 import { useRouter } from 'next/navigation'
 import AppRoutes from '../../config/appRoutes'
 
-type AccountDropdownOwnProps = {}
-
-type AccountDropdownSliceProps = {}
-
-type AccountDropdownDispatchProps = {}
-
-type AccountDropdownProps = AccountDropdownOwnProps & AccountDropdownSliceProps & AccountDropdownDispatchProps
-
-const AccountDropdown: React.FC<AccountDropdownProps> = () => {
+const AccountDropdown: React.FC = () => {
     const dispatch = useDispatch()
     const router = useRouter()
     return (
@@ -72,8 +52,4 @@ const AccountDropdown: React.FC<AccountDropdownProps> = () => {
     )
 }
 
-const mapStateToProps = (store: RootState): AccountDropdownSliceProps => ({})
-
-const mapDispatchToProps = (dispatch: Dispatch): AccountDropdownDispatchProps => ({})
-
-export default connect(mapStateToProps, mapDispatchToProps)(AccountDropdown)
+export default AccountDropdown

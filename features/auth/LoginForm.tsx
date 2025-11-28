@@ -1,33 +1,20 @@
 import { RootState } from '@store/index'
 import React, { useEffect, useState } from 'react'
-import { connect, useDispatch, useSelector } from 'react-redux'
-import { Dispatch } from 'redux'
-import { AppDispatch } from '@store/index'
+import { useDispatch, useSelector } from 'react-redux'
 import * as Yup from 'yup'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
-import Image from 'next/image'
 import { eRole } from '@reformetypes/authTypes'
-import { signUp, login } from '@store/slices/signUpSlice'
+import { login } from '@store/slices/authSlice'
 import { useRouter } from 'next/navigation'
 import AppRoutes from '../../config/appRoutes'
 import { User } from '@reformetypes/userTypes'
-import App from 'next/app'
 import Button from '@components/button/button'
 import ForgotPasswordModal from './ForgotPasswordModal'
 
-type LoginFormOwnProps = {}
-
-type LoginFormSliceProps = {}
-
-type LoginFormDispatchProps = {}
-
-type LoginFormProps = LoginFormOwnProps & LoginFormSliceProps & LoginFormDispatchProps
-
-const LoginForm: React.FC<LoginFormProps> = () => {
+const LoginForm: React.FC = () => {
     const dispatch = useDispatch()
     const user: User | null = useSelector((state: RootState) => state?.user?.currentUser.data)
     const [isOpen, setIsOpen] = useState<boolean>(false)
-
     const router = useRouter()
 
     const LoginSchema = Yup.object().shape({
@@ -92,28 +79,16 @@ const LoginForm: React.FC<LoginFormProps> = () => {
                                 <ErrorMessage name="password" component="div" className="text-sm text-red-500" />
                             </div>
                             <Button type={'submit'} text="Login" />
-                            {/* type="submit"
-                                className="bg-brown-default text-main hover:bg-brown-50 rounded-lg p-4 font-semibold transition-colors"
-                            >
-                                Login */}
-                            {/* </button> */}
                         </Form>
                     </>
                 )}
             </Formik>
             <div className="flex flex-row gap-1">
                 <p> Dont have an account?</p>
-                <Button
-                    onClick={() => router.push(AppRoutes.authenticate.signUp)}
-                    variant="text"
-                    text="Sign Up"
-                    className="font-normal"
-                />
+                <Button onClick={() => router.push(AppRoutes.authenticate.signUp)} variant="text" text="Sign Up" />
             </div>
             <div className="flex flex-row gap-1">
-                <button onClick={() => setIsOpen(true)} className="cursor-pointer text-blue-600">
-                    Forgot password?
-                </button>
+                <Button onClick={() => setIsOpen(true)} text="Forgot password?" variant="text" />
             </div>
             <ForgotPasswordModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
         </div>

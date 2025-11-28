@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { User } from '@reformetypes/userTypes'
 import * as Yup from 'yup'
 import { useDispatch } from 'react-redux'
 import { updateUser } from '@store/slices/userSlice'
 import Button from '@components/button/button'
+import { useRouter } from 'next/navigation'
+import DeleteClientModal from './DeleteClientModal'
 
 type ClientSettingsFormProps = {
     client: User
@@ -12,6 +14,8 @@ type ClientSettingsFormProps = {
 
 const ClientSettingsForm: React.FC<ClientSettingsFormProps> = ({ client }) => {
     const dispatch = useDispatch()
+    const router = useRouter()
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 
     const ClientSettingsSchema = Yup.object().shape({
         name: Yup.string().required('Name is required'),
@@ -31,11 +35,15 @@ const ClientSettingsForm: React.FC<ClientSettingsFormProps> = ({ client }) => {
             }}
             validationSchema={ClientSettingsSchema}
             onSubmit={(values, { setSubmitting }) => {
-                dispatch(updateUser(values))
+                try {
+                    dispatch(updateUser(values))
+                } finally {
+                    setSubmitting(false)
+                }
             }}
             enableReinitialize
         >
-            {({ isValid }) => (
+            {({ isSubmitting, isValid }) => (
                 <Form className="flex max-w-lg flex-col gap-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-700">Name</label>
@@ -68,9 +76,26 @@ const ClientSettingsForm: React.FC<ClientSettingsFormProps> = ({ client }) => {
                     </div>
 
                     <div className="flex flex-row gap-2">
-                        <Button text="Delete" variant="danger" className="w-[50%]" />
-                        <Button type={'submit'} text="Save" className="w-[50%]" disabled={!isValid} />
+                        <Button
+                            type="button"
+                            text="Delete"
+                            variant="danger"
+                            className="w-[50%]"
+                            onClick={() => setIsDeleteModalOpen(true)}
+                        />
+                        <Button
+                            type={'submit'}
+                            text="Save"
+                            className="w-[50%]"
+                            disabled={!isValid}
+                            isLoading={isSubmitting}
+                        />
                     </div>
+                    <DeleteClientModal
+                        isOpen={isDeleteModalOpen}
+                        onClose={() => setIsDeleteModalOpen(false)}
+                        clientId={client.id}
+                    />
                 </Form>
             )}
         </Formik>

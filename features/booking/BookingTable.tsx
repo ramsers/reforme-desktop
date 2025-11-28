@@ -1,19 +1,19 @@
-import Modal from '@components/modal/Modal'
 import { PencilIcon, PlusIcon } from '@heroicons/react/24/solid'
-import { Booking } from '@reformetypes/bookingTypes'
 import { Class } from '@reformetypes/classTypes'
 import dayjs from 'dayjs'
 import React, { useState } from 'react'
 import ManageClassBookingModal from './ManageClassBookingModal'
 import { useSelector } from 'react-redux'
 import { RootState } from '@store/index'
-import AddClientModal from './AddClientModel'
+import AddClientModal from './AddClientModal'
 import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
 import TableContainer from '@components/table/TableContainer'
 import TableHeader from '@components/table/TableHeader'
 import TableRow from '@components/table/TableRow'
 import PaginationButtons from '@components/table/PaginationButtons'
 import Button from '@components/button/button'
+import { API_PAGESIZE } from 'consts/consts'
+import { formatLocalDateTime } from '../../utils/dateUtils'
 
 type BookingTableProps = {
     classes: ShortPaginatedResponse<Class>
@@ -39,8 +39,7 @@ const BookingTable: React.FC<BookingTableProps> = ({ classes, setCurrentPage, cu
         setIsAddClientOpen(true)
     }
 
-    const pageSize = 10
-    const totalPages = Math.ceil(classes.count / pageSize)
+    const totalPages = Math.ceil(classes.count / API_PAGESIZE)
 
     return (
         <>
@@ -62,7 +61,7 @@ const BookingTable: React.FC<BookingTableProps> = ({ classes, setCurrentPage, cu
                             }
                         >
                             <div className="col-span-3 font-bold md:col-span-6">
-                                <p>{dayjs(cls.date).format('D MMM')}</p>
+                                <p>{formatLocalDateTime(cls.date, 'D MMM')}</p>
                             </div>
 
                             <div className="col-span-3 truncate font-semibold md:col-span-6">{cls.title}</div>
@@ -75,7 +74,7 @@ const BookingTable: React.FC<BookingTableProps> = ({ classes, setCurrentPage, cu
                                 {`${cls.bookingsCount}/${cls.size}`}
                             </div>
 
-                            <div className="col-span-3 flex flex-row flex-wrap items-center justify-end gap-2 md:col-span-4">
+                            <div className="col-span-3 flex flex-row flex-wrap items-center justify-center gap-2 md:col-span-4 md:justify-end">
                                 {cls.bookingsCount > 0 && (
                                     <Button
                                         onClick={(e) => {

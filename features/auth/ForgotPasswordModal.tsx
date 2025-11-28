@@ -3,6 +3,8 @@ import React from 'react'
 import ForgotPasswordForm from './ForgotPasswordForm'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
+import { useDispatch } from 'react-redux'
+import { forgotPassword } from '@store/slices/authSlice'
 
 type ForgetPasswordModalProps = {
     isOpen: boolean
@@ -10,6 +12,7 @@ type ForgetPasswordModalProps = {
 }
 
 const ForgetPasswordModal: React.FC<ForgetPasswordModalProps> = ({ isOpen, onClose }) => {
+    const dispatch = useDispatch()
     return (
         <Formik
             initialValues={{ email: '' }}
@@ -17,7 +20,7 @@ const ForgetPasswordModal: React.FC<ForgetPasswordModalProps> = ({ isOpen, onClo
                 email: Yup.string().email('Invalid email address').required('Email is required'),
             })}
             onSubmit={(values) => {
-                console.log('FORM SUBMITTED WITH VALUES:', values)
+                dispatch(forgotPassword({ email: values.email }))
             }}
         >
             {({ isValid, dirty, handleSubmit }) => (

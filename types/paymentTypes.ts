@@ -16,6 +16,7 @@ export type CreatePurchaseIntentPayload = {
     priceAmount: number
     currency: string
     durationDays: string
+    redirectUrl?: string | null
 }
 
 export type PurchaseIntentResponse = {

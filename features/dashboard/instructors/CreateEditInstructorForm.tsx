@@ -1,8 +1,7 @@
 'use client'
 import { RootState } from '@store/index'
 import React from 'react'
-import { connect, useDispatch, useSelector } from 'react-redux'
-import { Dispatch } from 'redux'
+import { useDispatch, useSelector } from 'react-redux'
 import * as Yup from 'yup'
 import { User } from '@reformetypes/userTypes'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
@@ -18,13 +17,7 @@ type CreateEditInstructorFormOwnProps = {
     selectedInstructorId?: string | null
 }
 
-type CreateEditInstructorFormSliceProps = {}
-
-type CreateEditInstructorFormDispatchProps = {}
-
-type CreateEditInstructorFormProps = CreateEditInstructorFormOwnProps &
-    CreateEditInstructorFormSliceProps &
-    CreateEditInstructorFormDispatchProps
+type CreateEditInstructorFormProps = CreateEditInstructorFormOwnProps
 
 const CreateEditInstructorForm: React.FC<CreateEditInstructorFormProps> = ({
     isOpen,
@@ -46,7 +39,7 @@ const CreateEditInstructorForm: React.FC<CreateEditInstructorFormProps> = ({
         email: Yup.string().email('Invalid email').required('Email is required'),
         phoneNumber: Yup.string()
             .matches(/^\+?[0-9]{7,15}$/, 'Invalid phone number')
-            .notRequired(),
+            .required('Phone number is required'),
     })
     return (
         <div className="flex flex-col gap-5">
@@ -85,6 +78,7 @@ const CreateEditInstructorForm: React.FC<CreateEditInstructorFormProps> = ({
                             dispatch(clearClass())
                             resetForm()
                         }}
+                        isSubmitting={isSubmitting}
                     >
                         <Form className="flex flex-col gap-4">
                             <div>
@@ -124,8 +118,4 @@ const CreateEditInstructorForm: React.FC<CreateEditInstructorFormProps> = ({
     )
 }
 
-const mapStateToProps = (store: RootState): CreateEditInstructorFormSliceProps => ({})
-
-const mapDispatchToProps = (dispatch: Dispatch): CreateEditInstructorFormDispatchProps => ({})
-
-export default connect(mapStateToProps, mapDispatchToProps)(CreateEditInstructorForm)
+export default CreateEditInstructorForm

@@ -24,10 +24,9 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ title, isOpen
         email: Yup.string().email('Invalid email').required('Email is required'),
         phoneNumber: Yup.string()
             .matches(/^\+?[0-9]{7,15}$/, 'Invalid phone number')
-            .notRequired(),
+            .required('Phone number is required'),
     })
 
-    console.log('CLIENT IN MODAL =============', client)
     return (
         <Formik
             initialValues={{
@@ -39,7 +38,6 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ title, isOpen
             }}
             validationSchema={CreateUserSchema}
             onSubmit={(values, { setSubmitting, resetForm }) => {
-                console.log('VALUES =============', values)
                 const { id, ...payload } = values
 
                 if (!id) {
@@ -66,6 +64,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ title, isOpen
                         resetForm()
                     }}
                     isValid={isValid}
+                    isSubmitting={isSubmitting}
                 >
                     <Form className="flex flex-col gap-4">
                         <div>

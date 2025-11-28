@@ -33,6 +33,7 @@ const AddClientModal: React.FC<AddClientModalProps> = ({ isOpen, onClose, setIsO
         if (!selectedClientId || !classId) return null
         dispatch(createBooking({ clientId: selectedClientId, classId: classId }))
         setIsOpen(false)
+        setSelectedClientId(null)
     }
 
     return (

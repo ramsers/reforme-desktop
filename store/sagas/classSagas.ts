@@ -15,30 +15,32 @@ import { AxiosResponse } from 'axios'
 import { Class, CreateClassPayload, PartialUpdateClassPayload } from '@reformetypes/classTypes'
 import { deleteClasses, getClass, getClasses, patchUpdateClass, postCreateClass } from '@api/classes'
 import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
-import { toastError, toastSuccess } from 'lib/toast'
+import { toastError, toastLoading, toastSuccess } from 'lib/toast'
 import dayjs from 'dayjs'
+import { extractApiError } from 'utils/apiUtils'
 
 export function* fetchClassesSaga(action: PayloadAction<Record<string, any>>) {
     try {
-        try {
-            const response: AxiosResponse<ShortPaginatedResponse<Class>> = yield call(getClasses, action.payload)
-            yield put(fetchClassesSuccess(response.data))
-        } catch (e) {}
+        const response: AxiosResponse<ShortPaginatedResponse<Class>> = yield call(getClasses, action.payload)
+        yield put(fetchClassesSuccess({ data: response.data, append: action.payload.append }))
     } catch (e) {}
 }
 
 export function* createClassSaga(action: PayloadAction<CreateClassPayload>) {
+    toastLoading('Creating class...')
+
     try {
         yield call(postCreateClass, action.payload)
 
         const now = dayjs()
-        const start_date = now.startOf('week').toISOString() // Monday 00:00
+        const start_date = now.startOf('week').toISOString()
         const end_date = now.endOf('week').toISOString()
 
         yield put(fetchClasses({ start_date, end_date }))
         toastSuccess('Class created!')
     } catch (e) {
-        toastError('Error creating class. Please try again.')
+        const message = extractApiError(e)
+        toastError(message)
     }
 }
 
@@ -50,6 +52,8 @@ export function* fetchClassSaga(action: PayloadAction<string>) {
 }
 
 export function* partialUpdateClassSaga(action: PayloadAction<PartialUpdateClassPayload>) {
+    toastLoading('Updating class...')
+
     try {
         const response: AxiosResponse<Class> = yield call(patchUpdateClass, action.payload)
 
@@ -57,23 +61,25 @@ export function* partialUpdateClassSaga(action: PayloadAction<PartialUpdateClass
         yield put(clearClass())
         toastSuccess('Class updated!')
     } catch (e) {
-        toastError('Error updating class. Please try again.')
+        const message = extractApiError(e)
+        toastError(message)
     }
 }
 
 export function* deleteClassSaga(action: PayloadAction<{ id: string; deleteSeries: boolean }>) {
+    toastLoading('Deleting class...')
+
     try {
-        console.log('TEST HITTING DELTE SAGA =====================', action.payload)
         yield call(deleteClasses, action.payload.id, action.payload.deleteSeries)
         const now = dayjs()
-        const start_date = now.startOf('week').toISOString() // Monday 00:00
+        const start_date = now.startOf('week').toISOString()
         const end_date = now.endOf('week').toISOString()
 
         yield put(fetchClasses({ start_date, end_date }))
         toastSuccess('Class deleted!')
     } catch (e) {
-        console.log('ERRROR =========', e)
-        toastError('Error deleting class. Please try again.')
+        const message = extractApiError(e)
+        toastError(message)
     }
 }
 

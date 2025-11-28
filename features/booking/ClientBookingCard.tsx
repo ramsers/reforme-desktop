@@ -1,13 +1,13 @@
 import { Booking } from '@reformetypes/bookingTypes'
 import dayjs from 'dayjs'
+import { formatLocalDateTime } from '../../utils/dateUtils'
 
 type ClientBookingCardProps = {
     booking: Booking
     onCancel?: (id: string) => void
-    onReschedule?: (booking: Booking) => void
 }
 
-const ClientBookingCard: React.FC<ClientBookingCardProps> = ({ booking, onCancel, onReschedule }) => {
+const ClientBookingCard: React.FC<ClientBookingCardProps> = ({ booking, onCancel }) => {
     return (
         <div
             key={booking.id}
@@ -15,7 +15,7 @@ const ClientBookingCard: React.FC<ClientBookingCardProps> = ({ booking, onCancel
         >
             <div className="flex flex-col gap-3">
                 <p className="font-semibold italic">
-                    {dayjs(booking.bookedClass.date).format('dddd MMMM D YYYY h:mm A')}
+                    {formatLocalDateTime(booking.bookedClass.date, 'dddd MMMM D YYYY h:mm A')}
                 </p>
 
                 <div className="flex flex-col gap-1">
@@ -35,16 +35,7 @@ const ClientBookingCard: React.FC<ClientBookingCardProps> = ({ booking, onCancel
                         onClick={() => onCancel(booking.id)}
                         className="cursor-pointer font-semibold text-red-700 hover:text-red-500"
                     >
-                        Cancel
-                    </button>
-                )}
-
-                {onReschedule && (
-                    <button
-                        onClick={() => onReschedule(booking)}
-                        className="font-semibold text-blue-700 hover:text-blue-500"
-                    >
-                        Reschedule
+                        Cancel booking
                     </button>
                 )}
             </div>

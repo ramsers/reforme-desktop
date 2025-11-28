@@ -1,4 +1,3 @@
-import Modal from '@components/modal/Modal'
 import SlidingModal from '@components/slidingModal/SlidingModal'
 import { Class } from '@reformetypes/classTypes'
 import React from 'react'
@@ -23,7 +22,14 @@ const ManageClassBookingModal: React.FC<ManageClassBookingModalProps> = ({ isOpe
         >
             <>
                 {bookedClass?.bookings.map((booking) => {
-                    return <BookerModalRow key={booking.id} booking={booking} bookedClassId={bookedClass.id} />
+                    return (
+                        <BookerModalRow
+                            key={booking.id}
+                            booking={booking}
+                            bookedClassId={bookedClass.id}
+                            setIsOpen={setIsOpen}
+                        />
+                    )
                 })}
             </>
         </SlidingModal>

@@ -126,6 +126,43 @@ const userSlice = createSlice({
             }
             return state
         },
+        deleteUser: (
+            state,
+            action: PayloadAction<{
+                data: string
+                onSuccess?: () => void
+            }>
+        ) => state,
+        deleteUserSuccess: (state, action: PayloadAction<string>) => {
+            const userId = action.payload
+
+            const removeUserFromList = (collection: AsyncResource<ShortPaginatedResponse<User>>) => {
+                const index = collection.data.results.findIndex((user) => user.id === userId)
+                if (index !== -1) {
+                    collection.data.results.splice(index, 1)
+                    collection.data.count = Math.max(0, collection.data.count - 1)
+                }
+            }
+
+            removeUserFromList(state.clients)
+            removeUserFromList(state.instructors)
+
+            if (state.currentUser.data?.id === userId) {
+                state.currentUser.data = null
+                state.currentUser.hasFetched = false
+                state.currentUser.fetching = false
+            }
+
+            if (state.client?.id === userId) {
+                state.client = null
+            }
+
+            if (state.instructor?.id === userId) {
+                state.instructor = null
+            }
+
+            return state
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(cancelSubscriptionSuccess, (state, action: PayloadAction<string>) => {
@@ -162,5 +199,7 @@ export const {
     updateUserSuccess,
     fetchAllClients,
     fetchAllClientsSuccess,
+    deleteUser,
+    deleteUserSuccess,
 } = userSlice.actions
 export default userSlice.reducer

@@ -9,6 +9,7 @@ import TableHeader from '@components/table/TableHeader'
 import PaginationButtons from '@components/table/PaginationButtons'
 import TableRow from '@components/table/TableRow'
 import Button from '@components/button/button'
+import { API_PAGESIZE } from 'consts/consts'
 
 type ClientTableProps = {
     clients: ShortPaginatedResponse<User>
@@ -25,8 +26,7 @@ const ClientTable: React.FC<ClientTableProps> = ({ clients, setCurrentPage, curr
         setIsOpen(true)
     }
 
-    const pageSize = 10
-    const totalPages = Math.ceil(clients.count / pageSize)
+    const totalPages = Math.ceil(clients.count / API_PAGESIZE)
 
     return (
         <>

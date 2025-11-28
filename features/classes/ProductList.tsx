@@ -10,13 +10,15 @@ import { createPurchaseIntent, fetchProducts } from '@store/slices/paymentSlice'
 import { useRouter } from 'next/navigation'
 import AppRoutes from 'config/appRoutes'
 import SkeletonBlock from '@components/Loaders/SkeletonBlock'
+import { AsyncResource } from '@reformetypes/common/ApiTypes'
+import { User } from '@reformetypes/userTypes'
 
 const ProductList: React.FC = () => {
     const dispatch = useDispatch()
     const router = useRouter()
-    const productsList = useSelector((state: RootState) => state.payment.products)
-    const user = useSelector((state: RootState) => state.user.currentUser)
-    const userHasActivePass = !!user?.purchases?.some((purchase) => purchase.isActive)
+    const productsList: AsyncResource<Product[]> = useSelector((state: RootState) => state.payment.products)
+    const user: AsyncResource<User | null> = useSelector((state: RootState) => state.user.currentUser)
+    const userHasActivePass = !!user.data?.purchases?.some((purchase) => purchase.isActive)
 
     useEffect(() => {
         if (!productsList.hasFetched && !productsList.fetching) {
@@ -25,9 +27,9 @@ const ProductList: React.FC = () => {
     }, [dispatch, productsList.hasFetched, productsList.fetching])
 
     const handlePurchaseClick = (product: Product) => {
-        const currentPath = window.location.pathname
+        const currentPath = window.location.href
 
-        if (user && !userHasActivePass) {
+        if (user.data && !userHasActivePass) {
             dispatch(
                 createPurchaseIntent({
                     priceId: product.priceId,
@@ -36,14 +38,13 @@ const ProductList: React.FC = () => {
                     currency: product.currency,
                     priceAmount: product.priceAmount,
                     durationDays: product.durationDays,
+                    redirectUrl: product.isSubscription ? currentPath : null,
                 })
             )
         } else {
             router.push(`${AppRoutes.authenticate.signUp}?redirect=${encodeURIComponent(currentPath)}`)
         }
     }
-
-    console.log('PROJECT LIST ===============', productsList)
 
     return (
         <div className="flex w-3/4 flex-col justify-center gap-3 lg:flex-row">
@@ -63,7 +64,7 @@ const ProductList: React.FC = () => {
                                 </div>
 
                                 <Button
-                                    text={user && !userHasActivePass ? 'Purchase pass' : 'Create account'}
+                                    text={user.data && !userHasActivePass ? 'Purchase pass' : 'Create account'}
                                     onClick={() => handlePurchaseClick(product)}
                                 />
                             </div>

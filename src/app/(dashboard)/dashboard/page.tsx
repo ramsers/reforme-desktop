@@ -1,32 +1,21 @@
-"use client"
+'use client'
 
-import {RootState} from '@store/index'
+import { RootState } from '@store/index'
 import React from 'react'
-import {connect} from 'react-redux'
-import {Dispatch} from 'redux'
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
+import AppRoutes from 'config/appRoutes'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
-type DashboardPageOwnProps = {}
+const Page: React.FC = () => {
+    const router = useRouter()
 
-type DashboardPageSliceProps = {}
+    useEffect(() => {
+        router.replace(AppRoutes.dashboard.classes.list)
+    }, [router])
 
-type DashboardPageDispatchProps = {}
-
-type DashboardPageProps = DashboardPageOwnProps &
-    DashboardPageSliceProps &
-    DashboardPageDispatchProps
-
-const Page: React.FC<DashboardPageProps> = () => {
-    return (
-        <>im the admin user bruh</>
-    )
+    return null
 }
 
-const mapStateToProps = (store: RootState): DashboardPageSliceProps => (
-    {}
-)
-
-const mapDispatchToProps = (dispatch: Dispatch): DashboardPageDispatchProps => (
-    {}
-)
-
-export default connect(mapStateToProps, mapDispatchToProps)(Page)
+export default Page

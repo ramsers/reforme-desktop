@@ -9,15 +9,17 @@ import { useRouter } from 'next/navigation'
 type BookerModalRowPRops = {
     booking: BookingClient
     bookedClassId: string
+    setIsOpen: (isOpen: boolean) => void
 }
 
-const BookerModalRow: React.FC<BookerModalRowPRops> = ({ booking, bookedClassId }) => {
+const BookerModalRow: React.FC<BookerModalRowPRops> = ({ booking, bookedClassId, setIsOpen }) => {
     const dispatch = useDispatch()
     const router = useRouter()
 
     const handleDeleteBooking = () => {
         dispatch(deleteUserBooking(booking.id))
         dispatch(removeClassBooking({ classId: bookedClassId, bookingId: booking.id }))
+        setIsOpen(false)
     }
 
     const handleRedirectToClient = () => {
