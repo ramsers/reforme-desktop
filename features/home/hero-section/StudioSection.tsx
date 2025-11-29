@@ -1,16 +1,13 @@
 import React from 'react'
-import {ChevronDownIcon} from "@heroicons/react/24/outline";
 
 const StudioSection: React.FC = () => {
     return (
-        <div className="text-background relative flex h-full lg:min-h-100 flex-row items-end justify-start bg-[url('/images/studio_background.jpg')]
-        bg-cover bg-center bg-no-repeat p-5">
+        <div className="text-background relative flex h-full flex-row items-end justify-start bg-[url('/images/studio_background.jpg')] bg-cover bg-center bg-no-repeat p-5 lg:min-h-100">
             <div className="absolute inset-0 bg-black/30"></div>
 
-            <div className="relative z-10 bg-brown-default p-3 w-96 rounded-xl lg:ml-32 lg:mb-6 shadow-2xl p-2">
-                <p className="font-heading text-3xl text-center leading-8 font-semibold mb-2">
-                    A space to move,
-                    breathe, and grow
+            <div className="bg-brown-default relative z-10 w-96 rounded-xl p-2 p-3 shadow-2xl lg:mb-6 lg:ml-32">
+                <p className="font-heading mb-2 text-center text-3xl leading-8 font-semibold">
+                    A space to move, breathe, and grow
                 </p>
                 <p>
                     At Reformé, we specialize in Reformer Pilates that strengthens your body, improves posture, and

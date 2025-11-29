@@ -1,15 +1,7 @@
 import React from 'react'
-import { Bars3Icon, ChevronDownIcon } from '@heroicons/react/24/outline'
+import { ChevronDownIcon } from '@heroicons/react/24/outline'
 
-type HeroSectionOwnProps = {}
-
-type HeroSectionSliceProps = {}
-
-type HeroSectionDispatchProps = {}
-
-type HeroSectionProps = HeroSectionOwnProps & HeroSectionSliceProps & HeroSectionDispatchProps
-
-const HeroSection: React.FC<HeroSectionProps> = () => {
+const HeroSection: React.FC = () => {
     return (
         <div className="text-background relative flex h-full min-h-96 flex-row items-end justify-center bg-[url('/images/main_hero.jpg')] bg-cover bg-center bg-no-repeat">
             <div className="absolute inset-0 bg-black/35"></div>
