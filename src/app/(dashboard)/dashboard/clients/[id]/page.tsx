@@ -7,18 +7,16 @@ import { RootState } from '@store/index'
 import { retrieveUser } from '@store/slices/userSlice'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'next/navigation'
 
-type ClientPageProps = {
-    params: { id: string }
-}
-
-const ClientPage: React.FC<ClientPageProps> = ({ params }) => {
+const ClientPage: React.FC = () => {
     const disptach = useDispatch()
     const client = useSelector((state: RootState) => state.user.client)
+    const { id } = useParams<{ id: string }>()
 
     useEffect(() => {
-        disptach(retrieveUser(params.id))
-    }, [params.id])
+        disptach(retrieveUser(id))
+    }, [id])
 
     return (
         <div>

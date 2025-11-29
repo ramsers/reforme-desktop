@@ -14,21 +14,19 @@ import { AsyncResource } from '@reformetypes/common/ApiTypes'
 import SkeletonBlock from '@components/Loaders/SkeletonBlock'
 import ProductList from '@features/classes/ProductList'
 import { formatLocalDateTime } from '../../../../../utils/dateUtils'
+import { useParams } from 'next/navigation'
 
-type ClassPageProps = {
-    params: { id: string }
-}
-
-const ClassPage: React.FC<ClassPageProps> = ({ params }) => {
+const ClassPage: React.FC = () => {
     const dispatch = useDispatch()
     const currentClass: AsyncResource<Class | null> = useSelector((state: RootState) => state.class.class)
     const clientSecret = useSelector((state: RootState) => state.payment.clientSecret)
     const user = useSelector((state: RootState) => state.user.currentUser)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const userHasActivePass = !!user?.data?.purchases?.some((purchase) => purchase.isActive)
+    const { id } = useParams<{ id: string }>()
 
     useEffect(() => {
-        dispatch(fetchClass(params.id))
+        dispatch(fetchClass(id))
         dispatch(fetchProducts())
     }, [])
 
