@@ -52,13 +52,22 @@ const ClassPage: React.FC<ClassPageProps> = ({ params }) => {
 
     const handlePassHolders = () => {
         if (isBooked) {
-            user.data && dispatch(deleteUserBooking(userBooking?.id || ''))
-            currentClass &&
+            if (user.data) {
+                dispatch(deleteUserBooking(userBooking?.id || ''))
+            }
+
+            if (currentClass) {
                 dispatch(
-                    removeClassBooking({ classId: currentClass?.data?.id || '', bookingId: userBooking?.id || '' })
+                    removeClassBooking({
+                        classId: currentClass.data?.id || '',
+                        bookingId: userBooking?.id || '',
+                    })
                 )
+            }
         } else {
-            currentClass && handleCreateBooking(currentClass?.data?.id || '')
+            if (currentClass) {
+                handleCreateBooking(currentClass.data?.id || '')
+            }
         }
     }
 
