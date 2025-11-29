@@ -43,7 +43,7 @@ const ClassPage: React.FC<ClassPageProps> = ({ params }) => {
 
     const userBooking = currentClass?.data?.bookings?.find((bk: any) => bk.client?.id === user.data?.id)
 
-    let isBooked = !!userBooking
+    const isBooked = !!userBooking
 
     const bookingsCount = currentClass?.data?.bookingsCount ?? currentClass?.data?.bookings?.length ?? 0
     const classSize = currentClass?.data?.size ?? 0

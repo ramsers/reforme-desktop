@@ -45,7 +45,7 @@ const ClientPage: React.FC<ClientPageProps> = ({ params }) => {
                     <TabPanel>{client && <ClientSettingsForm client={client} />}</TabPanel>
                     <TabPanel>
                         {client?.purchases.map((purchase) => {
-                            return <PassCard purchase={purchase} />
+                            return <PassCard purchase={purchase} key={purchase.id} />
                         })}
                     </TabPanel>
                 </TabPanels>

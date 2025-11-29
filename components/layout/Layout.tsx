@@ -4,11 +4,10 @@ import React from 'react'
 import { ReactNode } from 'react'
 
 type LayoutProps = {
-    title?: string
     children?: ReactNode
 }
 
-const Layout: React.FC<LayoutProps> = ({ title = '', children }) => {
+const Layout: React.FC<LayoutProps> = ({ children }) => {
     return (
         <div className="bg-main flex h-full flex-row">
             <main

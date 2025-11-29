@@ -64,7 +64,6 @@ const PassCard: React.FC<PassCardProps> = ({ purchase }) => {
                 title="Cancel your subscription"
                 content={<p>Are you sure you want to cancel your subscription?</p>}
                 onConfirm={() => handleCancel()}
-                btnColor="bg"
             />
         </>
     )

@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Class } from '@reformetypes/classTypes'
-import dayjs from 'dayjs'
 import { PencilIcon } from '@heroicons/react/24/solid'
 import { deleteClass, fetchClass } from '@store/slices/classSlice'
 import CreateClassForm from '@features/dashboard/classes/CreateEditClassForm'
@@ -125,7 +124,6 @@ const ClassesTable: React.FC<ClassesTableProps> = ({ classes, setCurrentPage, cu
                 }
                 confirmText="Delete"
                 onConfirm={() => handleDeleteClass()}
-                btnColor="bg-red-600"
             />
         </>
     )
