@@ -2,7 +2,7 @@ import { AxiosError } from 'axios'
 
 export function extractApiError(error: unknown): string {
     if (isAxiosError(error) && error.response) {
-        const data = error.response.data
+        const data: any = error.response.data
 
         if (typeof data.detail === 'string') {
             return data.detail

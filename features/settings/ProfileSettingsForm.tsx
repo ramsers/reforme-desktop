@@ -4,10 +4,18 @@ import { AsyncResource } from '@reformetypes/common/ApiTypes'
 import { User } from '@reformetypes/userTypes'
 import { RootState } from '@store/index'
 import { fetchUserInfo, updateUser } from '@store/slices/userSlice'
-import { ErrorMessage, Field, Form, Formik } from 'formik'
+import { ErrorMessage, Field, FieldProps, Form, Formik } from 'formik'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import * as Yup from 'yup'
+
+type ProfileFormValues = {
+    id: string
+    name: string
+    email: string
+    phoneNumber: string
+    password: string
+}
 
 const ProfileSettingsForm: React.FC = () => {
     const dispatch = useDispatch()
@@ -35,7 +43,7 @@ const ProfileSettingsForm: React.FC = () => {
             {!currentUser.hasFetched ? (
                 <SkeletonBlock className="w-1/3" />
             ) : (
-                <Formik
+                <Formik<ProfileFormValues>
                     initialValues={{
                         id: currentUser?.data?.id || '',
                         name: currentUser?.data?.name || '',
@@ -89,7 +97,7 @@ const ProfileSettingsForm: React.FC = () => {
                                     type="password"
                                     className="focus:ring-brown-default mt-1 w-full rounded-lg border px-3 py-2 focus:ring"
                                 >
-                                    {({ field, form }) => (
+                                    {({ field, form }: FieldProps<string>) => (
                                         <input
                                             {...field}
                                             type="password"

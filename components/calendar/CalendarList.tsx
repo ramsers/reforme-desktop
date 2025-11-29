@@ -3,11 +3,11 @@
 import React, { useEffect, useRef } from 'react'
 import { formatLocalDateTime } from '../../utils/dateUtils'
 
-interface CardItem {
+export interface CardItem {
     id: string | number
     title: string
     description: string
-    instructorName: string
+    instructorName: string | null
     date: string
     actions?: React.ReactNode
 }

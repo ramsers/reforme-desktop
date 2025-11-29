@@ -6,7 +6,7 @@ import { fetchClasses } from '@store/slices/classSlice'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import CalendarBar from '@components/calendar/CalendarBar'
-import CalendarList from '@components/calendar/CalendarList'
+import CalendarList, { CardItem } from '@components/calendar/CalendarList'
 import { useRouter } from 'next/navigation'
 import AppRoutes from 'config/appRoutes'
 import Button from '@components/button/button'
@@ -61,15 +61,15 @@ const ClassesCalendar: React.FC = () => {
                                 id: cls.id,
                                 title: cls.title,
                                 description: cls.description,
-                                instructorName: cls?.instructor?.name,
-                                date: cls.date,
+                                instructorName: cls?.instructor?.name ?? '',
+                                date: cls.date.toString(),
                                 actions: !isPast ? (
                                     <Button
                                         text="View class"
                                         onClick={() => router.push(AppRoutes.classes.detail(cls.id))}
                                     />
                                 ) : null,
-                            }
+                            } as CardItem
                         })}
                         emptyMessage="No classes scheduled for this day"
                         hasMore={Boolean(classes.data.next)}

@@ -7,7 +7,7 @@ export type Class = {
     description: string
     size: number
     length: number
-    date: Date
+    date: string
     instructor: User | null
     bookingsCount: number
     isFull: boolean
@@ -25,9 +25,11 @@ export type CreateClassPayload = {
     title: string
     description: string
     size: number
-    length: number
-    date: Date
-    instructorId?: User | null
+    length?: number
+    date: string
+    instructorId?: string | null
+    recurrenceType?: eRecurrenceType | null
+    recurrenceDays?: number[] | null
 }
 
 export type PartialUpdateClassPayload = {
@@ -36,9 +38,11 @@ export type PartialUpdateClassPayload = {
     description?: string
     size?: number
     length?: number
-    date?: Date
-    instructorId?: User | null
+    date?: string
+    instructorId?: string | null
     updateSeries?: boolean
+    recurrenceType?: eRecurrenceType | null
+    recurrenceDays?: number[] | null
 }
 
 export enum eRecurrenceType {

@@ -100,14 +100,15 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                         ...payload,
                         date: utcDate,
                         recurrenceDays:
-                            values?.recurrenceDays && values.recurrenceDays.length > 0
-                                ? values.recurrenceDays.map((d: string) => parseInt(d, 10))
-                                : null,
+                            values.recurrenceDays && values.recurrenceDays.length > 0
+                                ? values.recurrenceDays.map((d) => parseInt(d, 10))
+                                : undefined,
+                        updateSeries: values.updateSeries ?? undefined,
                     }
                     if (values.id) {
                         dispatch(partialUpdateClass(updatedPayload))
                     } else {
-                        dispatch(createClass(payload))
+                        dispatch(createClass(updatedPayload))
                     }
 
                     setSubmitting(false)

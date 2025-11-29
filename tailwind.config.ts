@@ -1,4 +1,3 @@
-import type { Config } from 'tailwindcss'
 import plugin from 'tailwindcss/plugin'
 
 const capitalizeFirst = plugin(function ({ addUtilities }) {
@@ -55,7 +54,7 @@ const animationDelay = plugin(
     }
 )
 
-const config: Config = {
+const config = {
     content: [
         './src/app/pages/**/*.{js,ts,jsx,tsx}',
         './design/**/*.{js,ts,jsx,tsx}',
