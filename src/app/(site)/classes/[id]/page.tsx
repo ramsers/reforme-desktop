@@ -5,7 +5,6 @@ import { Class } from '@reformetypes/classTypes'
 import { RootState } from '@store/index'
 import { fetchClass, removeClassBooking } from '@store/slices/classSlice'
 import { fetchProducts } from '@store/slices/paymentSlice'
-import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import StripeModal from '@features/payments/StripeModal'
@@ -39,7 +38,7 @@ const ClassPage: React.FC<ClassPageProps> = ({ params }) => {
     }, [clientSecret])
 
     const handleCreateBooking = (classId: string) => {
-        dispatch(createBooking({ clientId: user?.data?.id!, classId: classId }))
+        dispatch(createBooking({ clientId: user?.data?.id || '', classId: classId }))
     }
 
     const userBooking = currentClass?.data?.bookings?.find((bk: any) => bk.client?.id === user.data?.id)

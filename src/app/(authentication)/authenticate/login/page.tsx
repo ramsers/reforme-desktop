@@ -1,40 +1,15 @@
 'use client'
 
-import {RootState} from '@store/index'
 import React from 'react'
-import {connect} from 'react-redux'
-import {Dispatch} from 'redux'
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
-import SignUpForm from "@features/auth/SignUpForm";
-import LoginForm from "@features/auth/LoginForm";
-import AuthLayout from "@components/layout/AuthLayout";
+import LoginForm from '@features/auth/LoginForm'
+import AuthLayout from '@components/layout/AuthLayout'
 
-type LoginPageOwnProps = {}
-
-type LoginPageSliceProps = {}
-
-type LoginPageDispatchProps = {}
-
-type LoginPageProps = LoginPageOwnProps &
-    LoginPageSliceProps &
-    LoginPageDispatchProps
-
-const LoginPage: React.FC<LoginPageProps> = () => {
-
+const LoginPage: React.FC = () => {
     return (
         <div>
-            <AuthLayout form={<LoginForm />} imgPath={"/images/login_side_img.jpg"} title={"Login"}/>
+            <AuthLayout form={<LoginForm />} imgPath={'/images/login_side_img.jpg'} title={'Login'} />
         </div>
     )
 }
 
-const mapStateToProps = (store: RootState): LoginPageSliceProps => (
-    {}
-)
-
-const mapDispatchToProps = (dispatch: Dispatch): LoginPageDispatchProps => (
-    {}
-)
-
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage)
+export default LoginPage

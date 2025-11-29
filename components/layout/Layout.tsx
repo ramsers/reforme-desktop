@@ -1,3 +1,6 @@
+'use client'
+
+import React from 'react'
 import { ReactNode } from 'react'
 
 type LayoutProps = {
@@ -5,7 +8,7 @@ type LayoutProps = {
     children?: ReactNode
 }
 
-export default function Layout({ title = '', children }) {
+const Layout: React.FC<LayoutProps> = ({ title = '', children }) => {
     return (
         <div className="bg-main flex h-full flex-row">
             <main
@@ -19,3 +22,5 @@ export default function Layout({ title = '', children }) {
         </div>
     )
 }
+
+export default Layout

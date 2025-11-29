@@ -5,7 +5,6 @@ import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
 import { AsyncResource } from '@reformetypes/common/ApiTypes'
 import { User } from '@reformetypes/userTypes'
 import { RootState } from '@store/index'
-import dayjs from 'dayjs'
 import React from 'react'
 import { useSelector } from 'react-redux'
 
@@ -32,7 +31,7 @@ const AccountPage: React.FC = () => {
                     {!!currentUser.data && currentUser.data?.purchases?.length > 0 ? (
                         <>
                             {currentUser.data.purchases.map((purchase) => {
-                                return <PassCard purchase={purchase} />
+                                return <PassCard purchase={purchase} key={purchase.id} />
                             })}
                         </>
                     ) : (

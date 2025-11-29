@@ -14,6 +14,7 @@ import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTy
 import { Class } from '@reformetypes/classTypes'
 import TableLoader from '@components/Loaders/TableLoader'
 import Button from '@components/button/button'
+import React from 'react'
 
 const DashboardBookingsPage: React.FC = () => {
     const dispatch = useDispatch()

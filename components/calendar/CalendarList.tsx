@@ -1,9 +1,6 @@
 'use client'
 
 import React, { useEffect, useRef } from 'react'
-import { connect } from 'react-redux'
-import { Dispatch } from 'redux'
-import dayjs from 'dayjs'
 import { formatLocalDateTime } from '../../utils/dateUtils'
 
 interface CardItem {
