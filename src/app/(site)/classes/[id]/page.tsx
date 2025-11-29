@@ -5,7 +5,6 @@ import { Class } from '@reformetypes/classTypes'
 import { RootState } from '@store/index'
 import { fetchClass, removeClassBooking } from '@store/slices/classSlice'
 import { fetchProducts } from '@store/slices/paymentSlice'
-import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import StripeModal from '@features/payments/StripeModal'
@@ -15,21 +14,19 @@ import { AsyncResource } from '@reformetypes/common/ApiTypes'
 import SkeletonBlock from '@components/Loaders/SkeletonBlock'
 import ProductList from '@features/classes/ProductList'
 import { formatLocalDateTime } from '../../../../../utils/dateUtils'
+import { useParams } from 'next/navigation'
 
-type ClassPageProps = {
-    params: { id: string }
-}
-
-const ClassPage: React.FC<ClassPageProps> = ({ params }) => {
+const ClassPage: React.FC = () => {
     const dispatch = useDispatch()
     const currentClass: AsyncResource<Class | null> = useSelector((state: RootState) => state.class.class)
     const clientSecret = useSelector((state: RootState) => state.payment.clientSecret)
     const user = useSelector((state: RootState) => state.user.currentUser)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const userHasActivePass = !!user?.data?.purchases?.some((purchase) => purchase.isActive)
+    const { id } = useParams<{ id: string }>()
 
     useEffect(() => {
-        dispatch(fetchClass(params.id))
+        dispatch(fetchClass(id))
         dispatch(fetchProducts())
     }, [])
 
@@ -39,12 +36,12 @@ const ClassPage: React.FC<ClassPageProps> = ({ params }) => {
     }, [clientSecret])
 
     const handleCreateBooking = (classId: string) => {
-        dispatch(createBooking({ clientId: user?.data?.id!, classId: classId }))
+        dispatch(createBooking({ clientId: user?.data?.id || '', classId: classId }))
     }
 
     const userBooking = currentClass?.data?.bookings?.find((bk: any) => bk.client?.id === user.data?.id)
 
-    let isBooked = !!userBooking
+    const isBooked = !!userBooking
 
     const bookingsCount = currentClass?.data?.bookingsCount ?? currentClass?.data?.bookings?.length ?? 0
     const classSize = currentClass?.data?.size ?? 0
@@ -53,13 +50,22 @@ const ClassPage: React.FC<ClassPageProps> = ({ params }) => {
 
     const handlePassHolders = () => {
         if (isBooked) {
-            user.data && dispatch(deleteUserBooking(userBooking?.id || ''))
-            currentClass &&
+            if (user.data) {
+                dispatch(deleteUserBooking(userBooking?.id || ''))
+            }
+
+            if (currentClass) {
                 dispatch(
-                    removeClassBooking({ classId: currentClass?.data?.id || '', bookingId: userBooking?.id || '' })
+                    removeClassBooking({
+                        classId: currentClass.data?.id || '',
+                        bookingId: userBooking?.id || '',
+                    })
                 )
+            }
         } else {
-            currentClass && handleCreateBooking(currentClass?.data?.id || '')
+            if (currentClass) {
+                handleCreateBooking(currentClass.data?.id || '')
+            }
         }
     }
 

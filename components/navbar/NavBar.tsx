@@ -1,11 +1,13 @@
 'use client'
+
+import React from 'react'
 import MobileNavBar from '@components/navbar/MobileNavBar'
 import appRoutes from 'config/appRoutes'
 import { useSelector } from 'react-redux'
 import { RootState } from '@store/index'
 import AccountDropdown from '@components/navbar/AccountDropdown'
 
-export default function NavBar() {
+const NavBar: React.FC = () => {
     const user = useSelector((state: RootState) => state.user)
 
     return (
@@ -55,3 +57,5 @@ export default function NavBar() {
         </nav>
     )
 }
+
+export default NavBar

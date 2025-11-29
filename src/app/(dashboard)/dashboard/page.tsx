@@ -1,9 +1,6 @@
 'use client'
 
-import { RootState } from '@store/index'
 import React from 'react'
-import { connect } from 'react-redux'
-import { Dispatch } from 'redux'
 import AppRoutes from 'config/appRoutes'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'

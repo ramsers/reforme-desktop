@@ -91,7 +91,7 @@ const RecurrenceSection: React.FC<RecurrenceSectionProps> = ({
                                     name="recurrenceDays"
                                     value={idx.toString()}
                                     checked={(values.recurrenceDays || [])?.includes(idx.toString())}
-                                    onChange={(e) => {
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                         handleRecurrenceInteraction()
                                         const updatedDays = new Set(values.recurrenceDays || [])
 

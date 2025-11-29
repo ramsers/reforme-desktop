@@ -1,4 +1,6 @@
 'use client'
+
+import React from 'react'
 import TableLoader from '@components/Loaders/TableLoader'
 import ClientTable from '@features/dashboard/clients/ClientTable'
 import CreateClientButtonModal from '@features/dashboard/clients/CreateClientButtonModal'

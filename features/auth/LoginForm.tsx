@@ -44,15 +44,15 @@ const LoginForm: React.FC = () => {
                     const payload = {
                         ...values,
                     }
-                    dispatch(login(payload))
-                        .unwrap()
-                        .then((user: User) => {
-                            if (user.role === eRole.ADMIN) {
-                                router.push(AppRoutes.dashboard.main)
-                            } else {
-                                router.push(AppRoutes.home)
-                            }
-                        })
+                    dispatch(login(payload) as any).then((res: any) => {
+                        const user = res.payload
+
+                        if (user.role === eRole.ADMIN) {
+                            router.push(AppRoutes.dashboard.main)
+                        } else {
+                            router.push(AppRoutes.home)
+                        }
+                    })
 
                     setSubmitting(false)
                 }}

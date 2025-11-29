@@ -6,15 +6,7 @@ import { RootState } from '@store/index'
 import AccountDropdown from './AccountDropdown'
 import appRoutes from 'config/appRoutes'
 
-type MobileNavBarOwnProps = {}
-
-type MobileNavBarSliceProps = {}
-
-type MobileNavBarDispatchProps = {}
-
-type MobileNavBarProps = MobileNavBarOwnProps & MobileNavBarSliceProps & MobileNavBarDispatchProps
-
-const MobileNavBar: React.FC<MobileNavBarProps> = () => {
+const MobileNavBar: React.FC = () => {
     const user = useSelector((state: RootState) => state.user)
 
     return (

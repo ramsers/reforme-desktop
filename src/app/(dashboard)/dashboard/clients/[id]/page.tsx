@@ -1,30 +1,22 @@
 'use client'
 
-import Modal from '@components/modal/Modal'
-import SlidingModal from '@components/slidingModal/SlidingModal'
 import ClientSettingsForm from '@features/dashboard/clients/ClientSettingsForm'
 import PassCard from '@features/dashboard/clients/PassCard'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
-import { Booking } from '@reformetypes/bookingTypes'
-import { User } from '@reformetypes/userTypes'
 import { RootState } from '@store/index'
 import { retrieveUser } from '@store/slices/userSlice'
-import dayjs from 'dayjs'
-import React, { use, useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'next/navigation'
 
-type ClientPageProps = {
-    params: { id: string }
-}
-
-const ClientPage: React.FC<ClientPageProps> = ({ params }) => {
+const ClientPage: React.FC = () => {
     const disptach = useDispatch()
     const client = useSelector((state: RootState) => state.user.client)
-    const [isOpen, setIsOpen] = useState<boolean>(false)
+    const { id } = useParams<{ id: string }>()
 
     useEffect(() => {
-        disptach(retrieveUser(params.id))
-    }, [params.id])
+        disptach(retrieveUser(id))
+    }, [id])
 
     return (
         <div>
@@ -51,10 +43,9 @@ const ClientPage: React.FC<ClientPageProps> = ({ params }) => {
                     <TabPanel>{client && <ClientSettingsForm client={client} />}</TabPanel>
                     <TabPanel>
                         {client?.purchases.map((purchase) => {
-                            return <PassCard purchase={purchase} />
+                            return <PassCard purchase={purchase} key={purchase.id} />
                         })}
                     </TabPanel>
-                    <TabPanel>Content 3</TabPanel>
                 </TabPanels>
             </TabGroup>
         </div>

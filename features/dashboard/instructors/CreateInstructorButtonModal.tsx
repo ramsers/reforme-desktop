@@ -1,23 +1,9 @@
-import { RootState } from '@store/index'
-import React, { useContext, useState } from 'react'
-import { connect } from 'react-redux'
-import { Dispatch } from 'redux'
+import React, { useState } from 'react'
 import { PlusIcon } from '@heroicons/react/24/solid'
 import CreateEditInstructorForm from '@features/dashboard/instructors/CreateEditInstructorForm'
-import { InstructorTableContext } from './instructors/InstructorTableContextProvider'
 import Button from '@components/button/button'
 
-type CreateInstructorButtonModalOwnProps = {}
-
-type CreateInstructorButtonModalSliceProps = {}
-
-type CreateInstructorButtonModalDispatchProps = {}
-
-type CreateInstructorButtonModalProps = CreateInstructorButtonModalOwnProps &
-    CreateInstructorButtonModalSliceProps &
-    CreateInstructorButtonModalDispatchProps
-
-const CreateInstructorButtonModal: React.FC<CreateInstructorButtonModalProps> = () => {
+const CreateInstructorButtonModal: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false)
 
     return (
@@ -28,8 +14,4 @@ const CreateInstructorButtonModal: React.FC<CreateInstructorButtonModalProps> = 
     )
 }
 
-const mapStateToProps = (store: RootState): CreateInstructorButtonModalSliceProps => ({})
-
-const mapDispatchToProps = (dispatch: Dispatch): CreateInstructorButtonModalDispatchProps => ({})
-
-export default connect(mapStateToProps, mapDispatchToProps)(CreateInstructorButtonModal)
+export default CreateInstructorButtonModal
