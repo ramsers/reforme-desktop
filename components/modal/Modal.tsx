@@ -10,7 +10,6 @@ type ModalProps = {
     content: React.ReactNode
     confirmText?: string
     onConfirm?: (args?: any) => void
-    btnColor?: string
     confirmDisabled?: boolean
 }
 
@@ -21,7 +20,6 @@ const Modal: React.FC<ModalProps> = ({
     content,
     confirmText = 'Confirm',
     onConfirm,
-    btnColor = 'bg-blue-600',
     confirmDisabled = false,
 }) => {
     const selfHandleClose = () => {}

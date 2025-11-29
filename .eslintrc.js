@@ -30,5 +30,6 @@ module.exports = {
                 printWidth: 120,
             },
         ],
+        '@typescript-eslint/no-explicit-any': 'off',
     },
 }
