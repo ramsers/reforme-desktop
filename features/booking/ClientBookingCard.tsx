@@ -1,6 +1,5 @@
 import { Booking } from '@reformetypes/bookingTypes'
-import dayjs from 'dayjs'
-import { formatLocalDateTime } from '../../utils/dateUtils'
+import { formatLocalDateTime } from '@utils/dateUtils'
 
 type ClientBookingCardProps = {
     booking: Booking

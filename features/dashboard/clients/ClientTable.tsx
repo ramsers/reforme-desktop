@@ -1,6 +1,6 @@
 import { PencilIcon } from '@heroicons/react/24/solid'
 import { User } from '@reformetypes/userTypes'
-import dayjs from 'dayjs'
+import dayjs from '@lib/dayjs'
 import React, { useState } from 'react'
 import CreateEditClientForm from './CreateEditClientForm'
 import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'

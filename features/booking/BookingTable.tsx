@@ -1,6 +1,5 @@
 import { PencilIcon, PlusIcon } from '@heroicons/react/24/solid'
 import { Class } from '@reformetypes/classTypes'
-import dayjs from 'dayjs'
 import React, { useState } from 'react'
 import ManageClassBookingModal from './ManageClassBookingModal'
 import { useSelector } from 'react-redux'

@@ -16,7 +16,7 @@ import { Class, CreateClassPayload, PartialUpdateClassPayload } from '@reformety
 import { deleteClasses, getClass, getClasses, patchUpdateClass, postCreateClass } from '@api/classes'
 import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
 import { toastError, toastLoading, toastSuccess } from 'lib/toast'
-import dayjs from 'dayjs'
+import dayjs from '@lib/dayjs'
 import { extractApiError } from 'utils/apiUtils'
 
 export function* fetchClassesSaga(action: PayloadAction<Record<string, any>>) {

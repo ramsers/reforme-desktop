@@ -2,7 +2,7 @@
 import BookingTable from '@features/booking/BookingTable'
 import { RootState } from '@store/index'
 import { fetchClasses } from '@store/slices/classSlice'
-import dayjs from 'dayjs'
+import dayjs from '@lib/dayjs'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { DateRange, Range } from 'react-date-range'
@@ -88,7 +88,7 @@ const DashboardBookingsPage: React.FC = () => {
                     className="w-full rounded rounded-lg border bg-white p-2 text-sm lg:w-64"
                 />
             </div>
-            {!classes.hasFetched && classes.data.results.length === 0 ? (
+            {classes.fetching ? (
                 <TableLoader />
             ) : (
                 <BookingTable classes={classes.data} currentPage={currentPage} setCurrentPage={setCurrentPage} />

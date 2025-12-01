@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@store/index'
 import { fetchClasses } from '@store/slices/classSlice'
 import CreateClassButtonModal from '@features/dashboard/classes/CreateClassButtonModal'
-import dayjs from 'dayjs'
+import dayjs from '@lib/dayjs'
 import { DateRange, Range } from 'react-date-range'
 import 'react-date-range/dist/styles.css'
 import 'react-date-range/dist/theme/default.css'
@@ -89,7 +89,7 @@ const DashboardClassesPage: React.FC = () => {
                     className="w-full rounded rounded-lg border bg-white p-2 text-sm lg:w-64"
                 />
             </div>
-            {!classes.hasFetched && classes.data.results.length === 0 ? (
+            {classes.fetching ? (
                 <TableLoader />
             ) : (
                 <ClassesTable classes={classes.data} currentPage={currentPage} setCurrentPage={setCurrentPage} />
