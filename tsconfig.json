@@ -29,7 +29,9 @@
             "@reformetypes/*": ["types/*"],
             "@store/*": ["store/*"],
             "@mocks/*.svg": ["__mocks__/svg"],
-            "@mocks/*": ["__mocks__/"]
+            "@mocks/*": ["__mocks__/"],
+            "@lib/*": ["lib/*"],
+            "@utils/*": ["utils/*"]
         },
         "esModuleInterop": true,
         "experimentalDecorators": true,

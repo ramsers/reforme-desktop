@@ -2,7 +2,7 @@
 import BookingTable from '@features/booking/BookingTable'
 import { RootState } from '@store/index'
 import { fetchClasses } from '@store/slices/classSlice'
-import dayjs from 'dayjs'
+import dayjs from '@lib/dayjs'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { DateRange, Range } from 'react-date-range'

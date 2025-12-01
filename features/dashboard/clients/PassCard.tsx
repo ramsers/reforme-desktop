@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import dayjs from 'dayjs'
+import dayjs from '@lib/dayjs'
 import { PassPurchase } from '@reformetypes/paymentTypes'
 import Button from '@components/button/button'
 import { useDispatch } from 'react-redux'

@@ -1,14 +1,10 @@
 import { RootState } from '@store/index'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import dayjs from 'dayjs'
+import dayjs from '@lib/dayjs'
 import utc from 'dayjs/plugin/utc'
-import { fetchClasses } from '@store/slices/classSlice'
 import { Booking } from '@reformetypes/bookingTypes'
-import { getWeekRange } from '../../utils/dateUtils'
-import { useRouter } from 'next/navigation'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
-import AppRoutes from '../../config/appRoutes'
 import { deleteUserBooking } from '@store/slices/bookingSlice'
 import SkeletonBlock from '@components/Loaders/SkeletonBlock'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
@@ -16,10 +12,9 @@ import ClientBookingCard from './ClientBookingCard'
 
 const BookingList: React.FC = () => {
     const dispatch = useDispatch()
-    const router = useRouter()
     const bookings = useSelector((state: RootState) => state.booking.bookings)
-    dayjs.extend(isSameOrAfter)
-    dayjs.extend(utc)
+    // dayjs.extend(isSameOrAfter)
+    // dayjs.extend(utc)
 
     const handleCancel = (bookingId: string) => {
         dispatch(deleteUserBooking(bookingId))

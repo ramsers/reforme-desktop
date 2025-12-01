@@ -1,4 +1,4 @@
-import dayjs from 'dayjs'
+import dayjs from '@lib/dayjs'
 
 export function getWeekRange(date: string | Date) {
     const start = dayjs(date).startOf('week').format('YYYY-MM-DD')
