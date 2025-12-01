@@ -88,7 +88,7 @@ const DashboardBookingsPage: React.FC = () => {
                     className="w-full rounded rounded-lg border bg-white p-2 text-sm lg:w-64"
                 />
             </div>
-            {!classes.hasFetched && classes.data.results.length === 0 ? (
+            {classes.fetching ? (
                 <TableLoader />
             ) : (
                 <BookingTable classes={classes.data} currentPage={currentPage} setCurrentPage={setCurrentPage} />

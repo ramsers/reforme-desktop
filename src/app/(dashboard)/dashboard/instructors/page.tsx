@@ -45,7 +45,7 @@ const DashBoardInstructorsPage: React.FC = () => {
                 />
             </div>
 
-            {!instructors.hasFetched && instructors.data.results.length === 0 ? (
+            {instructors.fetching ? (
                 <TableLoader />
             ) : (
                 <InstructorsTable
