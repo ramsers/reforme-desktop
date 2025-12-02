@@ -57,7 +57,7 @@ export function* partialUpdateClassSaga(action: PayloadAction<PartialUpdateClass
     try {
         const response: AxiosResponse<Class> = yield call(patchUpdateClass, action.payload)
 
-        yield put(partialUpdateClassSuccess(response.data))
+        yield put(partialUpdateClassSuccess({ updatedClass: response.data, updateSeries: action.payload.updateSeries }))
         yield put(clearClass())
         toastSuccess('Class updated!')
     } catch (e) {
