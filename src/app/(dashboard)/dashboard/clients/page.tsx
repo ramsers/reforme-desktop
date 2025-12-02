@@ -43,7 +43,7 @@ const DashboardClientsPage = () => {
                     className="w-64 rounded rounded-lg border bg-white p-2 text-sm"
                 />
             </div>
-            {!clients.hasFetched && clients.data.results.length === 0 ? (
+            {clients.fetching ? (
                 <TableLoader />
             ) : (
                 <ClientTable clients={clients.data} currentPage={currentPage} setCurrentPage={setCurrentPage} />

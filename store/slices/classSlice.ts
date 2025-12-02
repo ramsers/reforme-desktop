@@ -67,12 +67,40 @@ const classSlice = createSlice({
             return state
         },
         partialUpdateClass: (state, action: PayloadAction<PartialUpdateClassPayload>) => state,
-        partialUpdateClassSuccess: (state, action: PayloadAction<Class>) => {
+        partialUpdateClassSuccess: (state, action: PayloadAction<{ updatedClass: Class; updateSeries?: boolean }>) => {
+            const { updatedClass, updateSeries } = action.payload
+
             const indexToUpdate = state.classes.data.results.findIndex(
-                (classToUpdate) => classToUpdate.id === action.payload.id
+                (classToUpdate) => classToUpdate.id === updatedClass.id
             )
 
-            state.classes.data.results[indexToUpdate] = action.payload
+            if (indexToUpdate !== -1) {
+                state.classes.data.results[indexToUpdate] = updatedClass
+            }
+
+            if (updateSeries) {
+                state.classes.data.results = state.classes.data.results.map((classToUpdate) => {
+                    if (
+                        (classToUpdate.parentClassId === updatedClass.parentClassId ||
+                            classToUpdate.parentClassId === updatedClass.id) &&
+                        new Date(classToUpdate.date) > new Date(updatedClass.date)
+                    ) {
+                        return {
+                            ...classToUpdate,
+                            title: updatedClass.title,
+                            description: updatedClass.description,
+                            size: updatedClass.size,
+                            length: updatedClass.length,
+                            instructor: updatedClass.instructor,
+                            recurrenceType: updatedClass.recurrenceType,
+                            recurrenceDays: updatedClass.recurrenceDays,
+                            isFull: classToUpdate.bookingsCount >= updatedClass.size,
+                        }
+                    }
+
+                    return classToUpdate
+                })
+            }
             return state
         },
         clearClass: (state) => {
