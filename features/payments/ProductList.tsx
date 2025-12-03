@@ -30,6 +30,8 @@ const ProductList: React.FC = () => {
         const currentPath = window.location.href
 
         if (user.data && !userHasActivePass) {
+            console.log('im beimg called')
+
             dispatch(
                 createPurchaseIntent({
                     priceId: product.priceId,

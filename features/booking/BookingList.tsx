@@ -36,7 +36,7 @@ const BookingList: React.FC = () => {
                         Upcoming bookings
                     </Tab>
                     <Tab className={'data-selected:bg-brown-default/40 rounded-t-md px-3 py-1.5 focus:outline-none'}>
-                        Completed bookings
+                        Past bookings
                     </Tab>
                 </TabList>
                 <TabPanels>

@@ -12,8 +12,8 @@ import { createBooking, deleteUserBooking } from '@store/slices/bookingSlice'
 import Button from '@components/button/button'
 import { AsyncResource } from '@reformetypes/common/ApiTypes'
 import SkeletonBlock from '@components/Loaders/SkeletonBlock'
-import ProductList from '@features/classes/ProductList'
-import { formatLocalDateTime } from '../../../../../utils/dateUtils'
+import ProductList from '@features/payments/ProductList'
+import { formatLocalDateTime } from '@utils/dateUtils'
 import { useParams } from 'next/navigation'
 
 const ClassPage: React.FC = () => {
