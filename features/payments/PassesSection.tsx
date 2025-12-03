@@ -13,7 +13,6 @@ const PassesSection: React.FC = () => {
     const clientSecret = useSelector((state: RootState) => state.payment.clientSecret)
     const currentUser: AsyncResource<User | null> = useSelector((state: RootState) => state.user?.currentUser)
     const purchases = currentUser.data?.purchases ?? []
-    const hasPurchases = purchases.length > 0
     const userHasActivePass = !!currentUser?.data?.purchases?.some((purchase) => purchase.isActive)
 
     const [isModalOpen, setIsModalOpen] = useState(false)
