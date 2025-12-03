@@ -14,6 +14,8 @@ const PassesSection: React.FC = () => {
     const currentUser: AsyncResource<User | null> = useSelector((state: RootState) => state.user?.currentUser)
     const purchases = currentUser.data?.purchases ?? []
     const hasPurchases = purchases.length > 0
+    const userHasActivePass = !!currentUser?.data?.purchases?.some((purchase) => purchase.isActive)
+
     const [isModalOpen, setIsModalOpen] = useState(false)
 
     useEffect(() => {
@@ -24,8 +26,8 @@ const PassesSection: React.FC = () => {
 
     return (
         <div className="flex flex-col gap-4">
-            {hasPurchases ? (
-                purchases.map((purchase) => <PassCard purchase={purchase} key={purchase.id} />)
+            {userHasActivePass ? (
+                purchases.map((purchase) => purchase.isActive && <PassCard purchase={purchase} key={purchase.id} />)
             ) : (
                 <div className="flex flex-col gap-6">
                     <p>No current passes</p>
