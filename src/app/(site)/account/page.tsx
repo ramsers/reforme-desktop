@@ -1,16 +1,11 @@
 'use client'
-import PassCard from '@features/dashboard/clients/PassCard'
+
+import PassesSection from '@features/payments/PassesSection'
 import ProfileSettingsForm from '@features/settings/ProfileSettingsForm'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
-import { AsyncResource } from '@reformetypes/common/ApiTypes'
-import { User } from '@reformetypes/userTypes'
-import { RootState } from '@store/index'
 import React from 'react'
-import { useSelector } from 'react-redux'
 
 const AccountPage: React.FC = () => {
-    const currentUser: AsyncResource<User | null> = useSelector((state: RootState) => state.user?.currentUser)
-
     return (
         <TabGroup className={'flex flex-col gap-6'}>
             <TabList
@@ -28,15 +23,7 @@ const AccountPage: React.FC = () => {
                     <ProfileSettingsForm />
                 </TabPanel>
                 <TabPanel className="flex flex-col gap-4">
-                    {!!currentUser.data && currentUser.data?.purchases?.length > 0 ? (
-                        <>
-                            {currentUser.data.purchases.map((purchase) => {
-                                return <PassCard purchase={purchase} key={purchase.id} />
-                            })}
-                        </>
-                    ) : (
-                        <p>No current passes</p>
-                    )}
+                    <PassesSection />
                 </TabPanel>
             </TabPanels>
         </TabGroup>
