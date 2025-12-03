@@ -68,6 +68,10 @@ const RecurrenceSection: React.FC<RecurrenceSectionProps> = ({
                         handleRecurrenceInteraction()
                         const value = e.target.value || null
                         setFieldValue('recurrenceType', value)
+
+                        if (value !== eRecurrenceType.WEEKLY) {
+                            setFieldValue('recurrenceDays', [])
+                        }
                     }}
                 >
                     <option value={''}>No recurrence</option>
