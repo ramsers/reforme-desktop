@@ -13,8 +13,8 @@ import ClientBookingCard from './ClientBookingCard'
 const BookingList: React.FC = () => {
     const dispatch = useDispatch()
     const bookings = useSelector((state: RootState) => state.booking.bookings)
-    // dayjs.extend(isSameOrAfter)
-    // dayjs.extend(utc)
+    dayjs.extend(isSameOrAfter)
+    dayjs.extend(utc)
 
     const handleCancel = (bookingId: string) => {
         dispatch(deleteUserBooking(bookingId))
