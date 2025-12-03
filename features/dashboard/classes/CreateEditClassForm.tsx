@@ -94,7 +94,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                 validationSchema={ClassSchema}
                 onSubmit={(values, { setSubmitting, resetForm }) => {
                     const { id, ...payload } = values
-                    const utcDate = toUTCISOString(values.date)
+                    const utcDate = values.date
                     const updatedPayload = {
                         id,
                         ...payload,
