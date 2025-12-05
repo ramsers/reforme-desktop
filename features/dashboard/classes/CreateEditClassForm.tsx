@@ -19,7 +19,7 @@ import InstructorSelect from './InstructorSelect'
 import UpdateSeriesSection from './UpdateSeriesSection'
 import { formatLocalInputValue } from '../../../utils/dateUtils'
 
-// dayjs.extend(utc)
+dayjs.extend(utc)
 
 type CreateEditClassFormOwnProps = {
     isOpen: boolean
