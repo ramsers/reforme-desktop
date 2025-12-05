@@ -23,7 +23,7 @@ const SignUpForm: React.FC = () => {
         password: Yup.string().required('Password is required'),
         phoneNumber: Yup.string()
             .matches(/^\+?[0-9]{7,15}$/, 'Invalid phone number')
-            .notRequired(),
+            .required('Phone number is required'),
     })
 
     return (
@@ -77,7 +77,7 @@ const SignUpForm: React.FC = () => {
                         </div>
 
                         <div>
-                            <label className="font-semibold">Phone Number (optional)</label>
+                            <label className="font-semibold">Phone Number</label>
                             <Field
                                 name="phoneNumber"
                                 className="border-brown-default w-full rounded-lg border border-2 p-2"

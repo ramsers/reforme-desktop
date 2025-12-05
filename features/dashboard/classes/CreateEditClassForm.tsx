@@ -17,9 +17,9 @@ import { AsyncResource } from '@reformetypes/common/ApiTypes'
 import RecurrenceSection from './RecurrenceSection'
 import InstructorSelect from './InstructorSelect'
 import UpdateSeriesSection from './UpdateSeriesSection'
-import { formatLocalInputValue, toUTCISOString } from '../../../utils/dateUtils'
+import { formatLocalInputValue } from '../../../utils/dateUtils'
 
-dayjs.extend(utc)
+// dayjs.extend(utc)
 
 type CreateEditClassFormOwnProps = {
     isOpen: boolean
@@ -94,11 +94,13 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                 validationSchema={ClassSchema}
                 onSubmit={(values, { setSubmitting, resetForm }) => {
                     const { id, ...payload } = values
-                    const utcDate = values.date
+                    const userTZ = Intl.DateTimeFormat().resolvedOptions().timeZone
+
+                    const fixedDate = dayjs.tz(values.date, userTZ).format()
                     const updatedPayload = {
                         id,
                         ...payload,
-                        date: utcDate,
+                        date: fixedDate,
                         recurrenceDays:
                             values.recurrenceDays && values.recurrenceDays.length > 0
                                 ? values.recurrenceDays.map((d) => parseInt(d, 10))
@@ -159,6 +161,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                                         rows={3}
                                         className="focus:ring-brown-default mt-1 w-full rounded-lg border px-3 py-2 focus:ring"
                                     />
+                                    <ErrorMessage name="description" component="div" className="text-sm text-red-500" />
                                 </div>
 
                                 <div>
