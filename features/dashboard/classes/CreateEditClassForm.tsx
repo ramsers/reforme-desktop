@@ -17,7 +17,7 @@ import { AsyncResource } from '@reformetypes/common/ApiTypes'
 import RecurrenceSection from './RecurrenceSection'
 import InstructorSelect from './InstructorSelect'
 import UpdateSeriesSection from './UpdateSeriesSection'
-import { formatLocalInputValue } from '../../../utils/dateUtils'
+import { formatLocalInputValue } from '@utils/dateUtils'
 
 dayjs.extend(utc)
 
@@ -55,7 +55,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
         description: Yup.string().required('Description is required'),
         size: Yup.number().required('Class size is required'),
         date: Yup.date().required('Class date is required'),
-        instructorId: Yup.string().optional().nullable(),
+        instructorId: Yup.string().required('Instructor required'),
         recurrenceType: Yup.mixed<eRecurrenceType>().oneOf(Object.values(eRecurrenceType)).nullable(),
         recurrenceDays: Yup.array()
             .of(Yup.number().min(0).max(6))
@@ -196,7 +196,14 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                                     onRequiresSeriesUpdateChange={setRequiresSeriesUpdate}
                                 />
 
-                                <InstructorSelect instructors={instructors} />
+                                <div>
+                                    <InstructorSelect instructors={instructors} />
+                                    <ErrorMessage
+                                        name="instructorId"
+                                        component="div"
+                                        className="text-sm text-red-500"
+                                    />
+                                </div>
 
                                 <UpdateSeriesSection
                                     showUpdateSeries={Boolean(values.id && values.recurrenceType)}
