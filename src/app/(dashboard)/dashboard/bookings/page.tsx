@@ -15,6 +15,7 @@ import { Class } from '@reformetypes/classTypes'
 import TableLoader from '@components/Loaders/TableLoader'
 import Button from '@components/button/button'
 import React from 'react'
+import SearchInput from '@components/search/SearchInput'
 
 const DashboardBookingsPage: React.FC = () => {
     const dispatch = useDispatch()
@@ -77,15 +78,13 @@ const DashboardBookingsPage: React.FC = () => {
                         </div>
                     </Popover.Panel>
                 </Popover>
-                <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => {
-                        setSearchQuery(e.target.value)
+                <SearchInput
+                    placeholder="Search by class name or instructor"
+                    onDebouncedChange={(value) => {
+                        setSearchQuery(value)
                         setCurrentPage(1)
                     }}
-                    placeholder="Search by class name or instructor"
-                    className="w-full rounded rounded-lg border bg-white p-2 text-sm lg:w-64"
+                    className="lg:w-64"
                 />
             </div>
             {classes.fetching ? (

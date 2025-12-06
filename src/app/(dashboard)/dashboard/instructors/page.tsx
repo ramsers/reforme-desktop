@@ -10,6 +10,7 @@ import { AsyncResource } from '@reformetypes/common/ApiTypes'
 import { ShortPaginatedResponse } from '@reformetypes/common/PaginatedResponseTypes'
 import { User } from '@reformetypes/userTypes'
 import TableLoader from '@components/Loaders/TableLoader'
+import SearchInput from '@components/search/SearchInput'
 
 const DashBoardInstructorsPage: React.FC = () => {
     const dispatch = useDispatch()
@@ -33,15 +34,13 @@ const DashBoardInstructorsPage: React.FC = () => {
                 <CreateInstructorButtonModal />
             </div>
             <div className="flex flex-row justify-end">
-                <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => {
-                        setSearchQuery(e.target.value)
+                <SearchInput
+                    placeholder="Search by name or email"
+                    onDebouncedChange={(value) => {
+                        setSearchQuery(value)
                         setCurrentPage(1)
                     }}
-                    placeholder="Search by name or email"
-                    className="w-full rounded rounded-lg border bg-white p-2 text-sm md:w-64"
+                    className="lg:w-64"
                 />
             </div>
 

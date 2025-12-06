@@ -11,6 +11,7 @@ import { RootState } from '@store/index'
 import { fetchAllClients } from '@store/slices/userSlice'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import SearchInput from '@components/search/SearchInput'
 
 const DashboardClientsPage = () => {
     const dispatch = useDispatch()
@@ -32,15 +33,13 @@ const DashboardClientsPage = () => {
                 <CreateClientButtonModal />
             </div>
             <div className="flex flex-row justify-end gap-2">
-                <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => {
-                        setSearchQuery(e.target.value)
+                <SearchInput
+                    placeholder="Search by name or email"
+                    onDebouncedChange={(value) => {
+                        setSearchQuery(value)
                         setCurrentPage(1)
                     }}
-                    placeholder="Search by name or email"
-                    className="w-64 rounded rounded-lg border bg-white p-2 text-sm"
+                    className="lg:w-64"
                 />
             </div>
             {clients.fetching ? (
