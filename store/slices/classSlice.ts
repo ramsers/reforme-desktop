@@ -74,32 +74,14 @@ const classSlice = createSlice({
                 (classToUpdate) => classToUpdate.id === updatedClass.id
             )
 
-            if (indexToUpdate !== -1) {
-                state.classes.data.results[indexToUpdate] = updatedClass
-            }
-
             if (updateSeries) {
-                state.classes.data.results = state.classes.data.results.map((classToUpdate) => {
-                    if (
-                        (classToUpdate.parentClassId === updatedClass.parentClassId ||
-                            classToUpdate.parentClassId === updatedClass.id) &&
-                        new Date(classToUpdate.date) > new Date(updatedClass.date)
-                    ) {
-                        return {
-                            ...classToUpdate,
-                            title: updatedClass.title,
-                            description: updatedClass.description,
-                            size: updatedClass.size,
-                            length: updatedClass.length,
-                            instructor: updatedClass.instructor,
-                            recurrenceType: updatedClass.recurrenceType,
-                            recurrenceDays: updatedClass.recurrenceDays,
-                            isFull: classToUpdate.bookingsCount >= updatedClass.size,
-                        }
-                    }
+                if (indexToUpdate !== -1) {
+                    state.classes.data.results[indexToUpdate] = updatedClass
+                }
 
-                    return classToUpdate
-                })
+                if (state.class.data?.id === updatedClass.id) {
+                    state.class.data = updatedClass
+                }
             }
             return state
         },

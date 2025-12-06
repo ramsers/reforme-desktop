@@ -17,7 +17,7 @@ import { AsyncResource } from '@reformetypes/common/ApiTypes'
 import RecurrenceSection from './RecurrenceSection'
 import InstructorSelect from './InstructorSelect'
 import UpdateSeriesSection from './UpdateSeriesSection'
-import { formatLocalInputValue, toUTCISOString } from '../../../utils/dateUtils'
+import { formatLocalInputValue } from '@utils/dateUtils'
 
 dayjs.extend(utc)
 
@@ -55,7 +55,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
         description: Yup.string().required('Description is required'),
         size: Yup.number().required('Class size is required'),
         date: Yup.date().required('Class date is required'),
-        instructorId: Yup.string().optional().nullable(),
+        instructorId: Yup.string().required('Instructor required'),
         recurrenceType: Yup.mixed<eRecurrenceType>().oneOf(Object.values(eRecurrenceType)).nullable(),
         recurrenceDays: Yup.array()
             .of(Yup.number().min(0).max(6))
@@ -94,11 +94,13 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                 validationSchema={ClassSchema}
                 onSubmit={(values, { setSubmitting, resetForm }) => {
                     const { id, ...payload } = values
-                    const utcDate = toUTCISOString(values.date)
+                    const userTZ = Intl.DateTimeFormat().resolvedOptions().timeZone
+
+                    const fixedDate = dayjs.tz(values.date, userTZ).format()
                     const updatedPayload = {
                         id,
                         ...payload,
-                        date: utcDate,
+                        date: fixedDate,
                         recurrenceDays:
                             values.recurrenceDays && values.recurrenceDays.length > 0
                                 ? values.recurrenceDays.map((d) => parseInt(d, 10))
@@ -159,6 +161,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                                         rows={3}
                                         className="focus:ring-brown-default mt-1 w-full rounded-lg border px-3 py-2 focus:ring"
                                     />
+                                    <ErrorMessage name="description" component="div" className="text-sm text-red-500" />
                                 </div>
 
                                 <div>
@@ -193,7 +196,14 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ isOpen, setIs
                                     onRequiresSeriesUpdateChange={setRequiresSeriesUpdate}
                                 />
 
-                                <InstructorSelect instructors={instructors} />
+                                <div>
+                                    <InstructorSelect instructors={instructors} />
+                                    <ErrorMessage
+                                        name="instructorId"
+                                        component="div"
+                                        className="text-sm text-red-500"
+                                    />
+                                </div>
 
                                 <UpdateSeriesSection
                                     showUpdateSeries={Boolean(values.id && values.recurrenceType)}

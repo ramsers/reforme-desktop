@@ -11,6 +11,7 @@ export type SignUp = {
     phoneNumber: string | null
     password: string
     role: eRole
+    timezone: string | null
 }
 
 export interface AccessTokenResponse {

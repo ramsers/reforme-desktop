@@ -24,7 +24,6 @@ const InstructorSelect: React.FC<InstructorSelectProps> = ({ instructors }) => {
                     </option>
                 ))}
             </Field>
-            <ErrorMessage name="instructorId" component="div" className="text-sm text-red-500" />
         </div>
     )
 }

@@ -27,6 +27,7 @@ export function* signUpSaga(action: PayloadAction<SignUpPayload>) {
             phoneNumber: action.payload.phoneNumber,
             password: action.payload.password,
             role: action.payload.role,
+            timezone: action.payload.timezone,
         })
         yield call(setAccessToken, response.data.access)
         yield call(connectApi)

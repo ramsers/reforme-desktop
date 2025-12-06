@@ -58,6 +58,13 @@ export function* partialUpdateClassSaga(action: PayloadAction<PartialUpdateClass
         const response: AxiosResponse<Class> = yield call(patchUpdateClass, action.payload)
 
         yield put(partialUpdateClassSuccess({ updatedClass: response.data, updateSeries: action.payload.updateSeries }))
+        if (action.payload.updateSeries) {
+            const now = dayjs()
+            const start_date = now.startOf('week').toISOString()
+            const end_date = now.endOf('week').toISOString()
+
+            yield put(fetchClasses({ start_date, end_date }))
+        }
         yield put(clearClass())
         toastSuccess('Class updated!')
     } catch (e) {
