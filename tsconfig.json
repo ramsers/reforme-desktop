@@ -1,63 +1,106 @@
 {
-    "compilerOptions": {
-        "target": "esnext",
-        "module": "esnext",
-        "lib": ["dom", "dom.iterable", "esnext"],
-        "allowJs": true,
-        "sourceMap": true,
-        "outDir": "dist",
-        "rootDir": ".",
-        "removeComments": true,
-        "strict": true,
-        "noImplicitAny": true,
-        "strictPropertyInitialization": false,
-        "moduleResolution": "bundler",
-        "baseUrl": ".",
-        "typeRoots": ["./node_modules/@types"],
-        "paths": {
-            "@api/*": ["api/*"],
-            "@common/*": ["common/*"],
-            "@components/*": ["components/*"],
-            "@design/*": ["design/*"],
-            "@features/*": ["features/*"],
-            "@pages/*": ["pages/*"],
-            "@public/*": ["public/*"],
-            "@icons/*": ["public/assets/icons/*"],
-            "@animations/*": ["public/assets/animations/*"],
-            "@styles/*": ["styles/*"],
-            "@hooks/*": ["hooks/*"],
-            "@reformetypes/*": ["types/*"],
-            "@store/*": ["store/*"],
-            "@mocks/*.svg": ["__mocks__/svg"],
-            "@mocks/*": ["__mocks__/"],
-            "@lib/*": ["lib/*"],
-            "@utils/*": ["utils/*"]
-        },
-        "esModuleInterop": true,
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
-        "skipLibCheck": true,
-        "forceConsistentCasingInFileNames": true,
-        "noEmit": true,
-        "incremental": true,
-        "resolveJsonModule": true,
-        "isolatedModules": true,
-        "jsx": "preserve",
-        "plugins": [
-            {
-                "name": "next"
-            }
-        ]
-    },
-    "include": [
-        "**/*.d.ts",
-        "**/*.d.tsx",
-        "**/*.js",
-        "**/*.jsx",
-        "**/*.ts",
-        "**/*.tsx",
-        "next-env.d.ts",
-        ".next/types/**/*.ts"
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
     ],
-    "exclude": ["node_modules"]
+    "allowJs": true,
+    "sourceMap": true,
+    "outDir": "dist",
+    "rootDir": ".",
+    "removeComments": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "strictPropertyInitialization": false,
+    "moduleResolution": "bundler",
+    "baseUrl": ".",
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
+    "paths": {
+      "@api/*": [
+        "api/*"
+      ],
+      "@common/*": [
+        "common/*"
+      ],
+      "@components/*": [
+        "components/*"
+      ],
+      "@design/*": [
+        "design/*"
+      ],
+      "@features/*": [
+        "features/*"
+      ],
+      "@pages/*": [
+        "pages/*"
+      ],
+      "@public/*": [
+        "public/*"
+      ],
+      "@icons/*": [
+        "public/assets/icons/*"
+      ],
+      "@animations/*": [
+        "public/assets/animations/*"
+      ],
+      "@styles/*": [
+        "styles/*"
+      ],
+      "@hooks/*": [
+        "hooks/*"
+      ],
+      "@reformetypes/*": [
+        "types/*"
+      ],
+      "@store/*": [
+        "store/*"
+      ],
+      "@mocks/*.svg": [
+        "__mocks__/svg"
+      ],
+      "@mocks/*": [
+        "__mocks__/"
+      ],
+      "@lib/*": [
+        "lib/*"
+      ],
+      "@utils/*": [
+        "utils/*"
+      ]
+    },
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "incremental": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "**/*.d.ts",
+    "**/*.d.tsx",
+    "**/*.js",
+    "**/*.jsx",
+    "**/*.ts",
+    "**/*.tsx",
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
