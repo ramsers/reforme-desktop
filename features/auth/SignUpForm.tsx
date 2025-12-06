@@ -2,7 +2,7 @@
 
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { AppDispatch } from '@store/index'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useDispatch } from 'react-redux'
 import * as Yup from 'yup'
 import { eRole } from '@reformetypes/authTypes'
@@ -10,12 +10,17 @@ import { signUp } from '@store/slices/authSlice'
 import { useRouter, useSearchParams } from 'next/navigation'
 import AppRoutes from '../../config/appRoutes'
 import Button from '@components/button/button'
+import { de } from 'date-fns/locale'
+import { time } from 'console'
 
 const SignUpForm: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>()
     const router = useRouter()
     const searchParams = useSearchParams()
     const redirectUrl = searchParams.get('redirect') || AppRoutes.home
+
+    const detectTimeZone = () => Intl.DateTimeFormat().resolvedOptions().timeZone ?? 'UTC'
+    const detectedTimeZone = useMemo(() => detectTimeZone(), [])
 
     const SignupSchema = Yup.object().shape({
         name: Yup.string().required('Name is required'),
@@ -41,8 +46,11 @@ const SignUpForm: React.FC = () => {
                         ...values,
                         phoneNumber: values.phoneNumber || '',
                         role: eRole.CLIENT,
+                        timezone: detectedTimeZone,
                         onSuccess: () => router.push(redirectUrl),
                     }
+                    console.log('DETECT TIME ===================', payload)
+
                     dispatch(signUp(payload))
 
                     setSubmitting(false)
