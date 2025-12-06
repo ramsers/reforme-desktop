@@ -10,8 +10,6 @@ import { signUp } from '@store/slices/authSlice'
 import { useRouter, useSearchParams } from 'next/navigation'
 import AppRoutes from '../../config/appRoutes'
 import Button from '@components/button/button'
-import { de } from 'date-fns/locale'
-import { time } from 'console'
 
 const SignUpForm: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>()
@@ -49,8 +47,6 @@ const SignUpForm: React.FC = () => {
                         timezone: detectedTimeZone,
                         onSuccess: () => router.push(redirectUrl),
                     }
-                    console.log('DETECT TIME ===================', payload)
-
                     dispatch(signUp(payload))
 
                     setSubmitting(false)
