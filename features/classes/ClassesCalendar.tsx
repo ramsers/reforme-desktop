@@ -24,48 +24,51 @@ const ClassesCalendar: React.FC = () => {
     )
 
     // ⭐ USE INSTRUCTOR/STUDIO TIMEZONE
-    const studioTimezone = useMemo(() => {
+    const instructorTimezone = useMemo(() => {
         return currentUser?.account?.timezone?.trim() || 'America/Toronto'
     }, [currentUser?.account?.timezone])
 
-    const [selectedDay, setSelectedDay] = useState(dayjs().tz(studioTimezone))
+    const [selectedDay, setSelectedDay] = useState(dayjs().tz(instructorTimezone))
     const [page, setPage] = useState(1)
 
-    // When timezone changes, re-anchor selectedDay
     useEffect(() => {
-        setSelectedDay((prev) => dayjs(prev.format('YYYY-MM-DD')).tz(studioTimezone))
-    }, [studioTimezone])
+        setSelectedDay((prev) => dayjs(prev.format('YYYY-MM-DD')).tz(instructorTimezone))
+    }, [instructorTimezone])
 
-    // ⭐ Convert selected day → UTC range
-    const getDateRangeForSelectedDay = useCallback(
-        (date: typeof selectedDay) => {
-            const dayInStudioTz = date.tz(studioTimezone)
+    const selectedDayRange = useMemo(() => {
+        const dayInInstructorTz = selectedDay.tz(instructorTimezone)
 
-            return {
-                startDate: dayInStudioTz.startOf('day').utc().toISOString(),
-                endDate: dayInStudioTz.endOf('day').utc().toISOString(),
-            }
-        },
-        [studioTimezone]
-    )
+        return {
+            startDate: dayInInstructorTz.startOf('day').utc().toISOString(),
+            endDate: dayInInstructorTz.endOf('day').utc().toISOString(),
+        }
+    }, [instructorTimezone, selectedDay])
 
     // Fetch initial page
     useEffect(() => {
         setPage(1)
-        const { startDate, endDate } = getDateRangeForSelectedDay(selectedDay)
-
-        dispatch(fetchClasses({ start_date: startDate, end_date: endDate, page: 1 }))
-    }, [dispatch, getDateRangeForSelectedDay, selectedDay])
+        dispatch(
+            fetchClasses({
+                start_date: selectedDayRange.startDate,
+                end_date: selectedDayRange.endDate,
+                page: 1,
+            })
+        )
+    }, [dispatch, selectedDayRange.endDate, selectedDayRange.startDate])
 
     // Infinite scroll: Load more pages
     useEffect(() => {
         if (page === 1) return
-        if (!classes?.data?.next || classes.fetching) return
 
-        const { startDate, endDate } = getDateRangeForSelectedDay(selectedDay)
-
-        dispatch(fetchClasses({ start_date: startDate, end_date: endDate, page, append: true }))
-    }, [classes?.data?.next, classes.fetching, dispatch, getDateRangeForSelectedDay, page, selectedDay])
+        dispatch(
+            fetchClasses({
+                start_date: selectedDayRange.startDate,
+                end_date: selectedDayRange.endDate,
+                page,
+                append: true,
+            })
+        )
+    }, [dispatch, page, selectedDayRange.endDate, selectedDayRange.startDate])
 
     const handleLoadMore = useCallback(() => {
         if (!classes?.data?.next || classes.fetching) return
@@ -78,12 +81,17 @@ const ClassesCalendar: React.FC = () => {
                 <SkeletonBlock className="w-1/2" />
             ) : (
                 <>
-                    <CalendarBar selectedDay={selectedDay} setSelectedDay={setSelectedDay} timezone={studioTimezone} />
+                    <CalendarBar
+                        selectedDay={selectedDay}
+                        setSelectedDay={setSelectedDay}
+                        timezone={instructorTimezone}
+                    />
 
                     <CalendarList
                         items={classes.data.results.map((cls) => {
-                            const classDate = dayjs(cls.date).tz(studioTimezone)
-                            const isPast = classDate.isBefore(dayjs().tz(studioTimezone), 'day')
+                            const classTimezone = cls?.instructor?.account?.timezone || instructorTimezone
+                            const classDate = dayjs(cls.date).tz(classTimezone)
+                            const isPast = classDate.isBefore(dayjs().tz(classTimezone), 'day')
 
                             return {
                                 id: cls.id,
