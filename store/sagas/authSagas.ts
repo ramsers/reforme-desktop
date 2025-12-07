@@ -20,6 +20,8 @@ export function* setAccessToken(accessToken: string) {
 }
 
 export function* signUpSaga(action: PayloadAction<SignUpPayload>) {
+    toastLoading('Creating account...')
+
     try {
         const response: AxiosResponse<AccessTokenResponse> = yield call(postSignUp, {
             name: action.payload.name,
@@ -36,6 +38,7 @@ export function* signUpSaga(action: PayloadAction<SignUpPayload>) {
         if (action.payload.onSuccess) {
             yield call(action.payload.onSuccess)
         }
+        toastSuccess('Account created!')
     } catch (e) {
         const message = extractApiError(e)
         toastError(message)

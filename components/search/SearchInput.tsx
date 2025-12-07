@@ -17,6 +17,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
     ...props
 }) => {
     const [value, setValue] = useState(controlledValue?.toString() ?? '')
+    const debouncedChangeRef = React.useRef(onDebouncedChange)
 
     useEffect(() => {
         if (controlledValue !== undefined && controlledValue !== value) {
@@ -25,14 +26,18 @@ const SearchInput: React.FC<SearchInputProps> = ({
     }, [controlledValue, value])
 
     useEffect(() => {
+        debouncedChangeRef.current = onDebouncedChange
+    }, [onDebouncedChange])
+
+    useEffect(() => {
         const handler = setTimeout(() => {
-            onDebouncedChange(value)
+            debouncedChangeRef.current(value)
         }, delay)
 
         return () => {
             clearTimeout(handler)
         }
-    }, [value, delay, onDebouncedChange])
+    }, [value, delay])
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newValue = event.target.value
