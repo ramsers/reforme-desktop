@@ -1,19 +1,21 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import dayjs, { Dayjs } from 'dayjs'
+import type { Dayjs } from 'dayjs'
+import dayjs from '@lib/dayjs'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid'
 
 type CalendarBarOwnProps = {
     selectedDay: Dayjs
     setSelectedDay: (day: Dayjs) => void
+    timezone: string
 }
 
 type CalendarBarProps = CalendarBarOwnProps
 
-const CalendarBar: React.FC<CalendarBarProps> = ({ selectedDay, setSelectedDay }) => {
+const CalendarBar: React.FC<CalendarBarProps> = ({ selectedDay, setSelectedDay, timezone }) => {
     const [weekOffset, setWeekOffset] = useState(0)
-    const today = dayjs()
+    const today = dayjs().tz(timezone)
 
     const weekStart = today.startOf('week').add(weekOffset, 'week')
     const weekEnd = weekStart.add(6, 'day')
@@ -26,7 +28,7 @@ const CalendarBar: React.FC<CalendarBarProps> = ({ selectedDay, setSelectedDay }
         } else {
             setSelectedDay(weekStart)
         }
-    }, [weekOffset])
+    }, [weekOffset, today, weekStart, setSelectedDay])
 
     return (
         <>

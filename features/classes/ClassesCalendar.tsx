@@ -1,6 +1,6 @@
 'use client'
 import { RootState } from '@store/index'
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchClasses } from '@store/slices/classSlice'
 import dayjs from '@lib/dayjs'
@@ -18,31 +18,63 @@ import { Class } from '@reformetypes/classTypes'
 const ClassesCalendar: React.FC = () => {
     const dispatch = useDispatch()
     const router = useRouter()
+    const currentUser = useSelector((state: RootState) => state.user.currentUser.data)
+
     const classes: AsyncResource<ShortPaginatedResponse<Class>> = useSelector(
         (state: RootState) => state.class?.classes
     )
-    dayjs.extend(utc)
+    // dayjs.extend(utc)
 
     const [selectedDay, setSelectedDay] = useState(dayjs())
+    const guessedTimezone = useMemo(() => dayjs.tz.guess(), [])
+    const userTimezone = useMemo(() => {
+        const timezoneFromUser = currentUser?.account?.timezone?.trim()
+
+        if (timezoneFromUser) {
+            return timezoneFromUser
+        }
+
+        return guessedTimezone
+    }, [currentUser?.account?.timezone, guessedTimezone])
+
     const [page, setPage] = useState(1)
 
     useEffect(() => {
+        setSelectedDay((previousDay) => dayjs(previousDay.format('YYYY-MM-DD')).tz(userTimezone))
+    }, [userTimezone])
+
+    const getDateRangeForSelectedDay = useCallback(
+        (date: typeof selectedDay) => {
+            const dayInUserTz = date.tz(userTimezone)
+
+            return {
+                startDate: dayInUserTz.startOf('day').utc().toISOString(),
+                endDate: dayInUserTz.endOf('day').utc().toISOString(),
+            }
+        },
+        [userTimezone]
+    )
+
+    useEffect(() => {
         setPage(1)
-        dispatch(fetchClasses({ date: selectedDay.format('YYYY-MM-DD'), page: 1 }))
-    }, [dispatch, selectedDay])
+        const { startDate, endDate } = getDateRangeForSelectedDay(selectedDay)
+
+        dispatch(fetchClasses({ start_date: startDate, end_date: endDate, page: 1 }))
+    }, [dispatch, getDateRangeForSelectedDay, selectedDay])
 
     useEffect(() => {
         if (page === 1) return
         if (!classes?.data?.next || classes.fetching) return
+        const { startDate, endDate } = getDateRangeForSelectedDay(selectedDay)
 
-        dispatch(fetchClasses({ date: selectedDay.format('YYYY-MM-DD'), page, append: true }))
-    }, [classes?.data?.next, classes.fetching, dispatch, page, selectedDay])
+        dispatch(fetchClasses({ start_date: startDate, end_date: endDate, page, append: true }))
+    }, [classes?.data?.next, classes.fetching, dispatch, getDateRangeForSelectedDay, page, selectedDay])
 
     const handleLoadMore = useCallback(() => {
         if (!classes?.data?.next || classes.fetching) return
 
         setPage((prev) => prev + 1)
-    }, [classes?.data?.next, classes.fetching])
+    }, [classes?.data?.next, classes.fetching, dispatch, getDateRangeForSelectedDay, page, selectedDay])
 
     return (
         <div className="flex w-full flex-col items-center gap-6">
@@ -50,12 +82,12 @@ const ClassesCalendar: React.FC = () => {
                 <SkeletonBlock className="w-1/2" />
             ) : (
                 <>
-                    <CalendarBar selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
+                    <CalendarBar selectedDay={selectedDay} setSelectedDay={setSelectedDay} timezone={userTimezone} />
 
                     <CalendarList
                         items={classes.data.results.map((cls) => {
-                            const classDate = dayjs(cls.date).local()
-                            const isPast = classDate.isBefore(dayjs(), 'day')
+                            const classDate = dayjs(cls.date).tz(userTimezone)
+                            const isPast = classDate.isBefore(dayjs().tz(userTimezone), 'day')
 
                             return {
                                 id: cls.id,
