@@ -80,7 +80,7 @@ const DashboardClassesPage: React.FC = () => {
                     </Popover.Panel>
                 </Popover>
                 <SearchInput
-                    placeholder="Search by class name or instructor"
+                    placeholder="Search by class or instructor"
                     onDebouncedChange={(value) => {
                         setSearchQuery(value)
                         setCurrentPage(1)
