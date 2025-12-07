@@ -25,17 +25,19 @@ const ClassesCalendar: React.FC = () => {
     )
     // dayjs.extend(utc)
 
-    const [selectedDay, setSelectedDay] = useState(dayjs())
     const guessedTimezone = useMemo(() => dayjs.tz.guess(), [])
     const userTimezone = useMemo(() => {
         const timezoneFromUser = currentUser?.account?.timezone?.trim()
+        const userTzIsValid = timezoneFromUser && Boolean(dayjs.tz.zone(timezoneFromUser))
 
-        if (timezoneFromUser) {
-            return timezoneFromUser
+        if (userTzIsValid) {
+            return timezoneFromUser as string
         }
 
         return guessedTimezone
     }, [currentUser?.account?.timezone, guessedTimezone])
+
+    const [selectedDay, setSelectedDay] = useState(() => dayjs().tz(userTimezone))
 
     const [page, setPage] = useState(1)
 

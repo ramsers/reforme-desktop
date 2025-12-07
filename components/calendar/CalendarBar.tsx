@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import type { Dayjs } from 'dayjs'
 import dayjs from '@lib/dayjs'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid'
@@ -15,20 +15,20 @@ type CalendarBarProps = CalendarBarOwnProps
 
 const CalendarBar: React.FC<CalendarBarProps> = ({ selectedDay, setSelectedDay, timezone }) => {
     const [weekOffset, setWeekOffset] = useState(0)
-    const today = dayjs().tz(timezone)
+    const today = useMemo(() => dayjs().tz(timezone), [timezone])
 
-    const weekStart = today.startOf('week').add(weekOffset, 'week')
-    const weekEnd = weekStart.add(6, 'day')
+    const weekStart = useMemo(() => today.startOf('week').add(weekOffset, 'week'), [today, weekOffset])
+    const weekEnd = useMemo(() => weekStart.add(6, 'day'), [weekStart])
 
-    const days = Array.from({ length: 7 }, (_, i) => weekStart.add(i, 'day'))
+    const days = useMemo(() => Array.from({ length: 7 }, (_, i) => weekStart.add(i, 'day')), [weekStart])
 
     useEffect(() => {
-        if (weekOffset === 0) {
-            setSelectedDay(today)
-        } else {
-            setSelectedDay(weekStart)
+        const nextSelected = weekOffset === 0 ? today : weekStart
+
+        if (!nextSelected.isSame(selectedDay, 'day')) {
+            setSelectedDay(nextSelected)
         }
-    }, [weekOffset, today, weekStart, setSelectedDay])
+    }, [selectedDay, setSelectedDay, today, weekOffset, weekStart])
 
     return (
         <>
