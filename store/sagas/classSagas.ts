@@ -60,8 +60,8 @@ export function* partialUpdateClassSaga(action: PayloadAction<PartialUpdateClass
         yield put(partialUpdateClassSuccess({ updatedClass: response.data, updateSeries: action.payload.updateSeries }))
         if (action.payload.updateSeries) {
             const now = dayjs()
-            const start_date = now.startOf('week').toISOString()
-            const end_date = now.endOf('week').toISOString()
+            const start_date = now.startOf('week').format('YYYY-MM-DD')
+            const end_date = now.endOf('week').format('YYYY-MM-DD')
 
             yield put(fetchClasses({ start_date, end_date }))
         }
