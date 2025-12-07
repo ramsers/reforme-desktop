@@ -33,8 +33,8 @@ export function* createClassSaga(action: PayloadAction<CreateClassPayload>) {
         yield call(postCreateClass, action.payload)
 
         const now = dayjs()
-        const start_date = now.startOf('week').toISOString()
-        const end_date = now.endOf('week').toISOString()
+        const start_date = now.startOf('week').format('YYYY-MM-DD')
+        const end_date = now.endOf('week').format('YYYY-MM-DD')
 
         yield put(fetchClasses({ start_date, end_date }))
         toastSuccess('Class created!')
@@ -79,8 +79,8 @@ export function* deleteClassSaga(action: PayloadAction<{ id: string; deleteSerie
     try {
         yield call(deleteClasses, action.payload.id, action.payload.deleteSeries)
         const now = dayjs()
-        const start_date = now.startOf('week').toISOString()
-        const end_date = now.endOf('week').toISOString()
+        const start_date = now.startOf('week').format('YYYY-MM-DD')
+        const end_date = now.endOf('week').format('YYYY-MM-DD')
 
         yield put(fetchClasses({ start_date, end_date }))
         toastSuccess('Class deleted!')
