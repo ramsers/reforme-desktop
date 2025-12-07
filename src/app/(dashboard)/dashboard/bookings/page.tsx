@@ -38,8 +38,8 @@ const DashboardBookingsPage: React.FC = () => {
     }
 
     useEffect(() => {
-        const start_date = dateRange[0]?.startDate?.toISOString()
-        const end_date = dateRange[0]?.endDate?.toISOString()
+        const start_date = dateRange[0]?.startDate ? dayjs(dateRange[0].startDate).format('YYYY-MM-DD') : undefined
+        const end_date = dateRange[0]?.endDate ? dayjs(dateRange[0].endDate).format('YYYY-MM-DD') : undefined
 
         dispatch(fetchClasses({ start_date, end_date, page: currentPage, search: searchQuery }))
     }, [dateRange, currentPage, searchQuery])

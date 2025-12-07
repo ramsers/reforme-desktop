@@ -1,6 +1,11 @@
 import { eRole } from '@reformetypes/authTypes'
 import { PassPurchase } from './paymentTypes'
 
+export type Account = {
+    bio?: string | null
+    timezone: string
+}
+
 export type User = {
     id: string
     createdAt: Date
@@ -8,6 +13,7 @@ export type User = {
     name: string
     phoneNumber: string
     role: eRole
+    account: Account
     purchases: PassPurchase[]
 }
 

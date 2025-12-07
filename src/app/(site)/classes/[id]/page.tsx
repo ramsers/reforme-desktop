@@ -97,9 +97,12 @@ const ClassPage: React.FC = () => {
                                 {currentClass?.data?.instructor?.name || 'No instructor assigned'}
                             </p>
                             <p>
-                                <span className="font-bold">Bio:</span> This should actually be something like a part of
-                                an instructor bio which is a separate table/model holding data specific to the
-                                instructors like
+                                <span className="font-bold">Bio:</span>{' '}
+                                {currentClass?.data?.instructor?.account.bio?.trim() ? (
+                                    currentClass?.data?.instructor?.account.bio
+                                ) : (
+                                    <span className="italic">No bio added yet.</span>
+                                )}
                             </p>
                         </div>
                     </div>
