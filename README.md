@@ -33,7 +33,6 @@ Client
 - cd reforme-desktop
 
 ## 2️⃣ Install dependencies
-- cd frontend
 - npm install
 
 ## 3️⃣ Configure environment variables
