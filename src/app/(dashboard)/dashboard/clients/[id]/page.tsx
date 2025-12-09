@@ -42,9 +42,11 @@ const ClientPage: React.FC = () => {
                 <TabPanels>
                     <TabPanel>{client && <ClientSettingsForm client={client} />}</TabPanel>
                     <TabPanel>
-                        {client?.purchases.map((purchase) => {
-                            return <PassCard purchase={purchase} key={purchase.id} />
-                        })}
+                        <div className="flex flex-col gap-4">
+                            {client?.purchases.map((purchase) => {
+                                return <PassCard purchase={purchase} key={purchase.id} />
+                            })}
+                        </div>
                     </TabPanel>
                 </TabPanels>
             </TabGroup>
