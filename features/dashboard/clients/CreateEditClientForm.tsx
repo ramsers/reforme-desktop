@@ -5,6 +5,7 @@ import { createUser, updateUser } from '@store/slices/userSlice'
 import AppRoutes from 'config/appRoutes'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { useRouter } from 'next/navigation'
+import { useMemo } from 'react'
 import { useDispatch } from 'react-redux'
 import * as Yup from 'yup'
 
@@ -27,6 +28,9 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ title, isOpen
             .required('Phone number is required'),
     })
 
+    const detectTimeZone = () => Intl.DateTimeFormat().resolvedOptions().timeZone ?? 'UTC'
+    const detectedTimeZone = useMemo(() => detectTimeZone(), [])
+
     return (
         <Formik
             initialValues={{
@@ -41,7 +45,7 @@ const CreateEditClassForm: React.FC<CreateEditClassFormProps> = ({ title, isOpen
                 const { id, ...payload } = values
 
                 if (!id) {
-                    dispatch(createUser(payload))
+                    dispatch(createUser({ ...payload, timezone: detectedTimeZone }))
                 } else {
                     dispatch(updateUser(values))
                 }

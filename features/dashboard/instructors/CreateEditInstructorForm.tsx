@@ -1,6 +1,6 @@
 'use client'
 import { RootState } from '@store/index'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import * as Yup from 'yup'
 import { User } from '@reformetypes/userTypes'
@@ -41,6 +41,10 @@ const CreateEditInstructorForm: React.FC<CreateEditInstructorFormProps> = ({
             .matches(/^\+?[0-9]{7,15}$/, 'Invalid phone number')
             .required('Phone number is required'),
     })
+
+    const detectTimeZone = () => Intl.DateTimeFormat().resolvedOptions().timeZone ?? 'UTC'
+    const detectedTimeZone = useMemo(() => detectTimeZone(), [])
+
     return (
         <div className="flex flex-col gap-5">
             <Formik
@@ -55,7 +59,7 @@ const CreateEditInstructorForm: React.FC<CreateEditInstructorFormProps> = ({
                     const { id, ...payload } = values
 
                     if (!values.id) {
-                        dispatch(createUser({ ...payload, role: eRole.INSTRUCTOR }))
+                        dispatch(createUser({ ...payload, role: eRole.INSTRUCTOR, timezone: detectedTimeZone }))
                     } else {
                         dispatch(updateUser(values))
                     }

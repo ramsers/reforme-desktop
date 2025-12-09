@@ -95,9 +95,9 @@ const userSlice = createSlice({
         createUser: (state, action: PayloadAction<CreateUserPayload>) => state,
         createUserSuccess: (state, action: PayloadAction<User>) => {
             if (action.payload.role === eRole.INSTRUCTOR) {
-                state.instructors.data.results.push(action.payload)
+                state.instructors.data.results.unshift(action.payload)
             } else {
-                state.clients.data.results.push(action.payload)
+                state.clients.data.results.unshift(action.payload)
             }
 
             return state

@@ -23,4 +23,5 @@ export type CreateUserPayload = {
     phoneNumber: string
     role: eRole
     password?: string
+    timezone: string
 }
