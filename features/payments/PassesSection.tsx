@@ -18,10 +18,12 @@ const PassesSection: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false)
 
     useEffect(() => {
-        if (!clientSecret) return
-
+        if (!clientSecret || userHasActivePass) {
+            setIsModalOpen(false)
+            return
+        }
         setIsModalOpen(true)
-    }, [clientSecret])
+    }, [clientSecret, userHasActivePass])
 
     return (
         <div className="flex flex-col gap-4">
