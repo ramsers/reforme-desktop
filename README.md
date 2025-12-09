@@ -23,3 +23,24 @@ Client
 - Browse & Book classes
 - Manage passes & subscriptions
 - Receive confirmation/cancellation emails
+
+---
+
+# 📦 Local Development Setup
+
+## 1️⃣ Clone the repository
+- git clone [https://github.com/<your-username>/reforme.git](https://github.com/ramsers/reforme-desktop.git)
+- cd reforme-desktop
+
+## 2️⃣ Install dependencies
+- cd frontend
+- npm install
+
+## 3️⃣ Configure environment variables
+- cp .env.example .env
+- fill in .env values
+
+## 4️⃣ Start development server
+- npm run dev
+
+
